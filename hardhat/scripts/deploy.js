@@ -5,7 +5,7 @@ async function main() {
   const ERC20Address = process.env.POLYGON_MUMBAI_LINK_ADDRESS
 
   // Start deployment, returning a promise that resolves to a contract object
-  const deployedAINFTs = await AINFTs.deploy()
+  const deployedAINFTs = await AINFTs.deploy(ERC20Address)
   await deployedAINFTs.deployed()
   console.log('Contract deployed to address:', deployedAINFTs.address)
 }
