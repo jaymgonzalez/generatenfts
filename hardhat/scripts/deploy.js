@@ -1,5 +1,8 @@
+require('dotenv').config()
+
 async function main() {
   const AINFTs = await ethers.getContractFactory('AINFTs')
+  const ERC20Address = process.env.POLYGON_MUMBAI_LINK_ADDRESS
 
   // Start deployment, returning a promise that resolves to a contract object
   const deployedAINFTs = await AINFTs.deploy()
