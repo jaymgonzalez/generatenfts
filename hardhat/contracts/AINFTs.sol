@@ -13,7 +13,7 @@ error AINFTs__TransactionNotSent();
 contract AINFTs is ERC721URIStorage, Ownable {
     uint256 public _tokenIds;
     uint256 public maxTokenIds = 100;
-    uint256 public _price = 0.01 ether;
+    uint256 public _price = 0.1 ether;
     IERC20 public tokenAddress;
 
     constructor(address _tokenAddress) ERC721("AINFTs", "AINFT") {
@@ -34,6 +34,7 @@ contract AINFTs is ERC721URIStorage, Ownable {
         }
         _tokenIds += 1;
 
+        tokenAddress.transferFrom(msg.sender, address(this), _price);
         _mint(recipient, _tokenIds);
         _setTokenURI(_tokenIds, tokenURI);
 
