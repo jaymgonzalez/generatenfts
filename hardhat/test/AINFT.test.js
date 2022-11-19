@@ -9,16 +9,26 @@ const POLYGON_MUMBAI_LINK_ADDRESS =
 !developmentChains.includes(network.name)
   ? describe.skip
   : describe('AINFTs Unit Tests', function () {
-      let AINFT, contract
+      let AINFT,
+        Link,
+        nftContract,
+        linkContract,
+        owner,
+        addr1,
+        addr2,
+        addr3,
+        addrs
       beforeEach(async function () {
         AINFT = await ethers.getContractFactory('AINFTs')
+        Link = await ethers.getContractFactory('Link')
         ;[owner, addr1, addr2, addr3, ...addrs] = await ethers.getSigners()
-        contract = await AINFT.deploy()
+        linkContract = await Link.deploy()
+        nftContract = await AINFT.deploy(linkContract.address)
       })
 
       describe('Deployment', function () {
         it('Should set the right owner', async function () {
-          expect(await contract.owner.to.equal(owner.address))
+          expect(await nftContract.owner()).to.equal(owner.address)
         })
       })
     })
