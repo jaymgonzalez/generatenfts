@@ -50,12 +50,37 @@ const POLYGON_MUMBAI_LINK_ADDRESS =
               .mintNFT(addr1.address, baseurl, overrides)
           ).to.be.revertedWith('ERC20: insufficient allowance')
         })
-        it.only('Should mint NFT', async function () {
+        it.only('Should allow transfer of Link tokens', async function () {
+          await linkContract.approve(
+            owner.address,
+            ethers.utils.parseEther('100')
+          )
+          await linkContract.transferFrom(
+            owner.address,
+            addr2.address,
+            ethers.utils.parseEther('100')
+          )
+          const balance = await linkContract.balanceOf(addr2.address)
+          console.log(balance)
+          expect(
+            await linkContract
+              .balanceOf(addr2.address)
+              .to.equal('100000000000000000000')
+          )
+        })
+        it('Should allow transfer of Link tokens', async function () {
           const baseurl = 'ipfs://test.url/'
           const overrides = {
             value: ethers.utils.parseEther('0.01'),
           }
-          await linkContract.approve(nftContract.address, overrides.value)
+          await linkContract
+            .connect(addr1)
+            .approve(owner.address, ethers.utils.parseEther('100'))
+          await linkContract.transferFrom(
+            addr1.address,
+            addr2.address,
+            ethers.utils.parseEther('100')
+          )
           await nftContract
             .connect(owner)
             .mintNFT(owner.address, baseurl, overrides)

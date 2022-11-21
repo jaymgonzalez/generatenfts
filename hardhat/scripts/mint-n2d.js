@@ -16,8 +16,13 @@ async function main() {
   const N2d = await ethers.getContractAt(contract.abi, contractAddress, signer)
   console.log('Minting NFT...')
 
-  Link.approve(signer.address, 2)
-  await N2d.addCurrency(linkAddress, 1)
+  const approveTx = await Link.approve(N2d.address, 2)
+  console.log(await approveTx)
+  await approveTx.wait()
+
+  const addTx = await N2d.addCurrency(linkAddress, 1)
+  console.log(await addTx)
+  await addTx.wait()
 
   const tx = await N2d.mint(signer.address, 1, 0, {
     gasLimit: 5000000,
