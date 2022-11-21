@@ -33,13 +33,34 @@ const POLYGON_MUMBAI_LINK_ADDRESS =
       describe('Deployment', function () {
         it('Should set the right owner', async function () {
           expect(await nftContract.owner()).to.equal(owner.address)
-          // console.log(owner)
-          // console.log(await owner.address.getBalance(linkContract.address))
         })
         it('Should have minted Link tokens', async function () {
           expect(await linkContract.balanceOf(owner.address)).to.equal(
             '1000000000000000000000000'
           )
+        })
+        it('Should fail if not enough Link for transaction', async function () {
+          const baseurl = 'ipfs://test.url/'
+          const overrides = {
+            value: ethers.utils.parseEther('0.01'),
+          }
+          expect(
+            await nftContract
+              .connect(owner)
+              .mintNFT(addr1.address, baseurl, overrides)
+          ).to.be.revertedWith('ERC20: insufficient allowance')
+        })
+        it.only('Should mint NFT', async function () {
+          const baseurl = 'ipfs://test.url/'
+          const overrides = {
+            value: ethers.utils.parseEther('0.01'),
+          }
+          await linkContract.approve(nftContract.address, overrides.value)
+          await nftContract
+            .connect(owner)
+            .mintNFT(owner.address, baseurl, overrides)
+
+          expect(await nftContract.ownerOf(0)).to.equal(owner.address)
         })
       })
     })
