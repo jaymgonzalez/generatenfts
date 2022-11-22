@@ -1,8 +1,11 @@
 const { getNamedAccounts, ethers, provider } = require('hardhat')
 const { utils } = require('ethers')
 const contract = require('../artifacts/contracts/AINFTs.sol/AINFTs.json')
-const contractAddress = '0x06CE25aFCC5575A1945866357BaaD3f7967fD2F0'
+const contractAddress = '0xF38F653C781d85F66a838C60b736c4A1f0932D57'
 require('dotenv').config({ path: '.env' })
+const { linkAbi } = require('../constants')
+
+const linkAddress = process.env.POLYGON_MUMBAI_LINK_ADDRESS
 
 const ETH_ADDRESS = process.env.ETH_ADDRESS
 const metadataURL = 'ipfs://QmaEH4QgkSWeQaM9aDEhhDTcz5wEiHfdqaYpHJyGgFsev4'
@@ -16,6 +19,13 @@ async function main() {
     signer
   )
   console.log('Minting NFT...')
+  const linkContract = await ethers.getContractAt(linkAbi, linkAddress, signer)
+
+  const approveLinkTx = await linkContract.approve(
+    contractAddress,
+    ethers.utils.parseEther('1')
+  )
+  await approveLinkTx.wait()
 
   const tx = await AINFT.mintNFT(signer.address, metadataURL, {
     gasLimit: 5000000,

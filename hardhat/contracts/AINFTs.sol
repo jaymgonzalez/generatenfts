@@ -1,11 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.6;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "hardhat/console.sol";
 
 error AINFTs__MaxTokenIdsReached();
 error AINFTs__NotEnoughFunds();
@@ -14,7 +12,7 @@ error AINFTs__TransactionNotSent();
 contract AINFTs is ERC721URIStorage, Ownable {
     uint256 public _tokenIds;
     uint256 public maxTokenIds = 100;
-    uint256 public _price = 0.01 ether;
+    uint256 public _price = 1 ether;
     address public tokenAddress;
     IERC20 token;
 
@@ -28,7 +26,7 @@ contract AINFTs is ERC721URIStorage, Ownable {
         returns (uint256)
     {
         token = IERC20(tokenAddress);
-        require(token.balanceOf(_msgSender()) > 10, "Not enough tokens");
+        // require(token.balanceOf(msg.sender) > 1, "Not enough tokens");
         // if (_tokenIds > maxTokenIds) {
         //     revert AINFTs__MaxTokenIdsReached();
         // }
@@ -54,12 +52,8 @@ contract AINFTs is ERC721URIStorage, Ownable {
     }
 
     function withdraw() public onlyOwner {
-        address _owner = owner();
-        uint256 amount = address(this).balance;
-        (bool sent, ) = _owner.call{value: amount}("");
-        if (!sent) {
-            revert AINFTs__TransactionNotSent();
-        }
+        token = IERC20(tokenAddress);
+        token.transfer(msg.sender, token.balanceOf(address(this)));
     }
 
     receive() external payable {}
