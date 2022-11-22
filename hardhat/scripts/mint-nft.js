@@ -27,9 +27,7 @@ async function main() {
   )
   await approveLinkTx.wait()
 
-  const tx = await AINFT.mintNFT(signer.address, metadataURL, {
-    gasLimit: 5000000,
-  })
+  const tx = await AINFT.mintNFT(signer.address, metadataURL)
 
   console.log(
     `Check yout transaction at https://mumbai.polygonscan.com/tx/${tx.hash}`

@@ -30,6 +30,7 @@ module.exports = {
       url: POLYGON_MUMBAI_RPC_URL,
       accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
       chainId: 80001,
+      blockGasLimit: 5000000,
     },
   },
 
