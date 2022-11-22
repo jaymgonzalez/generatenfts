@@ -1,5 +1,4 @@
-const { getNamedAccounts, ethers, provider } = require('hardhat')
-const { utils } = require('ethers')
+const { ethers } = require('hardhat')
 const contract = require('../artifacts/contracts/AINFTs.sol/AINFTs.json')
 const contractAddress = '0xF38F653C781d85F66a838C60b736c4A1f0932D57'
 require('dotenv').config({ path: '.env' })
