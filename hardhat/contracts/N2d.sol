@@ -3,10 +3,12 @@
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 pragma solidity ^0.8.0;
 
 contract N2d is ERC721Enumerable, Ownable {
+    using SafeMath for uint256;
     struct TokenInfo {
         IERC20 paytoken;
         uint256 costvalue;
@@ -21,7 +23,7 @@ contract N2d is ERC721Enumerable, Ownable {
     uint256 public maxMintAmount = 5;
     bool public paused = false;
 
-    constructor() ERC721("Net2Dev NFT Collection", "N2D") {}
+    constructor() ERC721("AI Generated NFT Collection", "AINFT") {}
 
     function addCurrency(IERC20 _paytoken, uint256 _costvalue)
         public
