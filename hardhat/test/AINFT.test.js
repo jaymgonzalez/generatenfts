@@ -45,17 +45,15 @@ require('dotenv').config()
           expect(approvedTokens[2][0]).to.equal('Link 3')
         })
         it.only('Should NOT add a token to the token list if NOT owner', async function () {
-          await nftContract
-            .connect(addr1)
-            .addCurrency(
-              linkContract.address,
-              ethers.utils.parseEther('1'),
-              'Link 3'
-            )
-
-          expect(approvedTokens[0][0]).to.equal(linkContract.address)
-          expect(approvedTokens[1][0]).to.equal('1000000000000000000')
-          expect(approvedTokens[2][0]).to.equal('Link 3')
+          expect(
+            nftContract
+              .connect(addr1)
+              .addCurrency(
+                linkContract.address,
+                ethers.utils.parseEther('1'),
+                'Link 3'
+              )
+          ).to.be.revertedWith('Ownable: caller is not the owner')
         })
         it('Should mint the NFT', async function () {
           await nftContract.addCurrency(
@@ -73,20 +71,29 @@ require('dotenv').config()
 
           expect(await nftContract.balanceOf(addr1.address)).to.equal(1)
         })
-        it.only('Should allow withdraws from owner', async function () {
+        it('Should mint with not owner addr ', async function () {
+          await nftContract.addCurrency(
+            linkContract.address,
+            ethers.utils.parseEther('1'),
+            'Link 3'
+          )
+
+          await linkContract
+            .connect(addr1)
+            .approve(nftContract.address, ethers.utils.parseEther('100'))
+
           await linkContract.approve(
             owner.address,
             ethers.utils.parseEther('100')
           )
           await linkContract.transferFrom(
             owner.address,
-            addr2.address,
+            addr1.address,
             ethers.utils.parseEther('100')
           )
 
-          expect(await linkContract.balanceOf(addr2.address)).to.equal(
-            '100000000000000000000'
-          )
+          await nftContract.connect(addr1).mint(addr1.address, 1, 0)
+          expect(await nftContract.balanceOf(addr1.address)).to.equal(1)
 
           // const balance = await linkContract.balanceOf(addr2.address)
           // console.log(balance)
