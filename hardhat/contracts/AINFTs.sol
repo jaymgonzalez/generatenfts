@@ -30,6 +30,7 @@ contract AINFTs is ERC721Enumerable, Ownable {
     uint256 public maxMintAmount = 5;
     bool public paused = false;
     uint256 public currenciesAdded = 0;
+    uint256 public fee;
 
     constructor() ERC721("AI Generated NFT Collection", "AINFT") {}
 
@@ -74,7 +75,7 @@ contract AINFTs is ERC721Enumerable, Ownable {
 
         if (msg.sender != owner()) {
             require(
-                msg.value == cost * _mintAmount,
+                msg.value >= fee * _mintAmount,
                 "Not enough balance to complete transaction."
             );
         }
@@ -141,6 +142,9 @@ contract AINFTs is ERC721Enumerable, Ownable {
     }
 
     // only owner
+    function setFee(uint256 _fee) public onlyOwner {
+        fee = _fee;
+    }
 
     function setmaxMintAmount(uint256 _newmaxMintAmount) public onlyOwner {
         maxMintAmount = _newmaxMintAmount;
@@ -160,10 +164,19 @@ contract AINFTs is ERC721Enumerable, Ownable {
         paused = _state;
     }
 
-    function withdraw(uint256 _pid) public payable onlyOwner {
+    function withdrawToken(uint256 _pid) public payable onlyOwner {
         TokenInfo storage tokens = AllowedCrypto[_pid];
         IERC20 paytoken;
         paytoken = tokens.paytoken;
         paytoken.transfer(msg.sender, paytoken.balanceOf(address(this)));
+    }
+
+    function withdraw() public onlyOwner {
+        address _owner = owner();
+        uint256 amount = address(this).balance;
+        (bool sent, ) = _owner.call{value: amount}("");
+        if (!sent) {
+            revert AINFTs__TransactionNotSent();
+        }
     }
 }

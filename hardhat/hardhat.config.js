@@ -9,6 +9,7 @@ const QUICKNODE_HTTP_URL = process.env.QUICKNODE_HTTP_URL
 const POLYGON_MUMBAI_RPC_URL = process.env.POLYGON_MUMBAI_RPC_URL
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY
+const PRIVATE_KEY2 = process.env.PRIVATE_KEY2
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY
 const POLYGONSCAN_API_KEY = process.env.POLYGONSCAN_API_KEY
 
@@ -28,7 +29,7 @@ module.exports = {
     },
     mumbai: {
       url: POLYGON_MUMBAI_RPC_URL,
-      accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
+      accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [PRIVATE_KEY2],
       chainId: 80001,
       blockGasLimit: 5000000,
     },

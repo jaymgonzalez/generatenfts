@@ -1,5 +1,5 @@
 const contract = require('../artifacts/contracts/AINFTs.sol/AINFTs.json')
-const contractAddress = '0xF38F653C781d85F66a838C60b736c4A1f0932D57'
+const { contractAddress } = require('../constants')
 require('dotenv').config({ path: '.env' })
 
 async function main() {
@@ -10,19 +10,31 @@ async function main() {
     contractAddress,
     signer
   )
-  console.log('Withdrawing funds...')
+  console.log('Withdrawing token funds...')
 
-  const tx = await AINFT.withdraw({
-    gasLimit: 5000000,
+  const tokenTx = await AINFT.withdrawToken(0, {
+    gasLimit: 50000,
   })
 
   console.log(
-    `Check yout transaction at https://mumbai.polygonscan.com/tx/${tx.hash}`
+    `Check yout transaction at https://mumbai.polygonscan.com/tx/${tokenTx.hash}`
   )
 
-  await tx.wait()
+  await tokenTx.wait()
 
-  console.log('You successfully withdraw your funds :)')
+  console.log('You successfully withdraw your token funds :)')
+
+  console.log('Withdrawing funds...')
+
+  const maticTx = await AINFT.withdraw()
+
+  console.log(
+    `Check yout transaction at https://mumbai.polygonscan.com/tx/${maticTx.hash}`
+  )
+
+  await maticTx.wait()
+
+  console.log('You successfully withdraw your token funds :)')
 }
 
 main()
