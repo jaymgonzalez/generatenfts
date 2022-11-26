@@ -32,6 +32,8 @@ require('dotenv').config()
             '1000000000000000000000000'
           )
         })
+      })
+      describe('addCurrency', function () {
         it('Should add a token to the token list if owner', async function () {
           await nftContract.addCurrency(
             linkContract.address,
@@ -43,9 +45,10 @@ require('dotenv').config()
           expect(approvedTokens[0][0]).to.equal(linkContract.address)
           expect(approvedTokens[1][0]).to.equal('1000000000000000000')
           expect(approvedTokens[2][0]).to.equal('Link 3')
+          expect(await nftContract.currenciesAdded()).to.equal(1)
         })
-        it.only('Should NOT add a token to the token list if NOT owner', async function () {
-          expect(
+        it('Should NOT add a token to the token list if NOT owner', async function () {
+          await expect(
             nftContract
               .connect(addr1)
               .addCurrency(
@@ -55,6 +58,8 @@ require('dotenv').config()
               )
           ).to.be.revertedWith('Ownable: caller is not the owner')
         })
+      })
+      describe('mint', function () {
         it('Should mint the NFT', async function () {
           await nftContract.addCurrency(
             linkContract.address,
@@ -94,29 +99,30 @@ require('dotenv').config()
 
           await nftContract.connect(addr1).mint(addr1.address, 1, 0)
           expect(await nftContract.balanceOf(addr1.address)).to.equal(1)
-
-          // const balance = await linkContract.balanceOf(addr2.address)
-          // console.log(balance)
-          // expect(await linkContract.balanceOf(addr2.address).to.equal(balance))
         })
-        // it('Should allow transfer of Link tokens', async function () {
-        //   const baseurl = 'ipfs://test.url/'
-        //   const overrides = {
-        //     value: ethers.utils.parseEther('0.01'),
-        //   }
-        //   await linkContract
-        //     .connect(addr1)
-        //     .approve(owner.address, ethers.utils.parseEther('100'))
-        //   await linkContract.transferFrom(
-        //     addr1.address,
-        //     addr2.address,
-        //     ethers.utils.parseEther('100')
-        //   )
-        //   await nftContract
-        //     .connect(owner)
-        //     .mintNFT(owner.address, baseurl, overrides)
+        it('Should NOT mint if not enough ERC20 funds ', async function () {
+          await nftContract.addCurrency(
+            linkContract.address,
+            ethers.utils.parseEther('1000'),
+            'Link 3'
+          )
+          await linkContract.approve(
+            owner.address,
+            ethers.utils.parseEther('100')
+          )
+          await linkContract.transferFrom(
+            owner.address,
+            addr1.address,
+            ethers.utils.parseEther('100')
+          )
 
-        //   expect(await nftContract.ownerOf(0)).to.equal(owner.address)
-        // })
+          await linkContract
+            .connect(addr1)
+            .approve(nftContract.address, ethers.utils.parseEther('100'))
+
+          await expect(
+            nftContract.connect(addr1).mint(addr1.address, 1, 0)
+          ).to.be.revertedWith('ERC20: insufficient allowance')
+        })
       })
     })
