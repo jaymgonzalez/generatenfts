@@ -22,9 +22,6 @@ async function main() {
   await approveTx.wait()
   console.log('Approved!')
 
-  const setFeeTx = await AINFTs.setFee(ethers.utils.parseEther('0.01'))
-  await setFeeTx.wait()
-
   const tx = await AINFTs.mint(signer.address, 1, 0, {
     gasLimit: 5000000,
     value: ethers.utils.parseEther('0.01'),
