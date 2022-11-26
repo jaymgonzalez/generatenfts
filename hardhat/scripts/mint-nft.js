@@ -1,32 +1,41 @@
 const { ethers } = require('hardhat')
 const contract = require('../artifacts/contracts/AINFTs.sol/AINFTs.json')
-const contractAddress = '0xF38F653C781d85F66a838C60b736c4A1f0932D57'
+const contractAddress = '0xe0c51c3bE40C351Aa05007D68ffB8326cab1A3f6'
 require('dotenv').config({ path: '.env' })
 const { linkAbi } = require('../constants')
 
 const linkAddress = process.env.POLYGON_MUMBAI_LINK_ADDRESS
 
-const ETH_ADDRESS = process.env.ETH_ADDRESS
-const metadataURL = 'ipfs://QmaEH4QgkSWeQaM9aDEhhDTcz5wEiHfdqaYpHJyGgFsev4'
-
 async function main() {
   const signer = await ethers.getSigner()
 
-  const AINFT = await ethers.getContractAt(
+  const Link = await ethers.getContractAt(linkAbi, linkAddress, signer)
+  const AINFTs = await ethers.getContractAt(
     contract.abi,
     contractAddress,
     signer
   )
   console.log('Minting NFT...')
-  const linkContract = await ethers.getContractAt(linkAbi, linkAddress, signer)
 
-  const approveLinkTx = await linkContract.approve(
-    contractAddress,
+  const addTx = await AINFTs.addCurrency(
+    linkAddress,
     ethers.utils.parseEther('1')
   )
-  await approveLinkTx.wait()
+  console.log('Adding token...')
+  await addTx.wait()
+  console.log('Added!')
 
-  const tx = await AINFT.mintNFT(signer.address, metadataURL)
+  const approveTx = await Link.approve(
+    AINFTs.address,
+    ethers.utils.parseEther('1')
+  )
+  console.log('Approving token...')
+  await approveTx.wait()
+  console.log('Approved!')
+
+  const tx = await AINFTs.mint(signer.address, 1, 0, {
+    gasLimit: 5000000,
+  })
 
   console.log(
     `Check yout transaction at https://mumbai.polygonscan.com/tx/${tx.hash}`

@@ -4,14 +4,14 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 
+pragma solidity ^0.8.0;
+
 error AINFTs__MaxTokenSupplyReached(uint256 currentSupply, uint256 maxSupply);
 error AINFTs__NotEnoughFunds();
 error AINFTs__TransactionNotSent();
 error AINFTs__MintingIsPaused();
 error AINFTs__NftToMintLowerThanOne();
 error AINFTs__MintingMoreThanAllowed(uint256 maxMintAmount);
-
-pragma solidity ^0.8.0;
 
 contract AINFTs is ERC721Enumerable, Ownable {
     struct TokenInfo {
@@ -22,14 +22,13 @@ contract AINFTs is ERC721Enumerable, Ownable {
     TokenInfo[] public AllowedCrypto;
 
     using Strings for uint256;
-
     string public baseURI;
     string public baseExtension = ".json";
     uint256 public maxSupply = 1000;
     uint256 public maxMintAmount = 5;
     bool public paused = false;
 
-    constructor() ERC721("AI Generated NFT Collection", "AINFT") {}
+    constructor() ERC721("AINFT NFT Collection", "AINFT") {}
 
     function addCurrency(IERC20 _paytoken, uint256 _costvalue)
         public
