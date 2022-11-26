@@ -24,7 +24,7 @@ module.exports = {
     },
     goerli: {
       url: QUICKNODE_HTTP_URL,
-      accounts: [PRIVATE_KEY],
+      accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [PRIVATE_KEY2],
       chainId: 5,
     },
     mumbai: {
