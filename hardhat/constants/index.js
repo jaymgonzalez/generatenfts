@@ -1,3 +1,5 @@
+const contractAddress = '0x295D8d6FF9430EEDd8897e7BbF953c7102a835Cd'
+
 const linkAbi = [
   {
     constant: true,
@@ -169,4 +171,6 @@ const linkAbi = [
   },
 ]
 
-module.exports = { linkAbi }
+const linkAddress = '0x326C977E6efc84E512bB9C30f76E30c160eD06FB'
+
+module.exports = { linkAbi, contractAddress, linkAddress }

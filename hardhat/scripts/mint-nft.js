@@ -1,10 +1,7 @@
 const { ethers } = require('hardhat')
 const contract = require('../artifacts/contracts/AINFTs.sol/AINFTs.json')
-const contractAddress = '0xe0c51c3bE40C351Aa05007D68ffB8326cab1A3f6'
 require('dotenv').config({ path: '.env' })
-const { linkAbi } = require('../constants')
-
-const linkAddress = process.env.POLYGON_MUMBAI_LINK_ADDRESS
+const { contractAddress, linkAbi, linkAddress } = require('../constants')
 
 async function main() {
   const signer = await ethers.getSigner()
@@ -19,7 +16,8 @@ async function main() {
 
   const addTx = await AINFTs.addCurrency(
     linkAddress,
-    ethers.utils.parseEther('1')
+    ethers.utils.parseEther('1'),
+    'Link'
   )
   console.log('Adding token...')
   await addTx.wait()

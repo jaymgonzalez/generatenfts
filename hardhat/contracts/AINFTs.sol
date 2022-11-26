@@ -12,11 +12,13 @@ error AINFTs__TransactionNotSent();
 error AINFTs__MintingIsPaused();
 error AINFTs__NftToMintLowerThanOne();
 error AINFTs__MintingMoreThanAllowed(uint256 maxMintAmount);
+error AINFT__NoTokensAdded();
 
 contract AINFTs is ERC721Enumerable, Ownable {
     struct TokenInfo {
         IERC20 paytoken;
         uint256 costvalue;
+        string name;
     }
 
     TokenInfo[] public AllowedCrypto;
@@ -27,16 +29,19 @@ contract AINFTs is ERC721Enumerable, Ownable {
     uint256 public maxSupply = 1000;
     uint256 public maxMintAmount = 5;
     bool public paused = false;
+    uint256 public currenciesAdded = 0;
 
-    constructor() ERC721("AINFT NFT Collection", "AINFT") {}
+    constructor() ERC721("AI Generated NFT Collection", "AINFT") {}
 
-    function addCurrency(IERC20 _paytoken, uint256 _costvalue)
-        public
-        onlyOwner
-    {
+    function addCurrency(
+        IERC20 _paytoken,
+        uint256 _costvalue,
+        string memory _name
+    ) public onlyOwner {
         AllowedCrypto.push(
-            TokenInfo({paytoken: _paytoken, costvalue: _costvalue})
+            TokenInfo({paytoken: _paytoken, costvalue: _costvalue, name: _name})
         );
+        currenciesAdded += 1;
     }
 
     function _baseURI() internal view virtual override returns (string memory) {
@@ -80,11 +85,9 @@ contract AINFTs is ERC721Enumerable, Ownable {
         }
     }
 
-    function walletOfOwner(address _owner)
-        public
-        view
-        returns (uint256[] memory)
-    {
+    function walletOfOwner(
+        address _owner
+    ) public view returns (uint256[] memory) {
         uint256 ownerTokenCount = balanceOf(_owner);
         uint256[] memory tokenIds = new uint256[](ownerTokenCount);
         for (uint256 i; i < ownerTokenCount; i++) {
@@ -93,13 +96,9 @@ contract AINFTs is ERC721Enumerable, Ownable {
         return tokenIds;
     }
 
-    function tokenURI(uint256 tokenId)
-        public
-        view
-        virtual
-        override
-        returns (string memory)
-    {
+    function tokenURI(
+        uint256 tokenId
+    ) public view virtual override returns (string memory) {
         require(
             _exists(tokenId),
             "ERC721Metadata: URI query for nonexistent token"
@@ -118,6 +117,29 @@ contract AINFTs is ERC721Enumerable, Ownable {
                 : "";
     }
 
+    function getApprovedTokenInfo()
+        public
+        view
+        returns (IERC20[] memory, uint256[] memory, string[] memory)
+    {
+        IERC20[] memory paytoken = new IERC20[](currenciesAdded);
+        uint256[] memory costvalue = new uint256[](currenciesAdded);
+        string[] memory name = new string[](currenciesAdded);
+
+        if (currenciesAdded < 0) {
+            revert AINFT__NoTokensAdded();
+        }
+
+        for (uint i = 0; i < currenciesAdded; i++) {
+            TokenInfo storage tokens = AllowedCrypto[i];
+            paytoken[i] = tokens.paytoken;
+            costvalue[i] = tokens.costvalue;
+            name[i] = tokens.name;
+        }
+
+        return (paytoken, costvalue, name);
+    }
+
     // only owner
 
     function setmaxMintAmount(uint256 _newmaxMintAmount) public onlyOwner {
@@ -128,10 +150,9 @@ contract AINFTs is ERC721Enumerable, Ownable {
         baseURI = _newBaseURI;
     }
 
-    function setBaseExtension(string memory _newBaseExtension)
-        public
-        onlyOwner
-    {
+    function setBaseExtension(
+        string memory _newBaseExtension
+    ) public onlyOwner {
         baseExtension = _newBaseExtension;
     }
 
