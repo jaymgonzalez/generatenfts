@@ -1,25 +1,18 @@
 {
+  "name": "front-end",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
-  },
-  "devDependencies": {
-    "nuxt": "3.0.0"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "@mdi/font": "^7.0.96",
-    "@wagmi/core": "^0.7.5",
-    "@web3modal/core": "^2.0.0-beta.7",
-    "@web3modal/ethereum": "^2.0.0-beta.7",
-    "@web3modal/html": "^2.0.0-beta.7",
-    "@web3modal/ui": "^2.0.0-beta.7",
-    "ethers": "^5.7.2",
-    "sass": "^1.56.1",
-    "vuetify": "^3.0.1",
-    "web3modal": "^1.9.10"
+    "eslint": "8.28.0",
+    "eslint-config-next": "13.0.5",
+    "next": "13.0.5",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   }
 }
