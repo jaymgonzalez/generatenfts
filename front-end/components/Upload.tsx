@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { Text, Group, Button, createStyles } from '@mantine/core'
 import { Dropzone, MIME_TYPES } from '@mantine/dropzone'
 import { IconCloudUpload, IconX, IconDownload } from '@tabler/icons'
@@ -7,6 +7,8 @@ const useStyles = createStyles((theme) => ({
   wrapper: {
     position: 'relative',
     marginBottom: 30,
+    paddingLeft: 50,
+    paddingRight: 50,
   },
 
   dropzone: {
@@ -29,18 +31,35 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-export default function () {
+export default function Upload({ imagesURLs, setImagesURLs }) {
   const { classes, theme } = useStyles()
   const openRef = useRef<() => void>(null)
+  const [images, setImages] = useState([])
+
+  useEffect(() => {
+    if (images.length < 1) return
+    const newImagesURLs = []
+    images.forEach((image) => newImagesURLs.push(URL.createObjectURL(image)))
+    setImagesURLs(newImagesURLs)
+  }, [images])
+
+  function onImageDrop(files: any) {
+    setImages([...files])
+  }
+
+  function onImageChange(e: any) {
+    setImages([...e.target.files])
+  }
 
   return (
     <div className={classes.wrapper}>
       <Dropzone
         openRef={openRef}
-        onDrop={() => {}}
+        onDrop={onImageDrop}
+        onChange={onImageChange}
         className={classes.dropzone}
         radius="md"
-        accept={[MIME_TYPES.pdf]}
+        accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
         maxSize={30 * 1024 ** 2}
       >
         <div style={{ pointerEvents: 'none' }}>
@@ -75,7 +94,7 @@ export default function () {
           </Text>
           <Text align="center" size="sm" mt="xs" color="dimmed">
             Drag&apos;n&apos;drop files here to upload. We can accept only{' '}
-            <i>.pdf</i> files that are less than 30mb in size.
+            <i>.png</i> or <i>.jpeg</i> files that are less than 30mb in size.
           </Text>
         </div>
       </Dropzone>

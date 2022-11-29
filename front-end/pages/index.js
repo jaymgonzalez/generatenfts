@@ -1,5 +1,7 @@
 import Navbar from '../components/Navbar'
 import Upload from '../components/Upload'
+import ImageGrid from '../components/ImageGrid'
+import { useState } from 'react'
 
 const links = [
   {
@@ -57,10 +59,13 @@ const links = [
 ]
 
 export default function Home() {
+  const [imagesURLs, setImagesURLs] = useState([])
   return (
     <>
       <Navbar links={links} />
-      <Upload />
+      <Upload imagesURLs={imagesURLs} setImagesURLs={setImagesURLs} />
+      {console.log({ imagesURLs })}
+      <ImageGrid imagesURLs={imagesURLs} />
     </>
   )
 }
