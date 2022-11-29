@@ -5,16 +5,16 @@ import { useState } from 'react'
 
 const links = [
   {
-    link: '/about',
-    label: 'Features',
+    link: '/',
+    label: 'Home',
   },
   {
     link: '#1',
-    label: 'Learn',
+    label: 'CreateNFT',
     links: [
       {
-        link: '/docs',
-        label: 'Documentation',
+        link: '/upload',
+        label: 'Upload Images',
       },
       {
         link: '/resources',

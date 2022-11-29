@@ -1,5 +1,6 @@
 import { Contract, providers, utils } from 'ethers'
 import { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
 import Web3Modal from 'web3modal'
 
 import {
@@ -77,42 +78,47 @@ export default function Navbar({ links }: HeaderActionProps) {
   const [walletConnected, setWalletConnected] = useState(false)
   const web3ModalRef: any = useRef()
 
-  console.log(web3ModalRef)
-
   const items = links.map((link) => {
     const menuItems = link.links?.map((item) => (
-      <Menu.Item key={item.link}>{item.label}</Menu.Item>
+      <Menu.Item key={item.link}>
+        <Link href={item.link} className={classes.link}>
+          {item.label}
+        </Link>
+      </Menu.Item>
     ))
 
     if (menuItems) {
       return (
-        <Menu key={link.label} trigger="hover" exitTransitionDuration={0}>
-          <Menu.Target>
-            <a
-              href={link.link}
-              className={classes.link}
-              onClick={(event) => event.preventDefault()}
-            >
-              <Center>
-                <span className={classes.linkLabel}>{link.label}</span>
-                <IconChevronDown size={12} stroke={1.5} />
-              </Center>
-            </a>
-          </Menu.Target>
-          <Menu.Dropdown>{menuItems}</Menu.Dropdown>
-        </Menu>
+        <>
+          {console.log(link)}
+          <Menu key={link.label} trigger="hover" exitTransitionDuration={0}>
+            <Menu.Target>
+              <Link
+                href={link.link}
+                className={classes.link}
+                // onClick={(event) => event.preventDefault()}
+              >
+                <Center>
+                  <span className={classes.linkLabel}>{link.label}</span>
+                  <IconChevronDown size={12} stroke={1.5} />
+                </Center>
+              </Link>
+            </Menu.Target>
+            <Menu.Dropdown>{menuItems}</Menu.Dropdown>
+          </Menu>
+        </>
       )
     }
 
     return (
-      <a
+      <Link
         key={link.label}
         href={link.link}
         className={classes.link}
-        onClick={(event) => event.preventDefault()}
+        // onClick={(event) => event.preventDefault()}
       >
         {link.label}
-      </a>
+      </Link>
     )
   })
 
