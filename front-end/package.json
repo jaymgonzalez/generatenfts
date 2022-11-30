@@ -17,13 +17,13 @@
     "@mantine/next": "^5.8.4",
     "@mantine/notifications": "^5.8.4",
     "@tabler/icons": "^1.114.0",
-    "@usedapp/core": "^1.2.2",
     "eslint": "8.28.0",
     "eslint-config-next": "13.0.5",
     "ethers": "^5.7.2",
     "next": "13.0.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "wagmi": "^0.8.8",
     "web3modal": "^1.9.10"
   },
   "devDependencies": {

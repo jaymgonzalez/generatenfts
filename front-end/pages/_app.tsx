@@ -1,8 +1,33 @@
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { MantineProvider } from '@mantine/core'
-import { DAppProvider } from '@usedapp/core'
+import {
+  WagmiConfig,
+  createClient,
+  chain,
+  configureChains,
+  defaultChains,
+} from 'wagmi'
+import { alchemyProvider } from 'wagmi/providers/alchemy'
+import { publicProvider } from 'wagmi/providers/public'
+import { InjectedConnector } from 'wagmi/connectors/injected'
+import { getDefaultProvider } from 'ethers'
 import Navbar from '../components/Navbar'
+
+const { chains, provider } = configureChains(
+  [chain.polygonMumbai],
+  [
+    alchemyProvider({
+      apiKey: process.env.NEXT_PUBLIC_ALCHEMY_POLYGON_MUMBAI_API_KEY,
+    }),
+  ]
+)
+
+const client = createClient({
+  autoConnect: true,
+  connectors: [new InjectedConnector({ chains })],
+  provider,
+})
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props
@@ -14,7 +39,7 @@ export default function App(props: AppProps) {
         <meta name="description" content="Whitelist-Dapp" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <DAppProvider config={{}}>
+      <WagmiConfig client={client}>
         <MantineProvider
           withGlobalStyles
           withNormalizeCSS
@@ -33,7 +58,7 @@ export default function App(props: AppProps) {
           <Navbar />
           <Component {...pageProps} />
         </MantineProvider>
-      </DAppProvider>
+      </WagmiConfig>
     </>
   )
 }

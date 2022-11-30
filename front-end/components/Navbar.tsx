@@ -206,19 +206,19 @@ export default function Navbar() {
     return web3Provider
   }
 
-  useEffect(() => {
-    // if wallet is not connected, create a new instance of Web3Modal and connect the MetaMask wallet
-    if (!walletConnected) {
-      // Assign the Web3Modal class to the reference object by setting it's `current` value
-      // The `current` value is persisted throughout as long as this page is open
-      web3ModalRef.current = new Web3Modal({
-        network: 'goerli',
-        providerOptions: {},
-        disableInjectedProvider: false,
-      })
-      connectWallet()
-    }
-  }, [walletConnected])
+  // useEffect(() => {
+  //   // if wallet is not connected, create a new instance of Web3Modal and connect the MetaMask wallet
+  //   if (!walletConnected) {
+  //     // Assign the Web3Modal class to the reference object by setting it's `current` value
+  //     // The `current` value is persisted throughout as long as this page is open
+  //     web3ModalRef.current = new Web3Modal({
+  //       network: 'goerli',
+  //       providerOptions: {},
+  //       disableInjectedProvider: false,
+  //     })
+  //     connectWallet()
+  //   }
+  // }, [walletConnected])
 
   // const ConnectButtonMessage = () => (walletConnected) 'Connect your wallet' ? 'Connected'
   return (
