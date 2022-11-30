@@ -72,7 +72,62 @@ interface HeaderActionProps {
   }[]
 }
 
-export default function Navbar({ links }: HeaderActionProps) {
+const links = [
+  {
+    link: '/',
+    label: 'Home',
+  },
+  {
+    link: '#1',
+    label: 'CreateNFT',
+    links: [
+      {
+        link: '/upload',
+        label: 'Upload Images',
+      },
+      {
+        link: '/resources',
+        label: 'Resources',
+      },
+      {
+        link: '/community',
+        label: 'Community',
+      },
+      {
+        link: '/blog',
+        label: 'Blog',
+      },
+    ],
+  },
+  {
+    link: '/about',
+    label: 'About',
+  },
+  {
+    link: '/pricing',
+    label: 'Pricing',
+  },
+  {
+    link: '#2',
+    label: 'Support',
+    links: [
+      {
+        link: '/faq',
+        label: 'FAQ',
+      },
+      {
+        link: '/demo',
+        label: 'Book a demo',
+      },
+      {
+        link: '/forums',
+        label: 'Forums',
+      },
+    ],
+  },
+]
+
+export default function Navbar() {
   const { classes } = useStyles()
   const [opened, { toggle }] = useDisclosure(false)
   const [walletConnected, setWalletConnected] = useState(false)
