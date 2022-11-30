@@ -6,6 +6,8 @@ import { InjectedConnector } from 'wagmi/connectors/injected'
 import Link from 'next/link'
 import Web3Modal from 'web3modal'
 import { formatEther } from '@ethersproject/units'
+import Identicon from './Identicon'
+import { IconChevronDown } from '@tabler/icons'
 
 export default function ConnectButton() {
   const { address } = useAccount()
@@ -36,8 +38,6 @@ export default function ConnectButton() {
             theme.colorScheme === 'dark' ? theme.colors.gray[7] : theme.white,
           borderRadius: theme.radius.md,
           justifyContent: 'center',
-          // paddingTop: '0',
-          // paddingBottom: '0',
         })}
       >
         <Box
@@ -73,6 +73,8 @@ export default function ConnectButton() {
               address.length
             )}`}
           </Text>
+          <Identicon />
+          <IconChevronDown size={16} stroke={1.5} />
         </Button>
       </Box>
       <Button onClick={() => disconnect()}>Disconnect</Button>

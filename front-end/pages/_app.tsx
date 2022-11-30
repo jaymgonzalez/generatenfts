@@ -10,6 +10,7 @@ export default function App(props: AppProps) {
   const { Component, pageProps } = props
 
   const [showChild, setShowChild] = useState(false)
+
   useEffect(() => {
     setShowChild(true)
   }, [])
@@ -17,7 +18,6 @@ export default function App(props: AppProps) {
   if (!showChild) {
     return null
   }
-
   if (typeof window === 'undefined') {
     return <></>
   } else {

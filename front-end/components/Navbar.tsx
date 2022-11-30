@@ -145,7 +145,6 @@ export default function Navbar() {
     if (menuItems) {
       return (
         <>
-          {console.log(link)}
           <Menu key={link.label} trigger="hover" exitTransitionDuration={0}>
             <Menu.Target>
               <Link
