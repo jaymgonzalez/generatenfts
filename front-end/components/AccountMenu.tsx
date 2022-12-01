@@ -1,63 +1,62 @@
+import axios from 'axios'
+import { useEffect, useState } from 'react'
 import {
   ActionIcon,
-  Box,
   Button,
-  Container,
+  Center,
   createStyles,
-  Flex,
   Group,
   Menu,
   Text,
+  Tooltip,
   UnstyledButton,
 } from '@mantine/core'
-import { IconExternalLink, IconCopy, IconPower } from '@tabler/icons'
-import { useAccount } from 'wagmi'
-import Identicon from './Identicon'
 import {
-  IconSettings,
-  IconSearch,
-  IconPhoto,
-  IconMessageCircle,
-  IconTrash,
-  IconArrowsLeftRight,
+  IconExternalLink,
+  IconCopy,
+  IconPower,
+  IconChevronRight,
 } from '@tabler/icons'
+import Identicon from './Identicon'
+import { useBalance } from 'wagmi'
+import { formatEther } from '@ethersproject/units'
 
 const useStyles = createStyles((theme) => ({
-  addressButtons: {
-    // display: 'flex',
-    // alignItems: 'center',
-  },
-  address: {
-    // position: 'relative',
-    display: 'flex',
-    // justifyContent: 'start',
-    alignItems: 'center',
-    // margin: '0',
-    // maxWidth: '141px',
-  },
   menu: {
     backgroundColor:
       theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
     minWidth: 320,
-    // display: 'flex',
-    // justifyContent: 'space-between',
-    // width: '100%',
   },
   power: {
     color: theme.colors.red[6],
   },
-  buttons: {
-    // position: 'relative',
-    // display: 'flex',
-    // justifyContent: 'start',
-    // alignItems: 'left',
-    // margin: '0',
-    // maxWidth: '141px',
+  header: {
+    cursor: 'default',
   },
 }))
 
 export default function AccountMenu({ children, opened, onChange, address }) {
   const { classes, theme } = useStyles()
+  const { data, isError, isLoading } = useBalance({
+    address,
+  })
+  const [usdAmount, setUsdAmount] = useState(0)
+  const amount = parseFloat(formatEther(data?.value)).toFixed(4)
+  // const usdAmount = getTokenToUsd(data?.symbol, amount)
+
+  useEffect(() => {
+    axios
+      .get(
+        `https://api.coinconvert.net/convert/${data?.symbol}/usd?amount=${amount}`
+      )
+      .then((response) => {
+        setUsdAmount(response.data.USD)
+      })
+      .catch((err) => {
+        console.log(err)
+        setUsdAmount(0)
+      })
+  })
 
   return (
     <>
@@ -67,9 +66,9 @@ export default function AccountMenu({ children, opened, onChange, address }) {
         </Menu.Target>
 
         <Menu.Dropdown className={classes.menu}>
-          <Group className={classes.addressButtons} position="apart" m={2}>
-            <Group spacing="xs" className={classes.address}>
-              <ActionIcon>
+          <Group position="apart" py={6} px={8}>
+            <Group spacing="xs" className={classes.header}>
+              <ActionIcon variant="transparent">
                 <Identicon size={24} />
               </ActionIcon>
               <Text c="white" fw="600">
@@ -79,41 +78,42 @@ export default function AccountMenu({ children, opened, onChange, address }) {
                 )}`}
               </Text>
             </Group>
-            <Group spacing="xs" className={classes.buttons}>
-              <ActionIcon variant="default" radius="md" size={36}>
-                <IconCopy size={18} stroke={1.5} />
-              </ActionIcon>
-              <ActionIcon variant="default" radius="md" size={36}>
-                <IconExternalLink size={18} stroke={1.5} />
-              </ActionIcon>
-              <ActionIcon variant="default" radius="md" size={36}>
-                <IconPower size={18} className={classes.power} stroke={1.5} />
-              </ActionIcon>
+            <Group spacing="xs">
+              <Tooltip label="Copy" position="bottom">
+                <ActionIcon variant="default" radius="md" size={36}>
+                  <IconCopy size={18} stroke={1.5} />
+                </ActionIcon>
+              </Tooltip>
+              <Tooltip label="Explore" position="bottom">
+                <ActionIcon variant="default" radius="md" size={36}>
+                  <IconExternalLink size={18} stroke={1.5} />
+                </ActionIcon>
+              </Tooltip>
+              <Tooltip label="Disconnect" position="bottom">
+                <ActionIcon variant="default" radius="md" size={36}>
+                  <IconPower size={18} className={classes.power} stroke={1.5} />
+                </ActionIcon>
+              </Tooltip>
             </Group>
           </Group>
-          <Menu.Label>Application</Menu.Label>
-          <Menu.Item icon={<IconSettings size={14} />}>Settings</Menu.Item>
-          <Menu.Item icon={<IconMessageCircle size={14} />}>Messages</Menu.Item>
-          <Menu.Item icon={<IconPhoto size={14} />}>Gallery</Menu.Item>
-          <Menu.Item
-            icon={<IconSearch size={14} />}
-            rightSection={
-              <Text size="xs" color="dimmed">
-                ⌘K
-              </Text>
-            }
-          >
-            Search
-          </Menu.Item>
-
+          <Center pt={60}>
+            <Text color="gray.1" size={32} fw={700} lts={0.1}>
+              {amount} {data?.symbol}
+            </Text>
+          </Center>
+          <Center pb={30}>
+            <Text c="gray.5" size={16} fw={500} lts={0}>
+              {`$${usdAmount.toFixed(2)} USD`}
+            </Text>
+          </Center>
+          <Center pb={60}>
+            <Button fullWidth variant="outline" maw={'70%'} radius="md">
+              Mint NFT
+            </Button>
+          </Center>
           <Menu.Divider />
-
-          <Menu.Label>Danger zone</Menu.Label>
-          <Menu.Item icon={<IconArrowsLeftRight size={14} />}>
-            Transfer my data
-          </Menu.Item>
-          <Menu.Item color="red" icon={<IconTrash size={14} />}>
-            Delete my account
+          <Menu.Item rightSection={<IconChevronRight size={14} />}>
+            Transactions
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>

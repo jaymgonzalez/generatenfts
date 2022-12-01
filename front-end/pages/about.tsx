@@ -20,7 +20,6 @@ export default function About() {
       >
         <AccountMenu opened={isOpen} onChange={setIsOpen} address={address}>
           <DumbConnectButton address={address} isOpen={isOpen} />
-          {/* <ConnectButton /> */}
         </AccountMenu>
       </Flex>
     </>
