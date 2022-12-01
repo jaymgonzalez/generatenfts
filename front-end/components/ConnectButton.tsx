@@ -7,7 +7,7 @@ import Link from 'next/link'
 import Web3Modal from 'web3modal'
 import { formatEther } from '@ethersproject/units'
 import Identicon from './Identicon'
-import { IconChevronDown } from '@tabler/icons'
+import { IconChevronDown, IconChevronUp } from '@tabler/icons'
 
 export default function ConnectButton() {
   const { address } = useAccount()
@@ -20,6 +20,7 @@ export default function ConnectButton() {
   })
 
   const [walletConnected, setWalletConnected] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const web3ModalRef: any = useRef()
 
   return address ? (
@@ -40,16 +41,6 @@ export default function ConnectButton() {
           justifyContent: 'center',
         })}
       >
-        <Box
-          sx={() => ({
-            paddingRight: '8px',
-            paddingLeft: '8px',
-          })}
-        >
-          <Text color="white" size="md">
-            {parseFloat(formatEther(data?.value)).toFixed(4)} {data?.symbol}
-          </Text>
-        </Box>
         <Button
           sx={(theme) => ({
             border: '1px solid transparent',
@@ -58,7 +49,7 @@ export default function ConnectButton() {
               border: '1px',
               borderStyle: 'solid',
               borderColor: theme.colors.blue[4],
-              backgroundColor: theme.colors.gray[7],
+              backgroundColor: theme.colors.gray[9],
             },
           })}
           bg="gray.9"
@@ -67,17 +58,21 @@ export default function ConnectButton() {
           px={8}
           size="sm"
         >
+          {/* <Identicon /> */}
           <Text color="white" size="md" weight="600" mr="2">
             {`${address.slice(0, 6)}...${address.slice(
               address.length - 4,
               address.length
             )}`}
           </Text>
-          <Identicon />
-          <IconChevronDown size={16} stroke={1.5} />
+          {!menuOpen ? (
+            <IconChevronDown size={16} stroke={1.5} />
+          ) : (
+            <IconChevronUp size={16} stroke={1.5} />
+          )}
+          {/* <IconChevronDown size={16} stroke={1.5} /> */}
         </Button>
       </Box>
-      <Button onClick={() => disconnect()}>Disconnect</Button>
     </Flex>
   ) : (
     <Button onClick={() => connect()}>Connect to a wallet</Button>
