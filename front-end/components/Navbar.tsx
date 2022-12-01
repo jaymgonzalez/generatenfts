@@ -15,6 +15,9 @@ import {
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconChevronDown } from '@tabler/icons'
+import AccountMenu from './AccountMenu'
+import DumbConnectButton from './DumbButton'
+import { useAccount } from 'wagmi'
 
 const HEADER_HEIGHT = 60
 
@@ -131,7 +134,9 @@ export default function Navbar() {
   const { classes } = useStyles()
   const [opened, { toggle }] = useDisclosure(false)
   const [walletConnected, setWalletConnected] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
   const web3ModalRef: any = useRef()
+  const { address } = useAccount()
 
   const items = links.map((link) => {
     const menuItems = link.links?.map((item) => (
@@ -234,10 +239,9 @@ export default function Navbar() {
         <Group spacing={5} className={classes.links}>
           {items}
         </Group>
-        <Button radius="xl" sx={{ height: 30 }}>
-          {!walletConnected && 'Connect your wallet'}
-          {walletConnected && 'Disconnect'}
-        </Button>
+        <AccountMenu opened={isOpen} onChange={setIsOpen} address={address}>
+          <DumbConnectButton address={address} isOpen={isOpen} />
+        </AccountMenu>
       </Container>
     </Header>
   )

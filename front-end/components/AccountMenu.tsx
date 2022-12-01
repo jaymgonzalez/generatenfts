@@ -56,11 +56,18 @@ export default function AccountMenu({ children, opened, onChange, address }) {
         console.log(err)
         setUsdAmount(0)
       })
-  })
+  }, [amount])
 
   return (
     <>
-      <Menu opened={opened} onChange={onChange} offset={12}>
+      <Menu
+        opened={opened}
+        onChange={onChange}
+        offset={12}
+        radius="md"
+        position="bottom-end"
+        transition="pop-top-right"
+      >
         <Menu.Target>
           <UnstyledButton>{children}</UnstyledButton>
         </Menu.Target>

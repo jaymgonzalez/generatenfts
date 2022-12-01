@@ -23,11 +23,6 @@ export default function App(props: AppProps) {
   } else {
     return (
       <>
-        <Head>
-          <title>Generate NFT</title>
-          <meta name="description" content="Whitelist-Dapp" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
         <WagmiConfig client={client}>
           <MantineProvider
             withGlobalStyles
