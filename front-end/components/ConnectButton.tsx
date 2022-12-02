@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Group, Text, UnstyledButton } from '@mantine/core'
+import { Box, Button, Group, Text, UnstyledButton } from '@mantine/core'
 import { IconChevronDown, IconChevronUp } from '@tabler/icons'
 import { ComponentPropsWithoutRef, forwardRef } from 'react'
 import Identicon from './Identicon'
@@ -8,7 +8,7 @@ interface ConnectButtonProps extends ComponentPropsWithoutRef<'button'> {
   isOpen: boolean
 }
 
-const DumbConnectButton = forwardRef<HTMLButtonElement, ConnectButtonProps>(
+const ConnectButton = forwardRef<HTMLButtonElement, ConnectButtonProps>(
   ({ address, isOpen }: ConnectButtonProps, ref) => (
     <UnstyledButton ref={ref}>
       <Box
@@ -58,4 +58,4 @@ const DumbConnectButton = forwardRef<HTMLButtonElement, ConnectButtonProps>(
   )
 )
 
-export default DumbConnectButton
+export default ConnectButton

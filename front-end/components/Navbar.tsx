@@ -16,8 +16,9 @@ import { useDisclosure } from '@mantine/hooks'
 import { IconChevronDown } from '@tabler/icons'
 import AccountMenu from './AccountMenu'
 import CustomConnectButton from './ConnectButton'
-import { useAccount } from 'wagmi'
+import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
+import NetworkButton from './NetworkButton'
 
 const HEADER_HEIGHT = 60
 
@@ -136,6 +137,9 @@ export default function Navbar() {
   const [walletConnected, setWalletConnected] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const { address } = useAccount()
+  const { chain } = useNetwork()
+  const { chains, error, isLoading, pendingChainId, switchNetwork } =
+    useSwitchNetwork()
 
   const items = links.map((link) => {
     const menuItems = link.links?.map((item) => (
@@ -180,34 +184,6 @@ export default function Navbar() {
     )
   })
 
-  // const connectWallet = async () => {
-  //   try {
-  //     // Get the provider from web3Modal, which in our case is MetaMask
-  //     // When used for the first time, it prompts the user to connect their wallet
-  //     await getProviderOrSigner()
-  //     setWalletConnected(true)
-  //   } catch (err) {
-  //     console.error(err)
-  //   }
-  // }
-
-  // const getProviderOrSigner = async (needSigner = false) => {
-  //   const web3Provider = new providers.Web3Provider(provider)
-
-  //   // If user is not connected to the Goerli network, let them know and throw an error
-  //   const { chainId } = await web3Provider.getNetwork()
-  //   if (chainId !== 5) {
-  //     window.alert('Change the network to Goerli')
-  //     throw new Error('Change network to Goerli')
-  //   }
-
-  //   if (needSigner) {
-  //     const signer = web3Provider.getSigner()
-  //     return signer
-  //   }
-  //   return web3Provider
-  // }
-
   return (
     <Header
       height={HEADER_HEIGHT}
@@ -227,12 +203,22 @@ export default function Navbar() {
         <Group spacing={5} className={classes.links}>
           {items}
         </Group>
-        {address && (
-          <AccountMenu opened={isOpen} onChange={setIsOpen} address={address}>
-            <CustomConnectButton address={address} isOpen={isOpen} />
-          </AccountMenu>
-        )}
-        {!address && <ConnectButton />}
+        <Group>
+          <NetworkButton
+            chain={chain}
+            chains={chains}
+            error={error}
+            isLoading={isLoading}
+          />
+          {address && (
+            <AccountMenu opened={isOpen} onChange={setIsOpen} address={address}>
+              <CustomConnectButton address={address} isOpen={isOpen} />
+            </AccountMenu>
+          )}
+          {!address && <ConnectButton />}
+        </Group>
+
+        {/* <ConnectButton /> */}
       </Container>
     </Header>
   )

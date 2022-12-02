@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import {
   ActionIcon,
+  Box,
   Button,
   Center,
   createStyles,
@@ -18,7 +19,7 @@ import {
   IconChevronRight,
 } from '@tabler/icons'
 import Identicon from './Identicon'
-import { useBalance } from 'wagmi'
+import { useBalance, useDisconnect } from 'wagmi'
 import { formatEther } from '@ethersproject/units'
 
 const useStyles = createStyles((theme) => ({
@@ -36,13 +37,14 @@ const useStyles = createStyles((theme) => ({
 }))
 
 export default function AccountMenu({ children, opened, onChange, address }) {
+  const [usdAmount, setUsdAmount] = useState(0)
   const { classes, theme } = useStyles()
   const { data, isError, isLoading } = useBalance({
     address,
   })
-  const [usdAmount, setUsdAmount] = useState(0)
+  const { disconnect } = useDisconnect()
+
   const amount = parseFloat(formatEther(data?.value)).toFixed(4)
-  // const usdAmount = getTokenToUsd(data?.symbol, amount)
 
   useEffect(() => {
     axios
@@ -69,7 +71,7 @@ export default function AccountMenu({ children, opened, onChange, address }) {
         transition="pop-top-right"
       >
         <Menu.Target>
-          <UnstyledButton>{children}</UnstyledButton>
+          <Box>{children}</Box>
         </Menu.Target>
 
         <Menu.Dropdown className={classes.menu}>
@@ -97,7 +99,12 @@ export default function AccountMenu({ children, opened, onChange, address }) {
                 </ActionIcon>
               </Tooltip>
               <Tooltip label="Disconnect" position="bottom">
-                <ActionIcon variant="default" radius="md" size={36}>
+                <ActionIcon
+                  onClick={() => disconnect()}
+                  variant="default"
+                  radius="md"
+                  size={36}
+                >
                   <IconPower size={18} className={classes.power} stroke={1.5} />
                 </ActionIcon>
               </Tooltip>
