@@ -1,15 +1,18 @@
-import { AppProps } from 'next/app'
 import { useEffect, useState } from 'react'
+import { Session } from 'next-auth'
+import { SessionProvider } from 'next-auth/react'
+import { type AppProps } from 'next/app'
 import { MantineProvider } from '@mantine/core'
 import { WagmiConfig } from 'wagmi'
 import { client, chains } from '../wagmi'
 import { RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit'
+import { RainbowKitSiweNextAuthProvider } from '@rainbow-me/rainbowkit-siwe-next-auth'
 
 import Navbar from '../components/Navbar'
 
 import '@rainbow-me/rainbowkit/styles.css'
 
-export default function App(props: AppProps) {
+export default function App(props: AppProps<{ session: Session }>) {
   const { Component, pageProps } = props
 
   const [showChild, setShowChild] = useState(false)
@@ -44,18 +47,22 @@ export default function App(props: AppProps) {
           }}
         >
           <WagmiConfig client={client}>
-            <RainbowKitProvider
-              theme={darkTheme({
-                accentColor: '#1971C2',
-                accentColorForeground: 'white',
-                fontStack: 'system',
-              })}
-              modalSize="compact"
-              chains={chains}
-            >
-              <Navbar />
-              <Component {...pageProps} />
-            </RainbowKitProvider>
+            <SessionProvider session={pageProps.session} refetchInterval={0}>
+              <RainbowKitSiweNextAuthProvider>
+                <RainbowKitProvider
+                  theme={darkTheme({
+                    accentColor: '#1971C2',
+                    accentColorForeground: 'white',
+                    fontStack: 'system',
+                  })}
+                  modalSize="compact"
+                  chains={chains}
+                >
+                  <Navbar />
+                  <Component {...pageProps} />
+                </RainbowKitProvider>
+              </RainbowKitSiweNextAuthProvider>
+            </SessionProvider>
           </WagmiConfig>
         </MantineProvider>
       </>
