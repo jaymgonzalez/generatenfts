@@ -1,7 +1,6 @@
 import { Contract, providers, utils } from 'ethers'
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import Web3Modal from 'web3modal'
 
 import {
   createStyles,
@@ -16,8 +15,9 @@ import {
 import { useDisclosure } from '@mantine/hooks'
 import { IconChevronDown } from '@tabler/icons'
 import AccountMenu from './AccountMenu'
-import DumbConnectButton from './DumbButton'
+import CustomConnectButton from './ConnectButton'
 import { useAccount } from 'wagmi'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 
 const HEADER_HEIGHT = 60
 
@@ -135,7 +135,6 @@ export default function Navbar() {
   const [opened, { toggle }] = useDisclosure(false)
   const [walletConnected, setWalletConnected] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
-  const web3ModalRef: any = useRef()
   const { address } = useAccount()
 
   const items = links.map((link) => {
@@ -181,52 +180,41 @@ export default function Navbar() {
     )
   })
 
-  const connectWallet = async () => {
-    try {
-      // Get the provider from web3Modal, which in our case is MetaMask
-      // When used for the first time, it prompts the user to connect their wallet
-      await getProviderOrSigner()
-      setWalletConnected(true)
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
-  const getProviderOrSigner = async (needSigner = false) => {
-    const provider = await web3ModalRef.current.connect()
-    const web3Provider = new providers.Web3Provider(provider)
-
-    // If user is not connected to the Goerli network, let them know and throw an error
-    const { chainId } = await web3Provider.getNetwork()
-    if (chainId !== 5) {
-      window.alert('Change the network to Goerli')
-      throw new Error('Change network to Goerli')
-    }
-
-    if (needSigner) {
-      const signer = web3Provider.getSigner()
-      return signer
-    }
-    return web3Provider
-  }
-
-  // useEffect(() => {
-  //   // if wallet is not connected, create a new instance of Web3Modal and connect the MetaMask wallet
-  //   if (!walletConnected) {
-  //     // Assign the Web3Modal class to the reference object by setting it's `current` value
-  //     // The `current` value is persisted throughout as long as this page is open
-  //     web3ModalRef.current = new Web3Modal({
-  //       network: 'goerli',
-  //       providerOptions: {},
-  //       disableInjectedProvider: false,
-  //     })
-  //     connectWallet()
+  // const connectWallet = async () => {
+  //   try {
+  //     // Get the provider from web3Modal, which in our case is MetaMask
+  //     // When used for the first time, it prompts the user to connect their wallet
+  //     await getProviderOrSigner()
+  //     setWalletConnected(true)
+  //   } catch (err) {
+  //     console.error(err)
   //   }
-  // }, [walletConnected])
+  // }
 
-  // const ConnectButtonMessage = () => (walletConnected) 'Connect your wallet' ? 'Connected'
+  // const getProviderOrSigner = async (needSigner = false) => {
+  //   const web3Provider = new providers.Web3Provider(provider)
+
+  //   // If user is not connected to the Goerli network, let them know and throw an error
+  //   const { chainId } = await web3Provider.getNetwork()
+  //   if (chainId !== 5) {
+  //     window.alert('Change the network to Goerli')
+  //     throw new Error('Change network to Goerli')
+  //   }
+
+  //   if (needSigner) {
+  //     const signer = web3Provider.getSigner()
+  //     return signer
+  //   }
+  //   return web3Provider
+  // }
+
   return (
-    <Header height={HEADER_HEIGHT} sx={{ borderBottom: 0 }} mb={120}>
+    <Header
+      height={HEADER_HEIGHT}
+      bg="gray.8"
+      sx={{ borderBottom: 0 }}
+      mb={120}
+    >
       <Container className={classes.inner} fluid>
         <Group>
           <Burger
@@ -239,9 +227,12 @@ export default function Navbar() {
         <Group spacing={5} className={classes.links}>
           {items}
         </Group>
-        <AccountMenu opened={isOpen} onChange={setIsOpen} address={address}>
-          <DumbConnectButton address={address} isOpen={isOpen} />
-        </AccountMenu>
+        {address && (
+          <AccountMenu opened={isOpen} onChange={setIsOpen} address={address}>
+            <CustomConnectButton address={address} isOpen={isOpen} />
+          </AccountMenu>
+        )}
+        {!address && <ConnectButton />}
       </Container>
     </Header>
   )

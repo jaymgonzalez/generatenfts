@@ -1,8 +1,11 @@
+import { getDefaultWallets } from '@rainbow-me/rainbowkit'
 import { createClient, chain, configureChains } from 'wagmi'
-import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { InjectedConnector } from 'wagmi/connectors/injected'
+import { alchemyProvider } from 'wagmi/providers/alchemy'
+import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
+import { publicProvider } from 'wagmi/providers/public'
 
-const { chains, provider } = configureChains(
+export const { chains, provider } = configureChains(
   [chain.polygonMumbai],
   [
     alchemyProvider({
@@ -11,8 +14,13 @@ const { chains, provider } = configureChains(
   ]
 )
 
+const { connectors } = getDefaultWallets({
+  appName: 'Generate your NFT minting dApp',
+  chains,
+})
+
 export const client = createClient({
-  autoConnect: true,
-  connectors: [new InjectedConnector({ chains })],
+  autoConnect: false,
+  connectors,
   provider,
 })

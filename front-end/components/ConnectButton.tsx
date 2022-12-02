@@ -1,36 +1,16 @@
-import { Contract, providers, utils } from 'ethers'
-import { useEffect, useRef, useState } from 'react'
-import { Flex, Button, Box, Text } from '@mantine/core'
-import { useAccount, useConnect, useDisconnect, useBalance } from 'wagmi'
-import { InjectedConnector } from 'wagmi/connectors/injected'
-import Link from 'next/link'
-import Web3Modal from 'web3modal'
-import { formatEther } from '@ethersproject/units'
-import Identicon from './Identicon'
+import { Box, Button, Flex, Group, Text, UnstyledButton } from '@mantine/core'
 import { IconChevronDown, IconChevronUp } from '@tabler/icons'
+import { ComponentPropsWithoutRef, forwardRef } from 'react'
+import Identicon from './Identicon'
 
-export default function ConnectButton() {
-  const { address } = useAccount()
-  const { connect } = useConnect({
-    connector: new InjectedConnector(),
-  })
-  const { disconnect } = useDisconnect()
-  const { data, isError, isLoading } = useBalance({
-    address,
-  })
+interface ConnectButtonProps extends ComponentPropsWithoutRef<'button'> {
+  address: string
+  isOpen: boolean
+}
 
-  const [walletConnected, setWalletConnected] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
-  const web3ModalRef: any = useRef()
-
-  return address ? (
-    <Flex
-      direction="column"
-      align="center"
-      justify="center"
-      h="100vh"
-      bg="gray.9"
-    >
+const DumbConnectButton = forwardRef<HTMLButtonElement, ConnectButtonProps>(
+  ({ address, isOpen }: ConnectButtonProps, ref) => (
+    <UnstyledButton ref={ref}>
       <Box
         sx={(theme) => ({
           display: 'flex',
@@ -58,23 +38,24 @@ export default function ConnectButton() {
           px={8}
           size="sm"
         >
-          {/* <Identicon /> */}
-          <Text color="white" size="md" weight="600" mr="2">
-            {`${address.slice(0, 6)}...${address.slice(
-              address.length - 4,
-              address.length
-            )}`}
-          </Text>
-          {!menuOpen ? (
-            <IconChevronDown size={16} stroke={1.5} />
-          ) : (
-            <IconChevronUp size={16} stroke={1.5} />
-          )}
-          {/* <IconChevronDown size={16} stroke={1.5} /> */}
+          <Group spacing="xs">
+            <Identicon size={24} />
+            <Text color="white" size="md" weight="600" mr="2">
+              {`${address.slice(0, 6)}...${address.slice(
+                address.length - 4,
+                address.length
+              )}`}
+            </Text>
+            {!isOpen ? (
+              <IconChevronDown size={16} stroke={1.5} />
+            ) : (
+              <IconChevronUp size={16} stroke={1.5} />
+            )}
+          </Group>
         </Button>
       </Box>
-    </Flex>
-  ) : (
-    <Button onClick={() => connect()}>Connect to a wallet</Button>
+    </UnstyledButton>
   )
-}
+)
+
+export default DumbConnectButton
