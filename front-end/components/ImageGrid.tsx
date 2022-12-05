@@ -1,5 +1,6 @@
 import { SimpleGrid, Image, createStyles, Title, Button } from '@mantine/core'
 import { IconUpload } from '@tabler/icons'
+import { useEffect } from 'react'
 
 const useStyles = createStyles(() => ({
   container: {
@@ -41,7 +42,7 @@ export default function ImageGrid({ imagesURLs }) {
           <Image mx="auto" radius="sm" key={i} width={200} src={imageSrc} />
         ))}
       </SimpleGrid>
-      <Button
+      {/* <Button
         className={classes.control}
         size="md"
         radius="xl"
@@ -49,7 +50,7 @@ export default function ImageGrid({ imagesURLs }) {
         leftIcon={<IconUpload />}
       >
         Upload
-      </Button>
+      </Button> */}
     </>
   )
 }

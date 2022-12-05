@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react'
 import { Text, Group, Button, createStyles } from '@mantine/core'
-import { Dropzone, MIME_TYPES } from '@mantine/dropzone'
+import { Dropzone, FileWithPath, MIME_TYPES } from '@mantine/dropzone'
 import { IconCloudUpload, IconX, IconDownload } from '@tabler/icons'
 
 const useStyles = createStyles((theme) => ({
@@ -34,21 +34,18 @@ const useStyles = createStyles((theme) => ({
 export default function Upload({ imagesURLs, setImagesURLs }) {
   const { classes, theme } = useStyles()
   const openRef = useRef<() => void>(null)
-  const [images, setImages] = useState([])
+  const [images, setImages] = useState<FileWithPath[]>([])
 
   useEffect(() => {
     if (images.length < 1) return
-    const newImagesURLs = []
-    images.forEach((image) => newImagesURLs.push(URL.createObjectURL(image)))
-    setImagesURLs(newImagesURLs)
+    const newImageURLs = imagesURLs.concat(
+      images.map((image) => URL.createObjectURL(image))
+    )
+    setImagesURLs(newImageURLs)
   }, [images])
 
   function onImageDrop(files: any) {
     setImages([...files])
-  }
-
-  function onImageChange(e: any) {
-    setImages([...e.target.files])
   }
 
   return (
@@ -56,7 +53,6 @@ export default function Upload({ imagesURLs, setImagesURLs }) {
       <Dropzone
         openRef={openRef}
         onDrop={onImageDrop}
-        onChange={onImageChange}
         className={classes.dropzone}
         radius="md"
         accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
