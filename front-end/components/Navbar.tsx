@@ -134,11 +134,11 @@ const links = [
 export default function Navbar() {
   const { classes } = useStyles()
   const [opened, { toggle }] = useDisclosure(false)
-  const [walletConnected, setWalletConnected] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  const [networkOpened, setNetworkOpened] = useState(false)
   const { address } = useAccount()
   const { chain } = useNetwork()
-  const { chains, error, isLoading, pendingChainId, switchNetwork } =
+  const { chains, isLoading, pendingChainId, switchNetwork } =
     useSwitchNetwork()
 
   const items = links.map((link) => {
@@ -204,12 +204,17 @@ export default function Navbar() {
           {items}
         </Group>
         <Group>
-          <NetworkButton
-            chain={chain}
-            chains={chains}
-            error={error}
-            isLoading={isLoading}
-          />
+          {address && (
+            <NetworkButton
+              chain={chain}
+              chains={chains}
+              isLoading={isLoading}
+              switchNetwork={switchNetwork}
+              pendingChainId={pendingChainId}
+              opened={networkOpened}
+              onChange={setNetworkOpened}
+            />
+          )}
           {address && (
             <AccountMenu opened={isOpen} onChange={setIsOpen} address={address}>
               <CustomConnectButton address={address} isOpen={isOpen} />

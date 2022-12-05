@@ -12,10 +12,6 @@ import NetworkButton from '../components/NetworkButton'
 export default function About() {
   const { address } = useAccount()
 
-  const { openConnectModal } = useConnectModal()
-  const { openAccountModal } = useAccountModal()
-  const { openChainModal } = useChainModal()
-
   const { chain } = useNetwork()
   const { chains, error, isLoading, pendingChainId, switchNetwork } =
     useSwitchNetwork()
@@ -26,15 +22,6 @@ export default function About() {
       <Center>
         <Text>ABOUT</Text>
       </Center>
-      <Center>
-        <NetworkButton
-          chain={chain}
-          chains={chains}
-          error={error}
-          isLoading={isLoading}
-        />
-      </Center>
-      {/* </AuthenticatedPage> */}
     </>
   )
 }

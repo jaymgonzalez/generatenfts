@@ -1,4 +1,11 @@
-import { Box, Button, Group, Text, UnstyledButton } from '@mantine/core'
+import {
+  Box,
+  Button,
+  Group,
+  MediaQuery,
+  Text,
+  UnstyledButton,
+} from '@mantine/core'
 import { IconChevronDown, IconChevronUp } from '@tabler/icons'
 import { ComponentPropsWithoutRef, forwardRef } from 'react'
 import Identicon from './Identicon'
@@ -40,12 +47,17 @@ const ConnectButton = forwardRef<HTMLButtonElement, ConnectButtonProps>(
         >
           <Group spacing="xs">
             <Identicon size={24} />
-            <Text color="white" size="md" weight="600" mr="2">
-              {`${address.slice(0, 6)}...${address.slice(
-                address.length - 4,
-                address.length
-              )}`}
-            </Text>
+            <MediaQuery
+              query="(max-width: 900px) and (min-width: 500px)"
+              styles={{ display: 'none' }}
+            >
+              <Text color="white" size="md" weight="600" mr="2">
+                {`${address.slice(0, 6)}...${address.slice(
+                  address.length - 4,
+                  address.length
+                )}`}
+              </Text>
+            </MediaQuery>
             {!isOpen ? (
               <IconChevronDown size={16} stroke={1.5} />
             ) : (

@@ -7,70 +7,106 @@ import {
   Box,
   Text,
   ThemeIcon,
+  Loader,
+  Badge,
+  MediaQuery,
 } from '@mantine/core'
-import {
-  IconTrash,
-  IconBookmark,
-  IconCalendar,
-  IconChevronDown,
-  IconCheck,
-  IconChevronUp,
-} from '@tabler/icons'
+import { IconChevronDown, IconCheck, IconChevronUp } from '@tabler/icons'
 import PolygonIcon from './misc/PolygonIcon'
 
-const useStyles = createStyles(() => ({
+const useStyles = createStyles((theme, _params, getRef) => ({
+  group: {
+    borderRadius: theme.radius.md,
+    '&:hover': {
+      backgroundColor: theme.colors.gray[9],
+      [`& .${getRef('child')}`]: {
+        backgroundColor: theme.colors.gray[9],
+      },
+    },
+  },
+  buttonList: {
+    borderRadius: theme.radius.md,
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'space-between',
+  },
   icon: {
+    border: 0,
+  },
+  iconMenu: {
+    ref: getRef('child'),
+    backgroundColor:
+      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
     border: 0,
   },
 }))
 
-export default function NetworkButton({ chain, chains, error, isLoading }) {
+export default function NetworkButton({
+  chain,
+  chains,
+  isLoading,
+  switchNetwork,
+  pendingChainId,
+  opened,
+  onChange,
+}) {
   const { classes, theme } = useStyles()
-  const menuIconColor =
-    theme.colors[theme.primaryColor][theme.colorScheme === 'dark' ? 5 : 6]
-
-  console.log(chain)
 
   const chainMap = chains.map((_chain) => {
-    // console.log(_chain)
-
     return (
-      <Menu.Item>
-        <Group>
-          <ThemeIcon variant="default" size="lg" className={classes.icon}>
-            <PolygonIcon />
-          </ThemeIcon>
-          {_chain.name}
-
-          {_chain.id === chain?.id && (
-            <ThemeIcon variant="default" size="xs" className={classes.icon}>
-              <IconCheck />
+      <Group
+        className={classes.group}
+        key={_chain.id}
+        onClick={() => switchNetwork?.(_chain.id)}
+      >
+        <UnstyledButton className={classes.buttonList} mx="sm" py="sm">
+          <Group spacing="xs">
+            <ThemeIcon variant="default" size="sm" className={classes.iconMenu}>
+              <PolygonIcon />
             </ThemeIcon>
+            <Text color="white" size="sm" weight="200" mr="2" fw={600} lts={0}>
+              {_chain?.name}
+            </Text>
+          </Group>
+          {_chain.id === chain?.id && !isLoading && (
+            <Badge color="green" variant="dot" size="xs" my="auto" ml={64}>
+              Connected
+            </Badge>
           )}
-        </Group>
-      </Menu.Item>
+          {_chain.id === chain?.id && isLoading && (
+            <Badge color="yellow" variant="dot" size="xs" my="auto" ml={64}>
+              Changing
+            </Badge>
+          )}
+          {isLoading && pendingChainId === _chain.id && <Loader size="sm" />}
+        </UnstyledButton>
+      </Group>
     )
   })
 
   return (
-    <Menu transition="pop" position="bottom-end">
+    <Menu
+      offset={12}
+      radius="md"
+      position="bottom-end"
+      transition="pop-top-right"
+      opened={opened}
+      onChange={onChange}
+    >
       <Menu.Target>
         <UnstyledButton>
           <Box
             sx={(theme) => ({
               display: 'flex',
               alignItems: 'center',
-              backgroundColor:
-                theme.colorScheme === 'dark'
-                  ? theme.colors.gray[7]
-                  : theme.white,
-              borderRadius: theme.radius.md,
               justifyContent: 'center',
+              border: '1px transparent',
+              backgroundColor: theme.colors.gray[7],
+              borderRadius: theme.radius.md,
             })}
           >
             <Button
               sx={(theme) => ({
-                border: '1px solid transparent',
                 maring: '1px',
                 '&:hover': {
                   border: '1px',
@@ -89,8 +125,13 @@ export default function NetworkButton({ chain, chains, error, isLoading }) {
                 <ThemeIcon variant="default" size="sm" className={classes.icon}>
                   <PolygonIcon />
                 </ThemeIcon>
-                <Text>{chain?.name}</Text>
-                {true ? (
+                <MediaQuery
+                  query="(max-width: 900px) and (min-width: 500px)"
+                  styles={{ display: 'none' }}
+                >
+                  <Text>{chain?.name}</Text>
+                </MediaQuery>
+                {!opened ? (
                   <IconChevronDown size={16} stroke={1.5} />
                 ) : (
                   <IconChevronUp size={16} stroke={1.5} />
@@ -100,7 +141,13 @@ export default function NetworkButton({ chain, chains, error, isLoading }) {
           </Box>
         </UnstyledButton>
       </Menu.Target>
-      <Menu.Dropdown>
+      <Menu.Dropdown
+        sx={() => ({
+          backgroundColor:
+            theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+          minWidth: 250,
+        })}
+      >
         <Menu.Label>Networks</Menu.Label>
         {chainMap}
       </Menu.Dropdown>
