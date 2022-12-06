@@ -1,6 +1,13 @@
-import { SimpleGrid, Image, createStyles, Title, Button } from '@mantine/core'
+import {
+  SimpleGrid,
+  Image,
+  createStyles,
+  Title,
+  Modal,
+  Button,
+} from '@mantine/core'
 import { IconUpload } from '@tabler/icons'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 const useStyles = createStyles(() => ({
   container: {
@@ -20,6 +27,7 @@ const useStyles = createStyles(() => ({
 
 export default function ImageGrid({ imagesURLs }) {
   const { classes } = useStyles()
+  const [opened, setOpened] = useState(false)
 
   return (
     <>
@@ -39,9 +47,34 @@ export default function ImageGrid({ imagesURLs }) {
         ]}
       >
         {imagesURLs.map((imageSrc: string, i: number) => (
-          <Image mx="auto" radius="sm" key={i} width={200} src={imageSrc} />
+          <>
+            <Image
+              mx="auto"
+              radius="sm"
+              key={i}
+              width={200}
+              src={imageSrc}
+              onClick={() => setOpened(true)}
+            />
+            <Modal
+              opened={opened}
+              onClose={() => setOpened(false)}
+              title="Introduce yourself!"
+            >
+              <Image
+                mx="auto"
+                radius="sm"
+                key={i}
+                width={200}
+                src={imageSrc}
+                // onClick={() => setOpened(true)}
+              />
+              {/* Modal content */}
+            </Modal>
+          </>
         ))}
       </SimpleGrid>
+
       {/* <Button
         className={classes.control}
         size="md"
