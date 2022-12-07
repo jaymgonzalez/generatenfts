@@ -28,8 +28,11 @@ export default function ImageForm({
         <form
           onSubmit={form.onSubmit((values) => {
             const { nftName, creatorName } = values
-            imageData[index].nftName = nftName
-            imageData[index].creatorName = creatorName
+            imageData[index] = {
+              ...imageData[index],
+              nftName,
+              creatorName,
+            }
             setOpenedMap({
               ...openedMap,
               [index]: false,
