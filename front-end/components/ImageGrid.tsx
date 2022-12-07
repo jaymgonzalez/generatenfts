@@ -5,9 +5,10 @@ import {
   Title,
   Modal,
   Button,
+  Center,
 } from '@mantine/core'
-import { IconUpload } from '@tabler/icons'
-import { useEffect, useState } from 'react'
+import { IconUpload, IconX } from '@tabler/icons'
+import { useState } from 'react'
 
 const useStyles = createStyles(() => ({
   container: {
@@ -25,9 +26,9 @@ const useStyles = createStyles(() => ({
   },
 }))
 
-export default function ImageGrid({ imagesURLs }) {
+export default function ImageGrid({ imagesURLs, setImagesURLs }) {
   const { classes } = useStyles()
-  const [opened, setOpened] = useState(false)
+  const [openedMap, setOpenedMap] = useState({})
 
   return (
     <>
@@ -46,44 +47,60 @@ export default function ImageGrid({ imagesURLs }) {
           { maxWidth: 'xs', cols: 1, spacing: 'sm' },
         ]}
       >
-        {imagesURLs.map((imageSrc: string, i: number) => (
-          <>
-            <Image
-              mx="auto"
-              radius="sm"
-              key={i}
-              width={200}
-              src={imageSrc}
-              onClick={() => setOpened(true)}
-            />
-            <Modal
-              opened={opened}
-              onClose={() => setOpened(false)}
-              title="Introduce yourself!"
-            >
+        {imagesURLs.map((imageSrc: string, i: number) => {
+          return (
+            <>
               <Image
                 mx="auto"
                 radius="sm"
                 key={i}
                 width={200}
                 src={imageSrc}
-                // onClick={() => setOpened(true)}
+                onClick={() =>
+                  setOpenedMap({
+                    ...openedMap,
+                    [i]: true,
+                  })
+                }
               />
-              {/* Modal content */}
-            </Modal>
-          </>
-        ))}
+              <Modal
+                opened={openedMap[i] || false}
+                onClose={() => {
+                  setOpenedMap({
+                    ...openedMap,
+                    [i]: false,
+                  })
+                }}
+              >
+                <Image
+                  mx="auto"
+                  radius="sm"
+                  key={i}
+                  width={400}
+                  src={imageSrc}
+                />
+                <Center py="lg">
+                  <Button
+                    rightIcon={<IconX size={18} stroke={1.5} />}
+                    color="red"
+                    onClick={() => {
+                      const newImagesUrls = imagesURLs.slice()
+                      newImagesUrls.splice(i, 1)
+                      setImagesURLs(newImagesUrls)
+                      setOpenedMap({
+                        ...openedMap,
+                        [i]: false,
+                      })
+                    }}
+                  >
+                    Remove
+                  </Button>
+                </Center>
+              </Modal>
+            </>
+          )
+        })}
       </SimpleGrid>
-
-      {/* <Button
-        className={classes.control}
-        size="md"
-        radius="xl"
-        onClick={() => console.log('Control clicked')}
-        leftIcon={<IconUpload />}
-      >
-        Upload
-      </Button> */}
     </>
   )
 }

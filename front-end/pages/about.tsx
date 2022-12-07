@@ -32,7 +32,7 @@ export default function About() {
       <Stepper active={active} onStepClick={setActive} breakpoint="sm">
         <Stepper.Step label="First step" description="Create an account">
           <Upload imagesURLs={imagesURLs} setImagesURLs={setImagesURLs} />
-          <ImageGrid imagesURLs={imagesURLs} />
+          <ImageGrid imagesURLs={imagesURLs} setImagesURLs={setImagesURLs} />
         </Stepper.Step>
         <Stepper.Step label="Second step" description="Verify email">
           Step 2 content: Verify email
