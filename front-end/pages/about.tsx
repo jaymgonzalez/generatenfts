@@ -3,6 +3,7 @@ import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi'
 import { useState } from 'react'
 import Upload from '../components/Upload'
 import ImageGrid from '../components/ImageGrid'
+import UploadToIpfs from '../components/UploadToIpfs'
 
 // import AuthenticatedPage from '../components/Authenticated'
 
@@ -13,9 +14,16 @@ import ImageGrid from '../components/ImageGrid'
 // } from '@rainbow-me/rainbowkit'
 // import NetworkButton from '../components/NetworkButton'
 
+type ImageData = {
+  name: string
+  extension: string
+  url: string
+}
+
 export default function About() {
   const [active, setActive] = useState(0)
   const [imagesURLs, setImagesURLs] = useState([])
+  const [imageData, setImageData] = useState<ImageData[]>([])
 
   const nextStep = () =>
     setActive((current) => (current < 3 ? current + 1 : current))
@@ -31,11 +39,17 @@ export default function About() {
     <>
       <Stepper active={active} onStepClick={setActive} breakpoint="sm">
         <Stepper.Step label="First step" description="Create an account">
-          <Upload imagesURLs={imagesURLs} setImagesURLs={setImagesURLs} />
+          <Upload
+            imagesURLs={imagesURLs}
+            setImagesURLs={setImagesURLs}
+            imageData={imageData}
+            setImageData={setImageData}
+          />
           <ImageGrid imagesURLs={imagesURLs} setImagesURLs={setImagesURLs} />
         </Stepper.Step>
         <Stepper.Step label="Second step" description="Verify email">
           Step 2 content: Verify email
+          <UploadToIpfs imagesURLs={imagesURLs} imageData={imageData} />
         </Stepper.Step>
         <Stepper.Step label="Final step" description="Get full access">
           Step 3 content: Get full access

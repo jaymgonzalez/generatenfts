@@ -31,7 +31,12 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-export default function Upload({ imagesURLs, setImagesURLs }) {
+export default function Upload({
+  imagesURLs,
+  setImagesURLs,
+  imageData,
+  setImageData,
+}) {
   const { classes, theme } = useStyles()
   const openRef = useRef<() => void>(null)
   const [images, setImages] = useState<FileWithPath[]>([])
@@ -39,8 +44,18 @@ export default function Upload({ imagesURLs, setImagesURLs }) {
   useEffect(() => {
     if (images.length < 1) return
     const newImageURLs = imagesURLs.concat(
-      images.map((image) => URL.createObjectURL(image))
+      images.map((image) => {
+        const { name } = image
+        const url = URL.createObjectURL(image)
+        const extension = name.split('.')[1]
+        imageData !== undefined &&
+          setImageData(...imageData, { name, extension, url })
+        imageData?.length === 0 && setImageData({ name, extension, url })
+        return url
+      })
     )
+    console.log(imageData)
+
     setImagesURLs(newImageURLs)
   }, [images])
 
