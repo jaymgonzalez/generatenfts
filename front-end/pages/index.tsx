@@ -1,13 +1,9 @@
-import Upload from '../components/Upload'
-import ImageGrid from '../components/ImageGrid'
-import { useState } from 'react'
+import { Center } from '@mantine/core'
 
 export default function Home() {
-  const [imagesURLs, setImagesURLs] = useState([])
   return (
     <>
-      <Upload imagesURLs={imagesURLs} setImagesURLs={setImagesURLs} />
-      <ImageGrid imagesURLs={imagesURLs} />
+      <Center>This is the home page</Center>
     </>
   )
 }

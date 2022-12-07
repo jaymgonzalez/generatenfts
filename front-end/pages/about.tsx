@@ -18,6 +18,8 @@ type ImageData = {
   name: string
   extension: string
   url: string
+  nftName?: string
+  creatorName?: string
 }
 
 export default function About() {
@@ -45,7 +47,12 @@ export default function About() {
             imageData={imageData}
             setImageData={setImageData}
           />
-          <ImageGrid imagesURLs={imagesURLs} setImagesURLs={setImagesURLs} />
+          <ImageGrid
+            imagesURLs={imagesURLs}
+            setImagesURLs={setImagesURLs}
+            imageData={imageData}
+            setImageData={setImageData}
+          />
         </Stepper.Step>
         <Stepper.Step label="Second step" description="Verify email">
           Step 2 content: Verify email

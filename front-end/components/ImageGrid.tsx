@@ -6,9 +6,11 @@ import {
   Modal,
   Button,
   Center,
+  Box,
 } from '@mantine/core'
 import { IconUpload, IconX } from '@tabler/icons'
 import { useState } from 'react'
+import ImageForm from './ImageForm'
 
 const useStyles = createStyles(() => ({
   container: {
@@ -26,7 +28,12 @@ const useStyles = createStyles(() => ({
   },
 }))
 
-export default function ImageGrid({ imagesURLs, setImagesURLs }) {
+export default function ImageGrid({
+  imagesURLs,
+  setImagesURLs,
+  imageData,
+  setImageData,
+}) {
   const { classes } = useStyles()
   const [openedMap, setOpenedMap] = useState({})
 
@@ -96,6 +103,13 @@ export default function ImageGrid({ imagesURLs, setImagesURLs }) {
                     Remove
                   </Button>
                 </Center>
+                <ImageForm
+                  index={i}
+                  imagesURLs={imagesURLs}
+                  imageData={imageData}
+                  setOpenedMap={setOpenedMap}
+                  openedMap={openedMap}
+                ></ImageForm>
               </Modal>
             </>
           )

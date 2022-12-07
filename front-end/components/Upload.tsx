@@ -48,14 +48,11 @@ export default function Upload({
         const { name } = image
         const url = URL.createObjectURL(image)
         const extension = name.split('.')[1]
-        imageData !== undefined &&
-          setImageData(...imageData, { name, extension, url })
-        imageData?.length === 0 && setImageData({ name, extension, url })
+        imageData.push({ name, extension, url })
         return url
       })
     )
-    console.log(imageData)
-
+    setImageData(imageData)
     setImagesURLs(newImageURLs)
   }, [images])
 
