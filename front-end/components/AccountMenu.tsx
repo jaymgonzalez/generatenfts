@@ -44,7 +44,9 @@ export default function AccountMenu({ children, opened, onChange, address }) {
   })
   const { disconnect } = useDisconnect()
 
-  const amount = parseFloat(formatEther(data?.value)).toFixed(4)
+  const amount = data?.value
+    ? parseFloat(formatEther(data?.value)).toFixed(4)
+    : 0
 
   useEffect(() => {
     axios

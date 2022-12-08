@@ -8,6 +8,7 @@ import {
   Center,
   Box,
 } from '@mantine/core'
+import { randomId } from '@mantine/hooks'
 import { IconUpload, IconX } from '@tabler/icons'
 import { useState } from 'react'
 import ImageForm from './ImageForm'
@@ -49,9 +50,21 @@ export default function ImageGrid({
         cols={imagesURLs.length <= 4 ? imagesURLs.length : 4}
         spacing="lg"
         breakpoints={[
-          { maxWidth: 'md', cols: 3, spacing: 'md' },
-          { maxWidth: 'sm', cols: 2, spacing: 'sm' },
-          { maxWidth: 'xs', cols: 1, spacing: 'sm' },
+          {
+            maxWidth: 'md',
+            cols: imagesURLs.length <= 3 ? imagesURLs.length : 3,
+            spacing: 'md',
+          },
+          {
+            maxWidth: 'sm',
+            cols: imagesURLs.length <= 2 ? imagesURLs.length : 2,
+            spacing: 'sm',
+          },
+          {
+            maxWidth: 'xs',
+            cols: 1,
+            spacing: 'sm',
+          },
         ]}
       >
         {imagesURLs.map((imageSrc: string, i: number) => {
@@ -60,7 +73,7 @@ export default function ImageGrid({
               <Image
                 mx="auto"
                 radius="sm"
-                key={i}
+                key={randomId()}
                 width={200}
                 src={imageSrc}
                 onClick={() =>
@@ -82,7 +95,7 @@ export default function ImageGrid({
                 <Image
                   mx="auto"
                   radius="sm"
-                  key={i}
+                  key={randomId()}
                   width={400}
                   src={imageSrc}
                 />
@@ -93,6 +106,7 @@ export default function ImageGrid({
                     onClick={() => {
                       const newImagesUrls = imagesURLs.slice()
                       newImagesUrls.splice(i, 1)
+                      imageData.splice(i, 1)
                       setImagesURLs(newImagesUrls)
                       setOpenedMap({
                         ...openedMap,

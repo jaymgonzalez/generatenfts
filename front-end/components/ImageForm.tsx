@@ -17,6 +17,7 @@ import {
   IconPlus,
   IconSearch,
 } from '@tabler/icons'
+import { randomId } from '@mantine/hooks'
 
 export default function ImageForm({
   imagesURLs,
@@ -29,8 +30,6 @@ export default function ImageForm({
     imageData.find((data) => data.url === img)
   )
 
-  // console.log(initialValues)
-
   const form = useForm({
     initialValues: {
       nftName: initialValues[index].nftName || initialValues[index].name,
@@ -42,7 +41,7 @@ export default function ImageForm({
   })
 
   const fields = form.values.parameters.map((_, _index) => (
-    <Flex mt="xs" gap="sm" justify="center" align="center">
+    <Flex mt="xs" gap="sm" justify="center" align="center" key={randomId()}>
       <TextInput
         label="Parameter"
         placeholder="Parameter"
@@ -55,10 +54,7 @@ export default function ImageForm({
         display="inline-block"
         {...form.getInputProps(`parameters.${_index}.value`)}
       />
-      {/* <UnstyledButton>
-        <IconPlus />
-      </UnstyledButton> */}
-
+      {/* {console.log(_)} */}
       <Tooltip label="Remove">
         <UnstyledButton
           mt={32}
@@ -76,7 +72,6 @@ export default function ImageForm({
         <form
           onSubmit={form.onSubmit((values) => {
             const { nftName, creatorName, parameters } = values
-            console.log(parameters)
 
             imageData[index] = {
               ...imageData[index],
@@ -98,7 +93,6 @@ export default function ImageForm({
             {...form.getInputProps('nftName')}
           />
           <TextInput
-            withAsterisk
             label="Creator"
             placeholder="Creator's name"
             {...form.getInputProps('creatorName')}
@@ -120,7 +114,7 @@ export default function ImageForm({
             <Button
               variant="outline"
               onClick={() =>
-                form.insertListItem('parameters', { name: '', email: '' })
+                form.insertListItem('parameters', { parameter: '', value: '' })
               }
             >
               Add Custom Parameter
