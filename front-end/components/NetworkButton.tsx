@@ -11,7 +11,7 @@ import {
   Badge,
   MediaQuery,
 } from '@mantine/core'
-import { IconChevronDown, IconCheck, IconChevronUp } from '@tabler/icons'
+import { IconChevronDown, IconChevronUp } from '@tabler/icons'
 import PolygonIcon from './misc/PolygonIcon'
 
 const useStyles = createStyles((theme, _params, getRef) => ({

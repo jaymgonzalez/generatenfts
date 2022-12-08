@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Upload from '../components/Upload'
 import ImageGrid from '../components/ImageGrid'
 import UploadToIpfs from '../components/UploadToIpfs'
+import ImageTable from '../components/ImageTable'
 
 // import AuthenticatedPage from '../components/Authenticated'
 
@@ -13,13 +14,17 @@ import UploadToIpfs from '../components/UploadToIpfs'
 //   useChainModal,
 // } from '@rainbow-me/rainbowkit'
 // import NetworkButton from '../components/NetworkButton'
-
-type ImageData = {
+type Parameter = {
+  parameter: string
+  value: string
+}
+export type ImageData = {
   name: string
   extension: string
   url: string
   nftName?: string
   creatorName?: string
+  parameters?: Parameter[]
 }
 
 export default function About() {
@@ -40,7 +45,7 @@ export default function About() {
   return (
     <>
       <Stepper active={active} onStepClick={setActive} breakpoint="sm">
-        <Stepper.Step label="First step" description="Create an account">
+        <Stepper.Step label="First step" description="Add images">
           <Upload
             imagesURLs={imagesURLs}
             setImagesURLs={setImagesURLs}
@@ -54,12 +59,12 @@ export default function About() {
             setImageData={setImageData}
           />
         </Stepper.Step>
-        <Stepper.Step label="Second step" description="Verify email">
-          Step 2 content: Verify email
-          <UploadToIpfs imagesURLs={imagesURLs} imageData={imageData} />
+        <Stepper.Step label="Second step" description="Confirm information">
+          <ImageTable imageData={imageData} />
         </Stepper.Step>
         <Stepper.Step label="Final step" description="Get full access">
           Step 3 content: Get full access
+          <UploadToIpfs imagesURLs={imagesURLs} imageData={imageData} />
         </Stepper.Step>
         <Stepper.Completed>
           Completed, click back button to get to previous step

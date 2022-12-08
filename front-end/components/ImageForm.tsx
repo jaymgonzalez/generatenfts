@@ -1,7 +1,6 @@
 import { useForm } from '@mantine/form'
 import {
   TextInput,
-  Checkbox,
   Button,
   Group,
   Box,
@@ -10,14 +9,8 @@ import {
   Flex,
   UnstyledButton,
 } from '@mantine/core'
-import {
-  IconCircleMinus,
-  IconInfoCircle,
-  IconMinus,
-  IconPlus,
-  IconSearch,
-} from '@tabler/icons'
-import { randomId } from '@mantine/hooks'
+import { IconCircleMinus, IconInfoCircle } from '@tabler/icons'
+import { useAccount } from 'wagmi'
 
 export default function ImageForm({
   imagesURLs,
@@ -26,6 +19,16 @@ export default function ImageForm({
   setOpenedMap,
   openedMap,
 }) {
+  const { address } = useAccount()
+
+  const smallAddress =
+    address !== undefined
+      ? `${address.slice(0, 4)}...${address.slice(
+          address.length - 4,
+          address.length
+        )}`
+      : ''
+
   const initialValues = imagesURLs.map((img) =>
     imageData.find((data) => data.url === img)
   )
@@ -33,7 +36,7 @@ export default function ImageForm({
   const form = useForm({
     initialValues: {
       nftName: initialValues[index].nftName || initialValues[index].name,
-      creatorName: initialValues[index].creatorName || '',
+      creatorName: initialValues[index].creatorName || address,
       parameters: initialValues[index].parameters || [
         { parameter: '', value: '' },
       ],
@@ -41,7 +44,7 @@ export default function ImageForm({
   })
 
   const fields = form.values.parameters.map((_, _index) => (
-    <Flex mt="xs" gap="sm" justify="center" align="center" key={randomId()}>
+    <Flex mt="xs" gap="sm" justify="center" align="center">
       <TextInput
         label="Parameter"
         placeholder="Parameter"
@@ -54,7 +57,6 @@ export default function ImageForm({
         display="inline-block"
         {...form.getInputProps(`parameters.${_index}.value`)}
       />
-      {/* {console.log(_)} */}
       <Tooltip label="Remove">
         <UnstyledButton
           mt={32}
