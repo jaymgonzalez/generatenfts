@@ -62,7 +62,13 @@ export default function About() {
           />
         </Stepper.Step>
         <Stepper.Step label="Second step" description="Confirm information">
-          <ImageTable imageData={imageData} />
+          <ImageTable
+            imagesURLs={imagesURLs}
+            setImagesURLs={setImagesURLs}
+            imageData={imageData}
+            openedMap={openedMap}
+            setOpenedMap={setOpenedMap}
+          />
         </Stepper.Step>
         <Stepper.Step label="Final step" description="Get full access">
           Step 3 content: Get full access

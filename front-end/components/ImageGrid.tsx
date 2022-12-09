@@ -31,6 +31,7 @@ export default function ImageGrid({
     return (
       <Box key={randomId()}>
         <Image
+          sx={{ cursor: 'pointer' }}
           mx="auto"
           radius="sm"
           width={200}

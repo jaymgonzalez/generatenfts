@@ -1,20 +1,22 @@
 import {
-  createStyles,
   Table,
-  Progress,
-  Anchor,
   Text,
   Group,
   ScrollArea,
   Image,
   ActionIcon,
 } from '@mantine/core'
-import { IconPencil, IconTrash, IconX } from '@tabler/icons'
+import { IconPencil, IconTrash } from '@tabler/icons'
+import ImageModal from './ImageModal'
 
-export default function ImageTable({ imageData }) {
-  console.log(imageData)
-
-  const rows = imageData.map((img) => {
+export default function ImageTable({
+  imagesURLs,
+  setImagesURLs,
+  imageData,
+  openedMap,
+  setOpenedMap,
+}) {
+  const rows = imageData.map((img, index) => {
     const parameters = img.parameters?.map(
       (param) =>
         param.parameter.length > 0 && (
@@ -26,9 +28,28 @@ export default function ImageTable({ imageData }) {
 
     return (
       <>
+        <ImageModal
+          index={index}
+          imagesURLs={imagesURLs}
+          setImagesURLs={setImagesURLs}
+          imageData={imageData}
+          setOpenedMap={setOpenedMap}
+          openedMap={openedMap}
+          imageSrc={img.url}
+        />
         <tr key={img.url}>
           <td>
-            <Image src={img.url} width={60} />
+            <Image
+              sx={{ cursor: 'pointer' }}
+              src={img.url}
+              width={60}
+              onClick={() =>
+                setOpenedMap({
+                  ...openedMap,
+                  [index]: true,
+                })
+              }
+            />
           </td>
           <td>{img.nftName || img.name}</td>
           <td>
@@ -43,10 +64,29 @@ export default function ImageTable({ imageData }) {
           <td>{parameters}</td>
           <td>
             <Group spacing={0} position="right">
-              <ActionIcon>
+              <ActionIcon
+                onClick={() =>
+                  setOpenedMap({
+                    ...openedMap,
+                    [index]: true,
+                  })
+                }
+              >
                 <IconPencil size={16} stroke={1.5} />
               </ActionIcon>
-              <ActionIcon color="red">
+              <ActionIcon
+                color="red"
+                onClick={() => {
+                  const newImagesUrls = imagesURLs.slice()
+                  newImagesUrls.splice(index, 1)
+                  imageData.splice(index, 1)
+                  setImagesURLs(newImagesUrls)
+                  setOpenedMap({
+                    ...openedMap,
+                    [index]: false,
+                  })
+                }}
+              >
                 <IconTrash size={16} stroke={1.5} />
               </ActionIcon>
             </Group>
