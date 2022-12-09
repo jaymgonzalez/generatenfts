@@ -14,19 +14,15 @@ import { IconPencil, IconTrash, IconX } from '@tabler/icons'
 export default function ImageTable({ imageData }) {
   console.log(imageData)
 
-  const rows = imageData.map((img, i) => {
-    console.log(img)
-    const parameters = img.parameters?.map((param) => {
-      console.log(param)
-
-      return (
+  const rows = imageData.map((img) => {
+    const parameters = img.parameters?.map(
+      (param) =>
         param.parameter.length > 0 && (
           <Text>
             {param.parameter}: {param.value}
           </Text>
         )
-      )
-    })
+    )
 
     return (
       <>
