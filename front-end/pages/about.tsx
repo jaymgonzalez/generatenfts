@@ -31,6 +31,7 @@ export default function About() {
   const [active, setActive] = useState(0)
   const [imagesURLs, setImagesURLs] = useState([])
   const [imageData, setImageData] = useState<ImageData[]>([])
+  const [openedMap, setOpenedMap] = useState({})
 
   const nextStep = () =>
     setActive((current) => (current < 3 ? current + 1 : current))
@@ -56,7 +57,8 @@ export default function About() {
             imagesURLs={imagesURLs}
             setImagesURLs={setImagesURLs}
             imageData={imageData}
-            setImageData={setImageData}
+            openedMap={openedMap}
+            setOpenedMap={setOpenedMap}
           />
         </Stepper.Step>
         <Stepper.Step label="Second step" description="Confirm information">

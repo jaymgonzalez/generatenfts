@@ -1,17 +1,6 @@
-import {
-  SimpleGrid,
-  Image,
-  createStyles,
-  Title,
-  Modal,
-  Button,
-  Center,
-  Box,
-} from '@mantine/core'
+import { SimpleGrid, Image, createStyles, Title, Box } from '@mantine/core'
 import { randomId } from '@mantine/hooks'
-import { IconX } from '@tabler/icons'
-import { useState } from 'react'
-import ImageForm from './ImageForm'
+import ImageModal from './ImageModal'
 
 const useStyles = createStyles(() => ({
   container: {
@@ -33,10 +22,10 @@ export default function ImageGrid({
   imagesURLs,
   setImagesURLs,
   imageData,
-  setImageData,
+  openedMap,
+  setOpenedMap,
 }) {
   const { classes } = useStyles()
-  const [openedMap, setOpenedMap] = useState({})
 
   const images = imagesURLs.map((imageSrc: string, i: number) => {
     return (
@@ -53,7 +42,16 @@ export default function ImageGrid({
             })
           }
         />
-        <Modal
+        <ImageModal
+          index={i}
+          imagesURLs={imagesURLs}
+          setImagesURLs={setImagesURLs}
+          imageData={imageData}
+          setOpenedMap={setOpenedMap}
+          openedMap={openedMap}
+          imageSrc={imageSrc}
+        />
+        {/* <Modal
           opened={openedMap[i] || false}
           onClose={() => {
             setOpenedMap({
@@ -88,7 +86,7 @@ export default function ImageGrid({
             setOpenedMap={setOpenedMap}
             openedMap={openedMap}
           ></ImageForm>
-        </Modal>
+        </Modal> */}
       </Box>
     )
   })
