@@ -27,7 +27,7 @@ export default function ImageTable({
     )
 
     return (
-      <>
+      <tbody key={img.url}>
         <ImageModal
           index={index}
           imagesURLs={imagesURLs}
@@ -37,7 +37,7 @@ export default function ImageTable({
           openedMap={openedMap}
           imageSrc={img.url}
         />
-        <tr key={img.url}>
+        <tr>
           <td>
             <Image
               sx={{ cursor: 'pointer' }}
@@ -92,7 +92,7 @@ export default function ImageTable({
             </Group>
           </td>
         </tr>
-      </>
+      </tbody>
     )
   })
 
@@ -109,7 +109,7 @@ export default function ImageTable({
               <th />
             </tr>
           </thead>
-          <tbody>{rows}</tbody>
+          {rows}
         </Table>
       </ScrollArea>
     </>

@@ -70,9 +70,8 @@ export default function About() {
             setOpenedMap={setOpenedMap}
           />
         </Stepper.Step>
-        <Stepper.Step label="Final step" description="Get full access">
-          Step 3 content: Get full access
-          <UploadToIpfs imagesURLs={imagesURLs} imageData={imageData} />
+        <Stepper.Step label="Final step" description="Generate your NFTs">
+          <UploadToIpfs imageData={imageData} />
         </Stepper.Step>
         <Stepper.Completed>
           Completed, click back button to get to previous step
