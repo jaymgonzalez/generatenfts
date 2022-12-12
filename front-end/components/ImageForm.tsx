@@ -11,7 +11,6 @@ import {
 } from '@mantine/core'
 import { IconCircleMinus, IconInfoCircle } from '@tabler/icons'
 import { useAccount } from 'wagmi'
-import { randomId } from '@mantine/hooks'
 
 export default function ImageForm({
   imagesURLs,

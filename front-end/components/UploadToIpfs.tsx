@@ -1,6 +1,7 @@
 import { Button } from '@mantine/core'
 import makeStorageClient from '../web3storage'
 import { pack } from 'ipfs-car/pack'
+import { useAccount } from 'wagmi'
 
 function toImportCandidate(file) {
   let stream
@@ -56,10 +57,52 @@ async function returnCid(images) {
   return cid
 }
 
-export default function UploadToIpfs({ imageData }) {
-  const cid = Promise.resolve(returnCid(imageData))
+async function getMetadata(images, metadata) {
+  const cid = await returnCid(images)
+  const newMetadata = images.map((img) => {
+    const newMetadata = {
+      ...metadata,
+      asset_url: `ipfs://${cid}/${img.nftName}.${img.extension}`,
+    }
+    return newMetadata
+  })
+  return newMetadata
+}
 
-  console.log(cid.then((cid) => cid))
+export default function UploadToIpfs({ imageData }) {
+  const { address } = useAccount()
+  const date = new Date()
+  const baseMetadata = {
+    title: 'Generate NFT ', // choose by user (Name + Creator)
+    id: '0x0123456789abcdef', // ??????
+    contract: '0x9876543210fedcba', // contract that minted it
+    asset_url: 'https://example.com/assets/0123456789abcdef.png',
+    owner: address, // wallet address
+    timestamp: Math.floor(date.getTime() / 1000),
+    name: 'My Awesome NFT',
+    description:
+      'This is a unique and valuable digital asset that represents ownership of a special piece of digital content.',
+    attributes: [
+      // {
+      //   trait_type: 'Background',
+      //   value: 'Green',
+      // },
+      {
+        trait_type: 'Head',
+        value: 'Hat',
+      },
+      {
+        trait_type: 'Level',
+        display_type: 'number',
+        value: 10,
+      },
+    ],
+  }
+
+  const metadataArray = Promise.resolve(getMetadata(imageData, baseMetadata))
+  // const cid = returnCid(imageData)
+
+  metadataArray.then((res) => console.log(res))
 
   return (
     <>
