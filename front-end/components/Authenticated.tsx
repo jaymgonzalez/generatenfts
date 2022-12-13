@@ -10,6 +10,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   // server knows the user is authenticated.
   // You can then pass any data you want
   // to the page component here.
+
   return {
     props: {
       address,
@@ -20,15 +21,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 type AuthenticatedPageProps = InferGetServerSidePropsType<
   typeof getServerSideProps
 >
+
 export default function AuthenticatedPage({
   address,
   children,
 }: AuthenticatedPageProps) {
-  return address ? (
-    <h1>
-      Authenticated as {address} {children}
-    </h1>
-  ) : (
-    <h1>Unauthenticated</h1>
-  )
+  return address ? children : <h1>Unauthenticated</h1>
 }
