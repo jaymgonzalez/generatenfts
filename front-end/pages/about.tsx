@@ -49,51 +49,49 @@ export default function About() {
   return (
     <>
       <AuthenticatedPage address={address}>
-        <Box>
-          <Stepper active={active} onStepClick={setActive} breakpoint="sm">
-            <Stepper.Step label="First step" description="Add images">
-              <Upload
-                imagesURLs={imagesURLs}
-                setImagesURLs={setImagesURLs}
-                imageData={imageData}
-                setImageData={setImageData}
-              />
-              <ImageGrid
-                imagesURLs={imagesURLs}
-                setImagesURLs={setImagesURLs}
-                imageData={imageData}
-                openedMap={openedMap}
-                setOpenedMap={setOpenedMap}
-              />
-            </Stepper.Step>
-            <Stepper.Step label="Second step" description="Confirm information">
-              <ImageTable
-                imagesURLs={imagesURLs}
-                setImagesURLs={setImagesURLs}
-                imageData={imageData}
-                openedMap={openedMap}
-                setOpenedMap={setOpenedMap}
-              />
-            </Stepper.Step>
-            <Stepper.Step label="Final step" description="Generate your NFTs">
-              <UploadToIpfs
-                imageData={imageData}
-                metadata={metadata}
-                setMetadata={setMetadata}
-              />
-            </Stepper.Step>
-            <Stepper.Completed>
-              Completed, click back button to get to previous step
-            </Stepper.Completed>
-          </Stepper>
+        <Stepper active={active} onStepClick={setActive} breakpoint="sm">
+          <Stepper.Step label="First step" description="Add images">
+            <Upload
+              imagesURLs={imagesURLs}
+              setImagesURLs={setImagesURLs}
+              imageData={imageData}
+              setImageData={setImageData}
+            />
+            <ImageGrid
+              imagesURLs={imagesURLs}
+              setImagesURLs={setImagesURLs}
+              imageData={imageData}
+              openedMap={openedMap}
+              setOpenedMap={setOpenedMap}
+            />
+          </Stepper.Step>
+          <Stepper.Step label="Second step" description="Confirm information">
+            <ImageTable
+              imagesURLs={imagesURLs}
+              setImagesURLs={setImagesURLs}
+              imageData={imageData}
+              openedMap={openedMap}
+              setOpenedMap={setOpenedMap}
+            />
+          </Stepper.Step>
+          <Stepper.Step label="Final step" description="Generate your NFTs">
+            <UploadToIpfs
+              imageData={imageData}
+              metadata={metadata}
+              setMetadata={setMetadata}
+            />
+          </Stepper.Step>
+          <Stepper.Completed>
+            Completed, click back button to get to previous step
+          </Stepper.Completed>
+        </Stepper>
 
-          <Group position="center" mt="xl">
-            <Button variant="default" onClick={prevStep}>
-              Back
-            </Button>
-            <Button onClick={nextStep}>Next step</Button>
-          </Group>
-        </Box>
+        <Group position="center" mt="xl">
+          <Button variant="default" onClick={prevStep}>
+            Back
+          </Button>
+          <Button onClick={nextStep}>Next step</Button>
+        </Group>
       </AuthenticatedPage>
     </>
   )

@@ -48,17 +48,19 @@ export default function AccountMenu({ children, opened, onChange, address }) {
     : 0
 
   useEffect(() => {
-    axios
-      .get(
-        `https://api.coinconvert.net/convert/${data?.symbol}/usd?amount=${amount}`
-      )
-      .then((response) => {
-        setUsdAmount(response.data.USD)
-      })
-      .catch((err) => {
-        console.log(err)
-        setUsdAmount(0)
-      })
+    if (amount <= 0) setUsdAmount(0)
+    else
+      axios
+        .get(
+          `https://api.coinconvert.net/convert/${data?.symbol}/usd?amount=${amount}`
+        )
+        .then((response) => {
+          setUsdAmount(response.data.USD)
+        })
+        .catch((err) => {
+          console.log(err)
+          setUsdAmount(0)
+        })
   }, [amount])
 
   return (

@@ -3,6 +3,7 @@ import makeStorageClient from '../web3storage'
 import { pack } from 'ipfs-car/pack'
 import { useAccount, useNetwork } from 'wagmi'
 import { contractAddress } from '../constants'
+import { useEffect } from 'react'
 
 function toImportCandidate(file) {
   let stream
@@ -66,6 +67,7 @@ async function getMetadata(images, metadata) {
   const cid = await returnCid(images)
   const newMetadata = images.map((img) => {
     const attributes = img.parameters?.map((attr) => {
+      if (attr.parameter.length === 0) return
       return {
         trait_type: attr.parameter,
         value: attr.value,
@@ -79,7 +81,8 @@ async function getMetadata(images, metadata) {
       id: id(),
     }
 
-    if (attributes) newMetadata.attributes = attributes
+    if (attributes[0]) newMetadata.attributes = attributes
+    if (img.description) newMetadata.description = img.description
     return newMetadata
   })
   return newMetadata
@@ -96,15 +99,14 @@ export default function UploadToIpfs({ imageData, metadata, setMetadata }) {
     owner: address, // wallet address
     timestamp: Math.floor(date.getTime() / 1000),
     network: chain.name,
-    // TODO add to form
-    description:
-      'This is a unique and valuable digital asset that represents ownership of a special piece of digital content.',
   }
 
-  const metadataArray = Promise.resolve(getMetadata(imageData, baseMetadata))
-  // const cid = returnCid(imageData)
+  useEffect(() => {
+    const metadataArray = Promise.resolve(getMetadata(imageData, baseMetadata))
+    metadataArray.then((res) => setMetadata(res))
 
-  metadataArray.then((res) => console.log(res))
+    console.log(metadata)
+  }, [imageData])
 
   return (
     <>

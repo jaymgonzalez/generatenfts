@@ -8,6 +8,7 @@ import {
   Tooltip,
   Flex,
   UnstyledButton,
+  Textarea,
 } from '@mantine/core'
 import { IconCircleMinus, IconInfoCircle } from '@tabler/icons'
 import { useAccount } from 'wagmi'
@@ -32,6 +33,7 @@ export default function ImageForm({
       parameters: initialValues[index].parameters || [
         { parameter: '', value: '' },
       ],
+      description: initialValues[index].description || '',
     },
   })
 
@@ -66,13 +68,14 @@ export default function ImageForm({
     <Box sx={{ maxWidth: 450 }} mx="auto">
       <form
         onSubmit={form.onSubmit((values) => {
-          const { nftName, creatorName, parameters } = values
+          const { nftName, creatorName, parameters, description } = values
 
           imageData[index] = {
             ...imageData[index],
             nftName,
             creatorName,
             parameters,
+            description,
           }
           setOpenedMap({
             ...openedMap,
@@ -91,6 +94,11 @@ export default function ImageForm({
           label="Creator"
           placeholder="Creator's name"
           {...form.getInputProps('creatorName')}
+        />
+        <Textarea
+          placeholder="Description"
+          label="Description"
+          {...form.getInputProps('description')}
         />
         <Tooltip label="Add your own parameters" position="bottom-start">
           <Divider
