@@ -1,9 +1,10 @@
-import { Button } from '@mantine/core'
+import { Button, Center } from '@mantine/core'
 import makeStorageClient from '../web3storage'
 import { pack } from 'ipfs-car/pack'
 import { useAccount, useNetwork } from 'wagmi'
 import { contractAddress } from '../constants'
 import { useEffect } from 'react'
+import ImageCarousel from './ImageCarousel'
 
 function toImportCandidate(file) {
   let stream
@@ -77,18 +78,26 @@ async function getMetadata(images, metadata) {
     const newMetadata = {
       ...metadata,
       asset_url: `ipfs://${cid}/${img.nftName}.${img.extension}`,
-      name: img.nftName,
+      name: img.nftName || img.name,
       id: id(),
     }
 
-    if (attributes[0]) newMetadata.attributes = attributes
+    if (attributes && attributes[0]) newMetadata.attributes = attributes
     if (img.description) newMetadata.description = img.description
     return newMetadata
   })
   return newMetadata
 }
 
-export default function UploadToIpfs({ imageData, metadata, setMetadata }) {
+export default function UploadToIpfs({
+  imagesURLs,
+  setImagesURLs,
+  imageData,
+  openedMap,
+  setOpenedMap,
+  metadata,
+  setMetadata,
+}) {
   const { address } = useAccount()
   const { chain } = useNetwork()
   const date = new Date()
@@ -112,6 +121,17 @@ export default function UploadToIpfs({ imageData, metadata, setMetadata }) {
     <>
       <Button onClick={() => {}}></Button>
       <div>Holi</div>
+      <Center>
+        <ImageCarousel
+          imagesURLs={imagesURLs}
+          setImagesURLs={setImagesURLs}
+          imageData={imageData}
+          openedMap={openedMap}
+          setOpenedMap={setOpenedMap}
+          metadata={metadata}
+          setMetadata={setMetadata}
+        />
+      </Center>
     </>
   )
 }
