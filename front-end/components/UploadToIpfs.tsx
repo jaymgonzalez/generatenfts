@@ -80,6 +80,7 @@ async function getMetadata(images, metadata) {
       asset_url: `ipfs://${cid}/${img.nftName}.${img.extension}`,
       name: img.nftName || img.name,
       id: id(),
+      author: img.author,
     }
 
     if (attributes && attributes[0]) newMetadata.attributes = attributes
@@ -113,15 +114,18 @@ export default function UploadToIpfs({
   useEffect(() => {
     const metadataArray = Promise.resolve(getMetadata(imageData, baseMetadata))
     metadataArray.then((res) => setMetadata(res))
-
     console.log(metadata)
-  }, [imageData])
+  }, [
+    imageData,
+    metadata.description,
+    metadata.parameters,
+    metadata.name,
+    metadata.author,
+  ])
 
   return (
     <>
-      <Button onClick={() => {}}></Button>
-      <div>Holi</div>
-      <Center>
+      <Center mt={24}>
         <ImageCarousel
           imagesURLs={imagesURLs}
           setImagesURLs={setImagesURLs}

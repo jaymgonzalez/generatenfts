@@ -29,7 +29,7 @@ export default function ImageForm({
   const form = useForm({
     initialValues: {
       nftName: initialValues[index].nftName || initialValues[index].name,
-      creatorName: initialValues[index].creatorName || address,
+      author: initialValues[index].author || address,
       parameters: initialValues[index].parameters || [
         { parameter: '', value: '' },
       ],
@@ -68,12 +68,12 @@ export default function ImageForm({
     <Box sx={{ maxWidth: 450 }} mx="auto">
       <form
         onSubmit={form.onSubmit((values) => {
-          const { nftName, creatorName, parameters, description } = values
+          const { nftName, author, parameters, description } = values
 
           imageData[index] = {
             ...imageData[index],
             nftName,
-            creatorName,
+            author,
             parameters,
             description,
           }
@@ -91,9 +91,9 @@ export default function ImageForm({
           {...form.getInputProps('nftName')}
         />
         <TextInput
-          label="Creator"
+          label="Author"
           placeholder="Creator's name"
-          {...form.getInputProps('creatorName')}
+          {...form.getInputProps('author')}
         />
         <Textarea
           placeholder="Description"

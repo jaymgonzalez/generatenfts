@@ -53,13 +53,12 @@ export default function ImageTable({
           </td>
           <td>{img.nftName || img.name}</td>
           <td>
-            {img.creatorName?.length === 42 &&
-            img.creatorName.substring(0, 2) === '0x'
-              ? `${img.creatorName.slice(0, 4)}...${img.creatorName.slice(
-                  img.creatorName.length - 4,
-                  img.creatorName.length
+            {img.author?.length === 42 && img.author.substring(0, 2) === '0x'
+              ? `${img.author.slice(0, 4)}...${img.author.slice(
+                  img.author.length - 4,
+                  img.author.length
                 )}`
-              : img.creatorName}
+              : img.author}
           </td>
           <td>{parameters}</td>
           <td>
@@ -104,7 +103,7 @@ export default function ImageTable({
             <tr>
               <th>Image</th>
               <th>Name</th>
-              <th>Creator</th>
+              <th>Author/Owner</th>
               <th>Parameters</th>
               <th />
             </tr>

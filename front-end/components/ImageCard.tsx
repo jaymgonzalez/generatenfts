@@ -9,11 +9,12 @@ import {
   createStyles,
 } from '@mantine/core'
 import { Prism } from '@mantine/prism'
+import { IconEdit, IconPencil, IconTrash } from '@tabler/icons'
+import theme from 'prism-react-renderer/themes/nightOwl'
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   group: {
-    backgroundColor:
-      theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.white,
+    backgroundColor: '#011627',
   },
 }))
 
@@ -28,45 +29,63 @@ export default function ImageCard({
   metadata,
   setMetadata,
 }) {
-  // console.log(JSON.parse(JSON.stringify(card)))
-
-  // const imageCode = Object.keys(card).map(
-  //   (key) => `${key}: ${card[key]}
-  // `
-  // )
-
-  const imageCode = JSON.stringify(card)
-    .replace(/,/g, '\n')
-    .replace(/\{|\}/g, '')
-
-  // console.log(imageCode)
-
   const { classes } = useStyles()
 
+  const imageCode = JSON.stringify(card)
+    .replace(/,(?![^\[]*\])/g, '\n')
+    .replace(/\{|\}/g, '')
+
   return (
-    <Card
-      shadow="sm"
-      p="lg"
-      radius="md"
-      withBorder
-      maw="500px"
-      className={classes.group}
-    >
-      <Card.Section>
-        <Image
-          height={400}
-          src={imagesURLs[index]}
-          alt={card.name}
-          // fit="contain"
-        />
-      </Card.Section>
-      <Card.Section>
-        <Prism language="yaml">{`{\n${imageCode}\n}`}</Prism>
-        <Group position="center" py={16}>
-          <Button>holi</Button>
-          <Button>chusi</Button>
-        </Group>
-      </Card.Section>
-    </Card>
+    <>
+      <Card
+        shadow="sm"
+        p="lg"
+        radius="md"
+        withBorder
+        maw="500px"
+        className={classes.group}
+      >
+        <Card.Section>
+          <Image height={400} src={imagesURLs[index]} alt={card.name} />
+        </Card.Section>
+        <Card.Section>
+          <Prism
+            getPrismTheme={() => theme}
+            language="yaml"
+          >{`{\n${imageCode}\n}`}</Prism>
+          <Group position="center" py={16}>
+            <Button
+              leftIcon={<IconPencil />}
+              onClick={() =>
+                setOpenedMap({
+                  ...openedMap,
+                  [index]: true,
+                })
+              }
+            >
+              Edit
+            </Button>
+            <Button
+              onClick={() => {
+                const newImagesUrls = imagesURLs.slice()
+                newImagesUrls.splice(index, 1)
+                imageData.splice(index, 1)
+                metadata.splice(index, 1)
+                setImagesURLs(newImagesUrls)
+                setOpenedMap({
+                  ...openedMap,
+                  [index]: false,
+                })
+              }}
+              leftIcon={<IconTrash />}
+              variant="light"
+              color="red"
+            >
+              Delete
+            </Button>
+          </Group>
+        </Card.Section>
+      </Card>
+    </>
   )
 }

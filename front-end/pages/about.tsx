@@ -24,7 +24,7 @@ export type ImageData = {
   extension: string
   url: string
   nftName?: string
-  creatorName?: string
+  author?: string
   parameters?: Parameter[]
 }
 
@@ -94,7 +94,11 @@ export default function About() {
           <Button variant="default" onClick={prevStep}>
             Back
           </Button>
-          <Button onClick={nextStep}>Next step</Button>
+          {active !== 3 && (
+            <Button onClick={nextStep}>
+              {active === 2 ? 'Generate NFTs' : 'Next step'}
+            </Button>
+          )}
         </Group>
       </AuthenticatedPage>
     </>
