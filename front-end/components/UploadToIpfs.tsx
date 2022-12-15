@@ -77,7 +77,9 @@ async function getMetadata(images, metadata) {
 
     const newMetadata = {
       ...metadata,
-      asset_url: `ipfs://${cid}/${img.nftName}.${img.extension}`,
+      asset_url: `ipfs://${cid}/${img.nftName.replace(/ /g, '_')}.${
+        img.extension
+      }`,
       name: img.nftName || img.name,
       id: id(),
       author: img.author,

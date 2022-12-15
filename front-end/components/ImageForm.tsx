@@ -38,7 +38,7 @@ export default function ImageForm({
   })
 
   const fields = form.values.parameters.map((_, _index) => (
-    <Box key={_index}>
+    <Box key={_index + 2343}>
       <Flex mt="xs" gap="sm" justify="center" align="center">
         <TextInput
           label="Parameter"

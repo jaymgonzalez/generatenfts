@@ -56,6 +56,7 @@ export default function ImageCard({
           <Group position="center" py={16}>
             <Button
               leftIcon={<IconPencil />}
+              variant="outline"
               onClick={() =>
                 setOpenedMap({
                   ...openedMap,
