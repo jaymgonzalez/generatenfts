@@ -1,9 +1,9 @@
-import { Button, Center } from '@mantine/core'
+import { Center } from '@mantine/core'
 import makeStorageClient from '../web3storage'
 import { pack } from 'ipfs-car/pack'
 import { useAccount, useNetwork } from 'wagmi'
 import { contractAddress } from '../constants'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import ImageCarousel from './ImageCarousel'
 
 function toImportCandidate(file) {
@@ -28,7 +28,7 @@ async function getCid(_files) {
   }
 }
 
-async function CreateFiles(images) {
+async function createFiles(images) {
   const files = await Promise.all(
     images.map(async (img) => {
       const response = await fetch(img.url)
@@ -54,7 +54,7 @@ async function storeFiles(files) {
 }
 
 async function returnCid(images) {
-  const files = await CreateFiles(images)
+  const files = await createFiles(images)
   const cid = await getCid(files)
   console.log('files cid:', cid)
   return cid
@@ -66,7 +66,7 @@ function id() {
 
 async function getMetadata(images, metadata) {
   const cid = await returnCid(images)
-  const newMetadata = images.map((img) => {
+  return images.map((img) => {
     const attributes = img.parameters?.map((attr) => {
       if (attr.parameter.length === 0) return
       return {
@@ -87,7 +87,6 @@ async function getMetadata(images, metadata) {
     if (img.description) newMetadata.description = img.description
     return newMetadata
   })
-  return newMetadata
 }
 
 export default function UploadToIpfs({
@@ -102,6 +101,7 @@ export default function UploadToIpfs({
   const { address } = useAccount()
   const { chain } = useNetwork()
   const date = new Date()
+  const refMetadata = useRef(metadata)
 
   const baseMetadata = {
     title: 'Generate NFT ', // choose by user (Name + Creator)
@@ -112,16 +112,13 @@ export default function UploadToIpfs({
   }
 
   useEffect(() => {
+    refMetadata.current = metadata
+  }, [metadata])
+
+  useEffect(() => {
     const metadataArray = Promise.resolve(getMetadata(imageData, baseMetadata))
     metadataArray.then((res) => setMetadata(res))
-    console.log(metadata)
-  }, [
-    imageData,
-    metadata.description,
-    metadata.parameters,
-    metadata.name,
-    metadata.author,
-  ])
+  }, [refMetadata.current])
 
   return (
     <>

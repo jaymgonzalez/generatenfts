@@ -1,10 +1,7 @@
 import { Carousel } from '@mantine/carousel'
 import { createStyles } from '@mantine/core'
-import { useEffect } from 'react'
 import ImageCard from './ImageCard'
 import ImageModal from './ImageModal'
-
-console.log(Carousel)
 
 const useStyles = createStyles((_theme, _params, getRef) => ({
   controls: {
