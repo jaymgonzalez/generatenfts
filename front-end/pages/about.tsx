@@ -15,8 +15,8 @@ import AuthenticatedPage from '../components/Authenticated'
 //   useChainModal,
 // } from '@rainbow-me/rainbowkit'
 // import NetworkButton from '../components/NetworkButton'
-type Parameter = {
-  parameter: string
+type Attribute = {
+  attribute: string
   value: string
 }
 export type ImageData = {
@@ -25,7 +25,7 @@ export type ImageData = {
   url: string
   nftName?: string
   author?: string
-  parameters?: Parameter[]
+  attributes?: Attribute[]
 }
 
 export default function About() {

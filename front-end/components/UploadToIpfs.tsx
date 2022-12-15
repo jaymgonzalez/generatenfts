@@ -67,10 +67,10 @@ function id() {
 async function getMetadata(images, metadata) {
   const cid = await returnCid(images)
   return images.map((img) => {
-    const attributes = img.parameters?.map((attr) => {
-      if (attr.parameter.length === 0) return
+    const attributes = img.attributes?.map((attr) => {
+      if (attr.attribute.length === 0) return
       return {
-        trait_type: attr.parameter,
+        trait_type: attr.attribute,
         value: attr.value,
       }
     })

@@ -9,8 +9,15 @@ import {
   Flex,
   UnstyledButton,
   Textarea,
+  ActionIcon,
 } from '@mantine/core'
-import { IconCircleMinus, IconInfoCircle } from '@tabler/icons'
+import {
+  IconCircleMinus,
+  IconCirclePlus,
+  IconInfoCircle,
+  IconPlus,
+  IconTrash,
+} from '@tabler/icons'
 import { useAccount } from 'wagmi'
 
 export default function ImageForm({
@@ -19,6 +26,7 @@ export default function ImageForm({
   index,
   setOpenedMap,
   openedMap,
+  setImagesURLs,
 }) {
   const { address } = useAccount()
 
@@ -30,32 +38,32 @@ export default function ImageForm({
     initialValues: {
       nftName: initialValues[index].nftName || initialValues[index].name,
       author: initialValues[index].author || address,
-      parameters: initialValues[index].parameters || [
-        { parameter: '', value: '' },
+      attributes: initialValues[index].attributes || [
+        { attribute: '', value: '' },
       ],
       description: initialValues[index].description || '',
     },
   })
 
-  const fields = form.values.parameters.map((_, _index) => (
+  const fields = form.values.attributes.map((_, _index) => (
     <Box key={_index + 2343}>
       <Flex mt="xs" gap="sm" justify="center" align="center">
         <TextInput
-          label="Parameter"
-          placeholder="Parameter"
+          label="Attribute"
+          placeholder="Attribute"
           display="inline-block"
-          {...form.getInputProps(`parameters.${_index}.parameter`)}
+          {...form.getInputProps(`attributes.${_index}.attribute`)}
         />
         <TextInput
           label="Value"
           placeholder="Value"
           display="inline-block"
-          {...form.getInputProps(`parameters.${_index}.value`)}
+          {...form.getInputProps(`attributes.${_index}.value`)}
         />
         <Tooltip label="Remove">
           <UnstyledButton
             mt={32}
-            onClick={() => form.removeListItem('parameters', _index)}
+            onClick={() => form.removeListItem('attributes', _index)}
           >
             <IconCircleMinus />
           </UnstyledButton>
@@ -65,16 +73,16 @@ export default function ImageForm({
   ))
 
   return (
-    <Box sx={{ maxWidth: 450 }} mx="auto">
+    <Box sx={{ maxWidth: 500 }} mx="auto">
       <form
         onSubmit={form.onSubmit((values) => {
-          const { nftName, author, parameters, description } = values
+          const { nftName, author, attributes, description } = values
 
           imageData[index] = {
             ...imageData[index],
             nftName,
             author,
-            parameters,
+            attributes,
             description,
           }
           setOpenedMap({
@@ -100,27 +108,52 @@ export default function ImageForm({
           label="Description"
           {...form.getInputProps('description')}
         />
-        <Tooltip label="Add your own parameters" position="bottom-start">
+        <Tooltip
+          label="Click on the + sign to add your own attributes"
+          position="bottom-end"
+          offset={-5.5}
+        >
           <Divider
-            my="md"
+            mt="md"
+            labelPosition="right"
             label={
               <>
-                <Box mr={5}>Parameters</Box>
-                <IconInfoCircle size={18} />
+                <Box mr={8}>Attributes</Box>
+                <Box sx={{ cursor: 'pointer', marginRight: 3 }}>
+                  <IconCirclePlus
+                    size={26}
+                    onClick={() =>
+                      form.insertListItem('attributes', {
+                        attribute: '',
+                        value: '',
+                      })
+                    }
+                  />
+                </Box>
               </>
             }
           />
         </Tooltip>
+
         {fields}
-        <Group position="center" mt="md">
-          <Button type="submit">Submit Info</Button>
+        <Group position="center" mt="xl">
+          <Button type="submit">Submit</Button>
           <Button
-            variant="outline"
-            onClick={() =>
-              form.insertListItem('parameters', { parameter: '', value: '' })
-            }
+            leftIcon={<IconTrash />}
+            variant="light"
+            color="red"
+            onClick={() => {
+              const newImagesUrls = imagesURLs.slice()
+              newImagesUrls.splice(index, 1)
+              imageData.splice(index, 1)
+              setImagesURLs(newImagesUrls)
+              setOpenedMap({
+                ...openedMap,
+                [index]: false,
+              })
+            }}
           >
-            Add Custom Parameter
+            Remove
           </Button>
         </Group>
       </form>

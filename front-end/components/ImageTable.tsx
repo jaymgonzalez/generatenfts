@@ -17,11 +17,11 @@ export default function ImageTable({
   setOpenedMap,
 }) {
   const rows = imageData.map((img, index) => {
-    const parameters = img.parameters?.map(
-      (param) =>
-        param.parameter.length > 0 && (
-          <Text>
-            {param.parameter}: {param.value}
+    const attributes = img.attributes?.map(
+      (attr) =>
+        attr.attribute.length > 0 && (
+          <Text key={index + 3478}>
+            {attr.attribute}: {attr.value}
           </Text>
         )
     )
@@ -60,7 +60,7 @@ export default function ImageTable({
                 )}`
               : img.author}
           </td>
-          <td>{parameters}</td>
+          <td>{attributes}</td>
           <td>
             <Group spacing={0} position="right">
               <ActionIcon
@@ -104,7 +104,7 @@ export default function ImageTable({
               <th>Image</th>
               <th>Name</th>
               <th>Author/Owner</th>
-              <th>Parameters</th>
+              <th>attributes</th>
               <th />
             </tr>
           </thead>
