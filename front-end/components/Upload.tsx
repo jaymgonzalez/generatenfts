@@ -68,7 +68,7 @@ export default function Upload({
         className={classes.dropzone}
         radius="md"
         accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
-        maxSize={30 * 1024 ** 2}
+        maxSize={3 * 1024 ** 2}
       >
         <div style={{ pointerEvents: 'none' }}>
           <Group position="center">
@@ -97,12 +97,14 @@ export default function Upload({
 
           <Text align="center" weight={700} size="lg" mt="xl">
             <Dropzone.Accept>Drop files here</Dropzone.Accept>
-            <Dropzone.Reject>Pdf file less than 30mb</Dropzone.Reject>
-            <Dropzone.Idle>Upload resume</Dropzone.Idle>
+            <Dropzone.Reject>
+              JPEG and PNG files only. Not bigger than 3mb
+            </Dropzone.Reject>
+            <Dropzone.Idle>Upload your images</Dropzone.Idle>
           </Text>
           <Text align="center" size="sm" mt="xs" color="dimmed">
             Drag&apos;n&apos;drop files here to upload. We can accept only{' '}
-            <i>.png</i> or <i>.jpeg</i> files that are less than 30mb in size.
+            <i>.png</i> or <i>.jpeg</i> files that are less than 3mb in size.
           </Text>
         </div>
       </Dropzone>
