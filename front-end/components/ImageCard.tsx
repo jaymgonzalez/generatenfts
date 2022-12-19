@@ -28,6 +28,7 @@ export default function ImageCard({
   setOpenedMap,
   metadata,
   setMetadata,
+  embla,
 }) {
   const { classes } = useStyles()
 
@@ -46,9 +47,14 @@ export default function ImageCard({
         className={classes.group}
       >
         <Card.Section>
-          <Image height={400} src={imagesURLs[index]} alt={card.name} />
+          <Image
+            height={400}
+            src={imagesURLs[index]}
+            alt={card.name}
+            // onClick={() => embla.reInit({ draggable: true })}
+          />
         </Card.Section>
-        <Card.Section>
+        <Card.Section onClick={() => embla.reInit({ draggable: false })}>
           <Prism
             getPrismTheme={() => theme}
             language="yaml"

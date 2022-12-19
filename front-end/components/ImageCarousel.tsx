@@ -1,5 +1,6 @@
-import { Carousel } from '@mantine/carousel'
+import { Carousel, Embla } from '@mantine/carousel'
 import { createStyles } from '@mantine/core'
+import { useEffect, useState } from 'react'
 import ImageCard from './ImageCard'
 import ImageModal from './ImageModal'
 
@@ -27,6 +28,10 @@ const useStyles = createStyles((_theme, _params, getRef) => ({
     },
   },
 
+  control: {
+    height: '100%',
+  },
+
   root: {
     '&:hover': {
       [`& .${getRef('controls')}`]: {
@@ -49,6 +54,16 @@ export default function ImageCarousel({
   setMetadata,
 }) {
   const { classes } = useStyles()
+  const [embla, setEmbla] = useState<Embla | null>(null)
+
+  useEffect(() => {
+    if (embla) {
+      // embla.on('scroll', handleScroll);
+      // handleScroll();
+
+      console.log(embla.slideNodes())
+    }
+  }, [embla])
 
   const cards = metadata.map((card, index) => {
     return (
@@ -72,6 +87,7 @@ export default function ImageCarousel({
           setOpenedMap={setOpenedMap}
           metadata={metadata}
           setMetadata={setMetadata}
+          embla={embla}
         />
       </Carousel.Slide>
     )
@@ -87,7 +103,8 @@ export default function ImageCarousel({
         slideGap="md"
         breakpoints={[{ maxWidth: 'xs', slideSize: '100%', slideGap: 2 }]}
         withIndicators
-        draggable={false}
+        // draggable={false}
+        getEmblaApi={setEmbla}
       >
         {cards}
       </Carousel>

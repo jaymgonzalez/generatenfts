@@ -9,15 +9,8 @@ import {
   Flex,
   UnstyledButton,
   Textarea,
-  ActionIcon,
 } from '@mantine/core'
-import {
-  IconCircleMinus,
-  IconCirclePlus,
-  IconInfoCircle,
-  IconPlus,
-  IconTrash,
-} from '@tabler/icons'
+import { IconCircleMinus, IconCirclePlus, IconTrash } from '@tabler/icons'
 import { useAccount } from 'wagmi'
 
 export default function ImageForm({
