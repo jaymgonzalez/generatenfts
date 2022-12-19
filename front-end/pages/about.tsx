@@ -3,7 +3,7 @@ import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi'
 import { useState } from 'react'
 import Upload from '../components/Upload'
 import ImageGrid from '../components/ImageGrid'
-import UploadToIpfs from '../components/UploadToIpfs'
+import ImageMetadata from '../components/ImageMetadata'
 import ImageTable from '../components/ImageTable'
 import AuthenticatedPage from '../components/Authenticated'
 
@@ -75,7 +75,7 @@ export default function About() {
             />
           </Stepper.Step>
           <Stepper.Step label="Final step" description="Generate your NFTs">
-            <UploadToIpfs
+            <ImageMetadata
               imagesURLs={imagesURLs}
               setImagesURLs={setImagesURLs}
               imageData={imageData}

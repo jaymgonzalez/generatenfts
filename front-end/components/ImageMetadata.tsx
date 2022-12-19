@@ -74,14 +74,14 @@ async function getMetadata(images, metadata) {
     })
 
     const newMetadata = {
+      id: img.id,
+      author: img.author,
+      name: img.nftName || img.name,
       ...metadata,
       asset_url: `ipfs://${cid}/${img.nftName?.replace(/ /g, '_')}.${
         img.extension
       }`,
-      name: img.nftName || img.name,
       timestamp: metadata.timestamp || Math.floor(date.getTime() / 1000),
-      author: img.author,
-      id: img.id,
     }
 
     if (attributes && attributes[0]) newMetadata.attributes = attributes
@@ -90,7 +90,7 @@ async function getMetadata(images, metadata) {
   })
 }
 
-export default function UploadToIpfs({
+export default function ImageMetadata({
   imagesURLs,
   setImagesURLs,
   imageData,
