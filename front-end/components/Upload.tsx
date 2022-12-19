@@ -31,6 +31,10 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
+function genId() {
+  return `0x${Math.random().toString(36).substring(2, 12)}`
+}
+
 export default function Upload({
   imagesURLs,
   setImagesURLs,
@@ -48,7 +52,8 @@ export default function Upload({
         const { name } = image
         const url = URL.createObjectURL(image)
         const extension = name.split('.')[1]
-        imageData.push({ name, extension, url })
+        const id = genId()
+        imageData.push({ name, extension, url, id })
         return url
       })
     )

@@ -6,6 +6,8 @@ import { contractAddress } from '../constants'
 import { useEffect, useRef } from 'react'
 import ImageCarousel from './ImageCarousel'
 
+const date = new Date()
+
 function toImportCandidate(file) {
   let stream
   return {
@@ -60,10 +62,6 @@ async function returnCid(images) {
   return cid
 }
 
-function id() {
-  return `0x${Math.random().toString(36).substring(2, 12)}`
-}
-
 async function getMetadata(images, metadata) {
   const cid = await returnCid(images)
   return images.map((img) => {
@@ -81,8 +79,9 @@ async function getMetadata(images, metadata) {
         img.extension
       }`,
       name: img.nftName || img.name,
-      id: id(),
+      timestamp: metadata.timestamp || Math.floor(date.getTime() / 1000),
       author: img.author,
+      id: img.id,
     }
 
     if (attributes && attributes[0]) newMetadata.attributes = attributes
@@ -102,7 +101,6 @@ export default function UploadToIpfs({
 }) {
   const { address } = useAccount()
   const { chain } = useNetwork()
-  const date = new Date()
   const refMetadata = useRef(metadata)
 
   const baseMetadata = {
