@@ -11,6 +11,7 @@ import {
 import { Prism } from '@mantine/prism'
 import { IconEdit, IconPencil, IconTrash } from '@tabler/icons'
 import theme from 'prism-react-renderer/themes/nightOwl'
+import { useEffect } from 'react'
 
 const useStyles = createStyles(() => ({
   group: {
@@ -51,7 +52,7 @@ export default function ImageCard({
             height={400}
             src={imagesURLs[index]}
             alt={card.name}
-            // onClick={() => embla.reInit({ draggable: true })}
+            onClick={() => embla.reInit({ draggable: true })}
           />
         </Card.Section>
         <Card.Section onClick={() => embla.reInit({ draggable: false })}>

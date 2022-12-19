@@ -56,15 +56,6 @@ export default function ImageCarousel({
   const { classes } = useStyles()
   const [embla, setEmbla] = useState<Embla | null>(null)
 
-  useEffect(() => {
-    if (embla) {
-      // embla.on('scroll', handleScroll);
-      // handleScroll();
-
-      console.log(embla.slideNodes())
-    }
-  }, [embla])
-
   const cards = metadata.map((card, index) => {
     return (
       <Carousel.Slide key={card.id}>
@@ -103,7 +94,6 @@ export default function ImageCarousel({
         slideGap="md"
         breakpoints={[{ maxWidth: 'xs', slideSize: '100%', slideGap: 2 }]}
         withIndicators
-        // draggable={false}
         getEmblaApi={setEmbla}
       >
         {cards}
