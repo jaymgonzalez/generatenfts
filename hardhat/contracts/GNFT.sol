@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT LICENSE
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 pragma solidity ^0.8.0;
 
@@ -11,13 +11,16 @@ error AINFTs__TransactionNotSent();
 error AINFTs__MintingIsPaused();
 error AINFTs__NftToMintLowerThanOne();
 
-contract AINFTs is ERC721Enumerable, Ownable {
+contract GNFTs is ERC721URIStorage, Ownable {
     using Strings for uint256;
-    string public baseURI;
-    string public baseExtension = ".json";
+    using SafeMath for uint256;
+
     bool public paused = false;
     uint256 public fee;
+    uint256 public supply;
+
     mapping(uint256 => string) public tokenIds;
+    mapping(uint256 => string) public tokenNames;
 
     constructor() ERC721("GenerateNFT.com Collection", "GNFT") {}
 
@@ -27,7 +30,6 @@ contract AINFTs is ERC721Enumerable, Ownable {
         string[] memory _fileNames,
         string[] memory _fileIds
     ) public payable {
-        uint256 supply = totalSupply();
         if (paused) {
             revert AINFTs__MintingIsPaused();
         }
@@ -40,31 +42,32 @@ contract AINFTs is ERC721Enumerable, Ownable {
                 "Not enough balance to complete transaction."
             );
         }
-        for (uint256 i = 1; i <= _fileNames.length; i++) {
-            tokenIds[supply + i] = _fileIds[i];
+        for (uint256 i = 0; i <= _fileNames.length; i++) {
+            increment();
+            tokenIds[supply] = _fileIds[i];
+            tokenNames[supply] = _fileNames[i];
+
+            _setTokenURI(supply, _baseUri);
             _safeMint(_to, supply + i);
         }
     }
 
-    function tokenURI(
-        uint256 tokenId
-    ) public view virtual override returns (string memory) {
+    function _setTokenURI(
+        uint256 tokenId,
+        string memory _baseUri
+    ) internal view override {
         require(
             _exists(tokenId),
             "ERC721Metadata: URI query for nonexistent token"
         );
 
-        string memory currentBaseURI = _baseURI();
-        return
-            bytes(currentBaseURI).length > 0
-                ? string(
-                    abi.encodePacked(
-                        currentBaseURI,
-                        tokenId.toString(),
-                        baseExtension
-                    )
-                )
-                : "";
+        bytes(_baseUri).length > 0
+            ? string(abi.encodePacked(_baseUri, tokenNames[tokenId], ".json"))
+            : "";
+    }
+
+    function increment() internal {
+        supply = supply.add(1);
     }
 
     // function transferFrom(address _from, address _to, uint256 _tokenId) public {
