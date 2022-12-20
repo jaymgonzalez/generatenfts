@@ -6,15 +6,8 @@ import ImageGrid from '../components/ImageGrid'
 import ImageMetadata from '../components/ImageMetadata'
 import ImageTable from '../components/ImageTable'
 import AuthenticatedPage from '../components/Authenticated'
+import RunContract from '../components/RunContract'
 
-// import AuthenticatedPage from '../components/Authenticated'
-
-// import {
-//   useConnectModal,
-//   useAccountModal,
-//   useChainModal,
-// } from '@rainbow-me/rainbowkit'
-// import NetworkButton from '../components/NetworkButton'
 type Attribute = {
   attribute: string
   value: string
@@ -40,11 +33,6 @@ export default function About() {
     setActive((current) => (current < 3 ? current + 1 : current))
   const prevStep = () =>
     setActive((current) => (current > 0 ? current - 1 : current))
-  // const { address } = useAccount()
-
-  // const { chain } = useNetwork()
-  // const { chains, error, isLoading, pendingChainId, switchNetwork } =
-  //   useSwitchNetwork()
 
   return (
     <>
@@ -86,14 +74,18 @@ export default function About() {
             />
           </Stepper.Step>
           <Stepper.Completed>
-            Completed, click back button to get to previous step
+            <>
+              <RunContract />
+            </>
           </Stepper.Completed>
         </Stepper>
 
         <Group position="center" mt="xl">
-          <Button variant="default" onClick={prevStep}>
-            Back
-          </Button>
+          {active < 3 && (
+            <Button variant="default" onClick={prevStep}>
+              Back
+            </Button>
+          )}
           {active !== 3 && (
             <Button onClick={nextStep}>
               {active === 2 ? 'Generate NFTs' : 'Next step'}
