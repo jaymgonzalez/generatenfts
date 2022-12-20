@@ -11,7 +11,7 @@ error AINFTs__TransactionNotSent();
 error AINFTs__MintingIsPaused();
 error AINFTs__NftToMintLowerThanOne();
 
-contract GNFTs is ERC721URIStorage, Ownable {
+contract GNFT is ERC721URIStorage, Ownable {
     using Strings for uint256;
     using SafeMath for uint256;
 
