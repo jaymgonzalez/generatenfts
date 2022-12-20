@@ -92,4 +92,8 @@ contract GNFT is ERC721URIStorage, Ownable {
             revert AINFTs__TransactionNotSent();
         }
     }
+
+    function getFee() public view returns (uint256) {
+        return fee;
+    }
 }

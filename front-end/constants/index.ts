@@ -1,4 +1,4 @@
-export const contractAddress = '0x8c8e19eFC5EB7b635565c64beAAc8BBABFe65C0d'
+export const contractAddress = '0x6EB3Ab771dc56f516e3cD67a7D7Ae327d9195c7F'
 
 export const contractAbi = [
   {
@@ -8,39 +8,7 @@ export const contractAbi = [
   },
   {
     inputs: [],
-    name: 'AINFT__NoTokensAdded',
-    type: 'error',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'currentSupply',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'maxSupply',
-        type: 'uint256',
-      },
-    ],
-    name: 'AINFTs__MaxTokenSupplyReached',
-    type: 'error',
-  },
-  {
-    inputs: [],
     name: 'AINFTs__MintingIsPaused',
-    type: 'error',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'maxMintAmount',
-        type: 'uint256',
-      },
-    ],
-    name: 'AINFTs__MintingMoreThanAllowed',
     type: 'error',
   },
   {
@@ -150,58 +118,6 @@ export const contractAbi = [
   {
     inputs: [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    name: 'AllowedCrypto',
-    outputs: [
-      {
-        internalType: 'contract IERC20',
-        name: 'paytoken',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'costvalue',
-        type: 'uint256',
-      },
-      {
-        internalType: 'string',
-        name: 'name',
-        type: 'string',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'contract IERC20',
-        name: '_paytoken',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: '_costvalue',
-        type: 'uint256',
-      },
-      {
-        internalType: 'string',
-        name: '_name',
-        type: 'string',
-      },
-    ],
-    name: 'addCurrency',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
         internalType: 'address',
         name: 'to',
         type: 'address',
@@ -226,45 +142,6 @@ export const contractAbi = [
       },
     ],
     name: 'balanceOf',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'baseExtension',
-    outputs: [
-      {
-        internalType: 'string',
-        name: '',
-        type: 'string',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'baseURI',
-    outputs: [
-      {
-        internalType: 'string',
-        name: '',
-        type: 'string',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'currenciesAdded',
     outputs: [
       {
         internalType: 'uint256',
@@ -308,29 +185,6 @@ export const contractAbi = [
     type: 'function',
   },
   {
-    inputs: [],
-    name: 'getApprovedTokenInfo',
-    outputs: [
-      {
-        internalType: 'contract IERC20[]',
-        name: '',
-        type: 'address[]',
-      },
-      {
-        internalType: 'uint256[]',
-        name: '',
-        type: 'uint256[]',
-      },
-      {
-        internalType: 'string[]',
-        name: '',
-        type: 'string[]',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
     inputs: [
       {
         internalType: 'address',
@@ -355,32 +209,6 @@ export const contractAbi = [
     type: 'function',
   },
   {
-    inputs: [],
-    name: 'maxMintAmount',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'maxSupply',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
     inputs: [
       {
         internalType: 'address',
@@ -388,14 +216,19 @@ export const contractAbi = [
         type: 'address',
       },
       {
-        internalType: 'uint256',
-        name: '_mintAmount',
-        type: 'uint256',
+        internalType: 'string',
+        name: '_baseUri',
+        type: 'string',
       },
       {
-        internalType: 'uint256',
-        name: '_pid',
-        type: 'uint256',
+        internalType: 'string[]',
+        name: '_fileNames',
+        type: 'string[]',
+      },
+      {
+        internalType: 'string[]',
+        name: '_fileIds',
+        type: 'string[]',
       },
     ],
     name: 'mint',
@@ -553,32 +386,6 @@ export const contractAbi = [
   {
     inputs: [
       {
-        internalType: 'string',
-        name: '_newBaseExtension',
-        type: 'string',
-      },
-    ],
-    name: 'setBaseExtension',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'string',
-        name: '_newBaseURI',
-        type: 'string',
-      },
-    ],
-    name: 'setBaseURI',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
         internalType: 'uint256',
         name: '_fee',
         type: 'uint256',
@@ -590,16 +397,16 @@ export const contractAbi = [
     type: 'function',
   },
   {
-    inputs: [
+    inputs: [],
+    name: 'supply',
+    outputs: [
       {
         internalType: 'uint256',
-        name: '_newmaxMintAmount',
+        name: '',
         type: 'uint256',
       },
     ],
-    name: 'setmaxMintAmount',
-    outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: 'view',
     type: 'function',
   },
   {
@@ -638,16 +445,16 @@ export const contractAbi = [
     inputs: [
       {
         internalType: 'uint256',
-        name: 'index',
+        name: '',
         type: 'uint256',
       },
     ],
-    name: 'tokenByIndex',
+    name: 'tokenIds',
     outputs: [
       {
-        internalType: 'uint256',
+        internalType: 'string',
         name: '',
-        type: 'uint256',
+        type: 'string',
       },
     ],
     stateMutability: 'view',
@@ -656,22 +463,17 @@ export const contractAbi = [
   {
     inputs: [
       {
-        internalType: 'address',
-        name: 'owner',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'index',
-        type: 'uint256',
-      },
-    ],
-    name: 'tokenOfOwnerByIndex',
-    outputs: [
-      {
         internalType: 'uint256',
         name: '',
         type: 'uint256',
+      },
+    ],
+    name: 'tokenNames',
+    outputs: [
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string',
       },
     ],
     stateMutability: 'view',
@@ -691,19 +493,6 @@ export const contractAbi = [
         internalType: 'string',
         name: '',
         type: 'string',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'totalSupply',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
       },
     ],
     stateMutability: 'view',
@@ -746,42 +535,10 @@ export const contractAbi = [
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '_owner',
-        type: 'address',
-      },
-    ],
-    name: 'walletOfOwner',
-    outputs: [
-      {
-        internalType: 'uint256[]',
-        name: '',
-        type: 'uint256[]',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
     inputs: [],
     name: 'withdraw',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_pid',
-        type: 'uint256',
-      },
-    ],
-    name: 'withdrawToken',
-    outputs: [],
-    stateMutability: 'payable',
     type: 'function',
   },
 ]

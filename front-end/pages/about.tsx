@@ -75,7 +75,7 @@ export default function About() {
           </Stepper.Step>
           <Stepper.Completed>
             <>
-              <RunContract />
+              <RunContract address={address} metadata={metadata} />
             </>
           </Stepper.Completed>
         </Stepper>

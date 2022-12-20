@@ -1,5 +1,9 @@
 import { contractAddress, contractAbi } from '../constants'
-import { useContractWrite, usePrepareContractWrite, useAccount } from 'wagmi'
+import {
+  useContractWrite,
+  usePrepareContractWrite,
+  useContractRead,
+} from 'wagmi'
 import { BigNumber } from 'ethers'
 
 // console.log(contract)
@@ -8,14 +12,15 @@ import { BigNumber } from 'ethers'
 //   console.log(await contract.owner())
 // }
 
-export default function RunContract() {
-  const { address } = useAccount()
-  const { config } = usePrepareContractWrite({
+export default function RunContract({ address, metadata }) {
+  console.log(metadata)
+
+  const { config: mintConfig } = usePrepareContractWrite({
     address: contractAddress,
     abi: contractAbi,
     functionName: 'mint',
-    args: [address, 1, 0],
-    // args: [0],
+    args: [address, 1, '0'],
+    // args: [10],
     onSuccess(data) {
       console.log('Success', data)
     },
@@ -23,20 +28,37 @@ export default function RunContract() {
       gasLimit: BigNumber.from('10000000'),
     },
   })
-  console.log(config)
 
-  const { data, isLoading, isSuccess, write } = useContractWrite(config)
+  const {
+    data: mintData,
+    isLoading: mintIsLoading,
+    isSuccess: mintIsSuccess,
+    write: mintWrite,
+  } = useContractWrite(mintConfig)
 
-  console.log(write)
+  // const { data, isError, isLoading, isSuccess } = useContractRead({
+  //   address: contractAddress,
+  //   abi: contractAbi,
+  //   functionName: 'fee',
+  //   // onSuccess(data) {
+  //   //   console.log('Success', data)
+  //   // },
+  // })
+
+  // console.log(mintConfig)
+
+  // console.log(isError)
+
+  // console.log(mintWrite)
 
   return (
     <>
       <div>
-        <button disabled={!write} onClick={() => write?.()}>
+        <button disabled={!mintWrite} onClick={() => mintWrite?.()}>
           Feed
         </button>
-        {isLoading && <div>Check Wallet</div>}
-        {isSuccess && <div>Transaction: {JSON.stringify(data)}</div>}
+        {mintIsLoading && <div>Check Wallet</div>}
+        {mintIsSuccess && <div>Transaction: {JSON.stringify(mintData)}</div>}
       </div>
     </>
   )
