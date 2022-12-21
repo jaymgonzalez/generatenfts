@@ -1,36 +1,13 @@
 import { Center } from '@mantine/core'
-import makeStorageClient from '../web3storage'
-import { pack } from 'ipfs-car/pack'
 import { useAccount, useNetwork } from 'wagmi'
 import { contractAddress } from '../constants'
 import { useEffect, useRef } from 'react'
 import ImageCarousel from './ImageCarousel'
+import { getCid, returnCid } from '../utils/cid'
 
 const date = new Date()
 
-function toImportCandidate(file) {
-  let stream
-  return {
-    path: file.name,
-    get content() {
-      stream = stream || file.stream()
-      return stream
-    },
-  }
-}
-
-async function getCid(_files) {
-  try {
-    const { root } = await pack({
-      input: Array.from(_files).map(toImportCandidate),
-    })
-    return root.toString()
-  } catch (err) {
-    console.log(err)
-  }
-}
-
-async function createFiles(images) {
+async function createImageFiles(images) {
   const files = await Promise.all(
     images.map(async (img) => {
       const response = await fetch(img.url)
@@ -48,22 +25,9 @@ async function createFiles(images) {
   return files
 }
 
-async function storeFiles(files) {
-  const client = makeStorageClient()
-  const cid = await client.put(files)
-  console.log('stored files with cid:', cid)
-  return cid
-}
-
-async function returnCid(images) {
-  const files = await createFiles(images)
-  const cid = await getCid(files)
-  console.log('files cid:', cid)
-  return cid
-}
-
 async function getMetadata(images, metadata) {
-  const cid = await returnCid(images)
+  const files = await createImageFiles(images)
+  const cid = await returnCid(files)
   return images.map((img) => {
     const attributes = img.attributes?.map((attr) => {
       if (attr.attribute.length === 0) return
@@ -75,6 +39,7 @@ async function getMetadata(images, metadata) {
 
     const newMetadata = {
       id: img.id,
+      cid,
       author: img.author,
       name: img.nftName || img.name,
       ...metadata,
