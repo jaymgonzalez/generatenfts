@@ -47,8 +47,8 @@ contract GNFT is ERC721URIStorage, Ownable {
             tokenIds[supply] = _fileIds[i];
             tokenNames[supply] = _fileNames[i];
 
+            _safeMint(_to, supply);
             _setTokenURI(supply, _baseUri);
-            _safeMint(_to, supply + i);
         }
     }
 
@@ -93,7 +93,12 @@ contract GNFT is ERC721URIStorage, Ownable {
         }
     }
 
+    // getters
     function getFee() public view returns (uint256) {
         return fee;
+    }
+
+    function getTokenUri(uint256 tokenId) public view returns (string memory) {
+        return tokenURI(tokenId);
     }
 }
