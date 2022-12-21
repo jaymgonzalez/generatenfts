@@ -5,6 +5,8 @@ import {
   useContractRead,
 } from 'wagmi'
 import { BigNumber } from 'ethers'
+import { returnCid } from '../utils/cid'
+import { useState } from 'react'
 
 // console.log(contract)
 
@@ -12,15 +14,36 @@ import { BigNumber } from 'ethers'
 //   console.log(await contract.owner())
 // }
 
+function createMetadataFiles(metadata) {
+  return metadata.map((data) => {
+    const response = JSON.stringify(data)
+
+    const blob = new Blob([response], { type: 'application/json' })
+
+    return new File([blob], `${data.name}.json`, {
+      type: 'application/json',
+    })
+  })
+}
+
 export default function RunContract({ address, metadata }) {
-  console.log(metadata)
+  const [metadataCid, setMetadataCid] = useState('')
+
+  const files = createMetadataFiles(metadata)
+  const ids = metadata.map((data) => data.id)
+  const names = metadata.map((data) => `${data.name}.json`)
+
+  returnCid(files).then((res) => {
+    setMetadataCid(res)
+  })
+
+  console.log(metadataCid)
 
   const { config: mintConfig } = usePrepareContractWrite({
     address: contractAddress,
     abi: contractAbi,
     functionName: 'mint',
-    args: [address, 1, '0'],
-    // args: [10],
+    args: [address, metadataCid, names, ids],
     onSuccess(data) {
       console.log('Success', data)
     },

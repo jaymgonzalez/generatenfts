@@ -104,7 +104,7 @@ export default function ImageTable({
               <th>Image</th>
               <th>Name</th>
               <th>Author/Owner</th>
-              <th>attributes</th>
+              <th>Attributes</th>
               <th />
             </tr>
           </thead>

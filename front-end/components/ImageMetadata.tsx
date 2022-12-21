@@ -3,7 +3,7 @@ import { useAccount, useNetwork } from 'wagmi'
 import { contractAddress } from '../constants'
 import { useEffect, useRef } from 'react'
 import ImageCarousel from './ImageCarousel'
-import { getCid, returnCid } from '../utils/cid'
+import { returnCid } from '../utils/cid'
 
 const date = new Date()
 
@@ -40,15 +40,15 @@ async function getMetadata(images, metadata) {
     const newMetadata = {
       id: img.id,
       cid,
-      author: img.author,
       name: img.nftName || img.name,
       ...metadata,
-      asset_url: `ipfs://${cid}/${img.nftName?.replace(/ /g, '_')}.${
-        img.extension
-      }`,
+      asset_url: img.nftName
+        ? `ipfs://${cid}/${img.nftName?.replace(/ /g, '_')}.${img.extension}`
+        : 'PLEASE ADD A NAME TO YOUR NFT',
       timestamp: metadata.timestamp || Math.floor(date.getTime() / 1000),
     }
 
+    if (img.author) newMetadata.author = img.author
     if (attributes && attributes[0]) newMetadata.attributes = attributes
     if (img.description) newMetadata.description = img.description
     return newMetadata
