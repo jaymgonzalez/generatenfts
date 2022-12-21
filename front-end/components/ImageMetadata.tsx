@@ -43,7 +43,7 @@ async function getMetadata(images, metadata) {
       name: img.nftName || img.name,
       ...metadata,
       asset_url: img.nftName
-        ? `ipfs://${cid}/${img.nftName?.replace(/ /g, '_')}.${img.extension}`
+        ? `ipfs://${cid}/${img.nftName.replace(/ /g, '_')}.${img.extension}`
         : 'PLEASE ADD A NAME TO YOUR NFT',
       timestamp: metadata.timestamp || Math.floor(date.getTime() / 1000),
     }

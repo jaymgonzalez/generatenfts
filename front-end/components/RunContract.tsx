@@ -39,7 +39,7 @@ export default function RunContract({ address, metadata }) {
     setMetadataCid(res)
   })
 
-  console.log(metadataCid)
+  // console.log(metadataCid)
 
   const { config: mintConfig } = usePrepareContractWrite({
     address: contractAddress,

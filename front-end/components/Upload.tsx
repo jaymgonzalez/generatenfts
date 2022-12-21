@@ -51,7 +51,7 @@ export default function Upload({
       images.map((image) => {
         const { name } = image
         const url = URL.createObjectURL(image)
-        const extension = name.split('.')[1]
+        const extension = name.split('.')[name.split('.').length - 1]
         const id = genId()
         imageData.push({ name, extension, url, id })
         return url
