@@ -1,4 +1,4 @@
-const contractAddress = '0x6EB3Ab771dc56f516e3cD67a7D7Ae327d9195c7F'
+const contractAddress = '0xC9A3DCbA132bA3c3b2cBB45b08b9d22Db7F95F3e'
 
 const linkAbi = [
   {

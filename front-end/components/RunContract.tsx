@@ -4,7 +4,7 @@ import {
   usePrepareContractWrite,
   useContractRead,
 } from 'wagmi'
-import { BigNumber } from 'ethers'
+import { BigNumber, utils } from 'ethers'
 import { returnCid } from '../utils/cid'
 import { useState } from 'react'
 
@@ -33,6 +33,8 @@ export default function RunContract({ address, metadata }) {
   const ids = metadata.map((data) => data.id)
   const names = metadata.map((data) => `${data.name}.json`)
 
+  // console.log(ids, names, metadataCid)
+
   returnCid(files).then((res) => {
     setMetadataCid(res)
   })
@@ -44,11 +46,12 @@ export default function RunContract({ address, metadata }) {
     abi: contractAbi,
     functionName: 'mint',
     args: [address, metadataCid, names, ids],
-    onSuccess(data) {
-      console.log('Success', data)
-    },
+    // onSuccess(data) {
+    //   console.log('Success', data)
+    // },
     overrides: {
       gasLimit: BigNumber.from('10000000'),
+      value: utils.parseEther('10'),
     },
   })
 
@@ -62,11 +65,14 @@ export default function RunContract({ address, metadata }) {
   // const { data, isError, isLoading, isSuccess } = useContractRead({
   //   address: contractAddress,
   //   abi: contractAbi,
-  //   functionName: 'fee',
-  //   // onSuccess(data) {
-  //   //   console.log('Success', data)
-  //   // },
+  //   functionName: 'getTokenUri',
+  //   // args: [1],
+  //   onSuccess(data) {
+  //     console.log('Success', data)
+  //   },
   // })
+
+  // console.log(isLoading)
 
   // console.log(mintConfig)
 

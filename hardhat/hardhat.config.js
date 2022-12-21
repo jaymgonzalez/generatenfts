@@ -21,6 +21,7 @@ module.exports = {
     },
     localhost: {
       chainId: 31337,
+      accounts: [PRIVATE_KEY2],
     },
     goerli: {
       url: QUICKNODE_HTTP_URL,

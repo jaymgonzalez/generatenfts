@@ -2,7 +2,8 @@ import contract from '../../hardhat/artifacts/contracts/GNFT.sol/GNFT.json'
 
 // export const contractAddress = '0xc9174dafe351C539678f56c9A702E3c30309EEB2'
 
-export const contractAddress = '0x5fbdb2315678afecb367f032d93f642f64180aa3'
+// TESTING CONTRACT
+export const contractAddress = '0xC9A3DCbA132bA3c3b2cBB45b08b9d22Db7F95F3e'
 
 export const contractAbi = contract.abi
 
