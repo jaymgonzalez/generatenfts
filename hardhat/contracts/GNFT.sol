@@ -25,20 +25,12 @@ contract GNFT is ERC721URIStorage, Ownable {
     uint256 public fee = 10;
     string private baseURI;
 
-    mapping(uint256 => string) public tokenIds;
-    mapping(uint256 => string) public tokenNames;
-
     constructor() ERC721("GenerateNFT.com Collection", "GNFT") {}
-
-    // function _baseURI() internal view virtual override returns (string memory) {
-    //     return "ipfs://" + _baseURI;
-    // }
 
     function mint(
         address _to,
         string memory _baseUri,
-        string[] memory _fileNames,
-        string[] memory _fileIds
+        string[] memory _fileNames
     ) public payable {
         if (paused) {
             revert AINFTs__MintingIsPaused();
@@ -52,71 +44,20 @@ contract GNFT is ERC721URIStorage, Ownable {
                 "Not enough balance to complete transaction."
             );
         }
-        console.log("filename lenght %s", _fileNames.length);
-        // console.log("supply %s", supply);
 
         for (uint256 i = 1; i <= _fileNames.length; i++) {
-            // console.log("Minting NFT, tokenID %s", supply);
-            // tokenIds[supply] = _fileIds[i];
-            // console.log("tokenIds %s", tokenIds[supply]);
-            // tokenNames[_tokenId] = _fileNames[i];
-            // console.log("tokenNames %s", tokenNames[_tokenId]);
-            console.log("tokenID %s", _tokenId);
             _tokenId = _tokenIdCounter.current();
             _tokenIdCounter.increment();
             console.log("tokenID %s", _tokenId);
 
-            // string memory stringTokenId = string(_tokenId);
-
             string memory uri = string(
-                abi.encodePacked(
-                    "ipfs://",
-                    _baseUri,
-                    "/",
-                    _tokenId.toString(),
-                    ".json"
-                )
+                abi.encodePacked("ipfs://", _baseUri, "/", _fileNames[i - 1])
             );
 
             _safeMint(_to, _tokenId);
             _setTokenURI(_tokenId, uri);
         }
-        // console.log("Minting NFT, tokenID %s", supply);
     }
-
-    // function tokenURI(
-    //     uint256 tokenId
-    // ) public view virtual override returns (string memory) {
-    //     require(
-    //         _exists(tokenId),
-    //         "ERC721Metadata: URI query for nonexistent token"
-    //     );
-
-    //     return
-    //         bytes(baseURI).length > 0
-    //             ? string(abi.encodePacked(baseURI, tokenId.toString()))
-    //             : "";
-    // }
-
-    // function _setTokenURI(
-    //     uint256 tokenId,
-    //     string memory _baseUri
-    // ) internal view override {
-    //     require(
-    //         _exists(tokenId),
-    //         "ERC721Metadata: URI query for nonexistent token"
-    //     );
-
-    //     bytes(_baseUri).length > 0
-    //         ? string(abi.encodePacked(_baseUri, tokenNames[tokenId], ".json"))
-    //         : "";
-    // }
-
-    // function tokenURI(
-    //     uint256 tokenId
-    // ) public view override(ERC721, ERC721URIStorage) returns (string memory) {
-    //     return super.tokenURI(tokenId);
-    // }
 
     // only owner
     function setFee(uint256 _fee) public onlyOwner {
@@ -135,13 +76,4 @@ contract GNFT is ERC721URIStorage, Ownable {
             revert AINFTs__TransactionNotSent();
         }
     }
-
-    // getters
-    function getFee() public view returns (uint256) {
-        return fee;
-    }
-
-    // function getTokenUri(uint256 tokenId) public view returns (string memory) {
-    //     return tokenURI(tokenId);
-    // }
 }

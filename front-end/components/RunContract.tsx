@@ -30,7 +30,6 @@ export default function RunContract({ address, metadata }) {
   const [metadataCid, setMetadataCid] = useState('')
 
   const files = createMetadataFiles(metadata)
-  const ids = metadata.map((data) => data.id)
   const names = metadata.map((data) => `${data.name}.json`)
 
   // console.log(ids, names, metadataCid)
@@ -45,7 +44,7 @@ export default function RunContract({ address, metadata }) {
     address: contractAddress,
     abi: contractAbi,
     functionName: 'mint',
-    args: [address, metadataCid, names, ids],
+    args: [address, metadataCid, names],
     // onSuccess(data) {
     //   console.log('Success', data)
     // },
