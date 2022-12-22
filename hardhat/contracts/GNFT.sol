@@ -76,3 +76,5 @@ contract GNFT is ERC721URIStorage, Ownable {
         }
     }
 }
+
+// TODO: implement a way to check which NFTS you own.

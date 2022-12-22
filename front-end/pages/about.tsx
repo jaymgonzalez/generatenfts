@@ -81,7 +81,6 @@ export default function About() {
               <RunContract
                 address={address}
                 metadata={metadata}
-                setMetadata={setMetadata}
                 images={images}
               />
             </>
@@ -95,11 +94,7 @@ export default function About() {
             </Button>
           )}
           {active !== 3 && (
-            <Button
-              onClick={() => {
-                nextStep()
-              }}
-            >
+            <Button onClick={nextStep}>
               {active === 2 ? 'Generate NFTs' : 'Next step'}
             </Button>
           )}

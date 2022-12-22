@@ -8,12 +8,7 @@ import { BigNumber, utils } from 'ethers'
 import { returnCid, storeFiles } from '../utils/cid'
 import { useEffect, useState } from 'react'
 import { Button, Center, Text } from '@mantine/core'
-
-// console.log(contract)
-
-// async function owner(contract) {
-//   console.log(await contract.owner())
-// }
+import { useEffectOnce } from '../hooks/useEffectOnce'
 
 function createMetadataFiles(metadata) {
   return metadata.map((data) => {
@@ -33,12 +28,7 @@ function mint(write, isSuccess, images, metadata) {
   // console.log(metadata)
 }
 
-export default function RunContract({
-  address,
-  metadata,
-  setMetadata,
-  images,
-}) {
+export default function RunContract({ address, metadata, images }) {
   const [metadataCid, setMetadataCid] = useState('')
 
   const files = createMetadataFiles(metadata)
@@ -59,90 +49,49 @@ export default function RunContract({
     abi: contractAbi,
     functionName: 'mint',
     args: [address, metadataCid, names],
-    // onSuccess(data) {
-    //   console.log('Success', data)
-    // },
     overrides: {
       gasLimit: BigNumber.from('10000000'),
       // value: utils.parseEther(!Number.isNaN(value) ? '10' : value.toString()),
-      value: utils.parseEther('10'),
+      // value: utils.parseEther('10'),
     },
   })
-
-  // const { config: setFeeConfig } = usePrepareContractWrite({
-  //   address: contractAddress,
-  //   abi: contractAbi,
-  //   functionName: 'setFee',
-  //   args: [0],
-  //   // onSuccess(data) {
-  //   //   console.log('Success', data)
-  //   // },
-  //   // overrides: {
-  //   //   gasLimit: BigNumber.from('10000000'),
-  //   //   value: utils.parseEther('10'),
-  //   // },
-  // })
 
   const {
     data: mintData,
     isLoading: mintIsLoading,
     isSuccess: mintIsSuccess,
+    isIdle: mintIsIdle,
     write: mintWrite,
   } = useContractWrite(mintConfig)
 
-  // const { data } = useContractRead({
-  //   address: contractAddress,
-  //   abi: contractAbi,
-  //   functionName: 'tokenURI',
-  //   // watch: true,
-  //   args: [2],
-  //   onSuccess(data) {
-  //     console.log('Success', data)
-  //   },
-  // })
+  const { config: withdrawConfig } = usePrepareContractWrite({
+    address: contractAddress,
+    abi: contractAbi,
+    functionName: 'withdraw',
+    // args: [address, metadataCid, names],
+    overrides: {
+      gasLimit: BigNumber.from('10000000'),
+      // value: utils.parseEther(!Number.isNaN(value) ? '10' : value.toString()),
+      // value: utils.parseEther('10'),
+    },
+  })
 
-  // const {
-  //   data: tokenId,
-  //   isError,
-  //   isLoading,
-  //   isSuccess,
-  // } = useContractRead({
-  //   address: contractAddress,
-  //   abi: contractAbi,
-  //   functionName: '_tokenId',
-  //   // watch: true,
-  //   // args: [0],
-  //   onSuccess(data) {
-  //     console.log('Success', data)
-  //   },
-  // })
-
-  // console.log(tokenId.toString())
-
-  // console.log(isLoading)
-
-  // console.log(mintConfig)
-
-  // console.log(isError)
-
-  // console.log(mintWrite)
-
-  // TODO:
-  // PUT EXECUTION OF FILES UPLOADS IN RETURN
+  const { write: withdrawWrite } = useContractWrite(withdrawConfig)
 
   useEffect(() => {
-    if (mintIsSuccess)
-      return () => {
-        storeFiles(metadata)
-        storeFiles(images)
-      }
+    console.log(mintIsSuccess)
+
+    if (mintIsSuccess) {
+      storeFiles(files)
+      storeFiles(images)
+    }
   }, [mintIsSuccess])
 
   useEffect(() => {
     returnCid(files).then((res) => {
       setMetadataCid(res)
     })
-  }, [images, metadata])
+  }, [metadata])
 
   return (
     <>
@@ -151,6 +100,9 @@ export default function RunContract({
           <Text>Generating {}</Text>
           <Button disabled={!mintWrite} onClick={() => mintWrite?.()}>
             MINT
+          </Button>
+          <Button disabled={!withdrawWrite} onClick={() => withdrawWrite?.()}>
+            Withdraw
           </Button>
         </Center>
         {mintIsLoading && <div>Check Wallet</div>}
