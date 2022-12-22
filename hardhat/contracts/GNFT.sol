@@ -20,7 +20,7 @@ contract GNFT is ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
 
-    uint256 public _tokenId = 1;
+    uint256 public _tokenId;
     bool public paused = false;
     uint256 public fee = 10;
     string private baseURI;
@@ -48,7 +48,6 @@ contract GNFT is ERC721URIStorage, Ownable {
         for (uint256 i = 1; i <= _fileNames.length; i++) {
             _tokenId = _tokenIdCounter.current();
             _tokenIdCounter.increment();
-            console.log("tokenID %s", _tokenId);
 
             string memory uri = string(
                 abi.encodePacked("ipfs://", _baseUri, "/", _fileNames[i - 1])
@@ -75,5 +74,16 @@ contract GNFT is ERC721URIStorage, Ownable {
         if (!sent) {
             revert AINFTs__TransactionNotSent();
         }
+    }
+
+    // view / pure functions
+    function getTokenUri(
+        uint256 tokenId
+    ) external view returns (string memory) {
+        return tokenURI(tokenId);
+    }
+
+    function getTokenId() external view returns (uint256) {
+        return _tokenId;
     }
 }

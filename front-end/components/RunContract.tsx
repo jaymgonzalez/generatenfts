@@ -5,7 +5,7 @@ import {
   useContractRead,
 } from 'wagmi'
 import { BigNumber, utils } from 'ethers'
-import { returnCid } from '../utils/cid'
+import { returnCid, storeFiles } from '../utils/cid'
 import { useState } from 'react'
 
 // console.log(contract)
@@ -32,7 +32,7 @@ export default function RunContract({ address, metadata }) {
   const files = createMetadataFiles(metadata)
   const names = metadata.map((data) => `${data.name}.json`)
 
-  // console.log(ids, names, metadataCid)
+  // storeFiles(files)
 
   returnCid(files).then((res) => {
     setMetadataCid(res)
@@ -50,9 +50,23 @@ export default function RunContract({ address, metadata }) {
     // },
     overrides: {
       gasLimit: BigNumber.from('10000000'),
-      value: utils.parseEther('10'),
+      // value: utils.parseEther('10'),
     },
   })
+
+  // const { config: setFeeConfig } = usePrepareContractWrite({
+  //   address: contractAddress,
+  //   abi: contractAbi,
+  //   functionName: 'setFee',
+  //   args: [0],
+  //   // onSuccess(data) {
+  //   //   console.log('Success', data)
+  //   // },
+  //   // overrides: {
+  //   //   gasLimit: BigNumber.from('10000000'),
+  //   //   value: utils.parseEther('10'),
+  //   // },
+  // })
 
   const {
     data: mintData,
@@ -61,15 +75,34 @@ export default function RunContract({ address, metadata }) {
     write: mintWrite,
   } = useContractWrite(mintConfig)
 
-  // const { data, isError, isLoading, isSuccess } = useContractRead({
+  // const { data } = useContractRead({
   //   address: contractAddress,
   //   abi: contractAbi,
   //   functionName: 'getTokenUri',
-  //   // args: [1],
+  //   // watch: true,
+  //   args: [2],
   //   onSuccess(data) {
   //     console.log('Success', data)
   //   },
   // })
+
+  // const {
+  //   data: tokenId,
+  //   isError,
+  //   isLoading,
+  //   isSuccess,
+  // } = useContractRead({
+  //   address: contractAddress,
+  //   abi: contractAbi,
+  //   functionName: '_tokenId',
+  //   // watch: true,
+  //   // args: [0],
+  //   onSuccess(data) {
+  //     console.log('Success', data)
+  //   },
+  // })
+
+  // console.log(tokenId.toString())
 
   // console.log(isLoading)
 
