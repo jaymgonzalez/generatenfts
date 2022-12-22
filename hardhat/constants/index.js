@@ -1,7 +1,8 @@
 // LAST CONTRACT IN MUMBAI
-// const contractAddress = '0x2F42E4b4b6F458FE5CeE42e89c753D3174CAf1Da'
+const contractAddress = '0x2F42E4b4b6F458FE5CeE42e89c753D3174CAf1Da'
 
-const contractAddress = '0xff825139321bd8fB8b720BfFC5b9EfDB7d6e9AB3'
+// TESTING CONTRACT
+// const contractAddress = '0xbD8Ca722093d811bF314dDAB8438711a4caB2e73'
 
 const linkAbi = [
   {

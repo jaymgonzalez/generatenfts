@@ -27,6 +27,7 @@ export default function About() {
   const [imageData, setImageData] = useState<ImageData[]>([])
   const [openedMap, setOpenedMap] = useState({})
   const [metadata, setMetadata] = useState([])
+  const [images, setImages] = useState([])
   const { address } = useAccount()
 
   const nextStep = () =>
@@ -71,11 +72,18 @@ export default function About() {
               setOpenedMap={setOpenedMap}
               metadata={metadata}
               setMetadata={setMetadata}
+              images={images}
+              setImages={setImages}
             />
           </Stepper.Step>
           <Stepper.Completed>
             <>
-              <RunContract address={address} metadata={metadata} />
+              <RunContract
+                address={address}
+                metadata={metadata}
+                setMetadata={setMetadata}
+                images={images}
+              />
             </>
           </Stepper.Completed>
         </Stepper>

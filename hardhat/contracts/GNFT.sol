@@ -9,10 +9,10 @@ import "hardhat/console.sol";
 
 pragma solidity ^0.8.0;
 
-error AINFTs__NotEnoughFunds();
-error AINFTs__TransactionNotSent();
-error AINFTs__MintingIsPaused();
-error AINFTs__NftToMintLowerThanOne();
+error GNFT__NotEnoughFunds(uint256 neededFunds);
+error GNFT__TransactionNotSent();
+error GNFT__MintingIsPaused();
+error GNFT__NftToMintLowerThanOne();
 
 contract GNFT is ERC721URIStorage, Ownable {
     using Strings for uint256;
@@ -22,8 +22,7 @@ contract GNFT is ERC721URIStorage, Ownable {
 
     uint256 public _tokenId;
     bool public paused = false;
-    uint256 public fee = 10;
-    string private baseURI;
+    uint256 public fee = 10 ether;
 
     constructor() ERC721("GenerateNFT.com Collection", "GNFT") {}
 
@@ -33,14 +32,22 @@ contract GNFT is ERC721URIStorage, Ownable {
         string[] memory _fileNames
     ) public payable {
         if (paused) {
-            revert AINFTs__MintingIsPaused();
+            revert GNFT__MintingIsPaused();
         }
         if (_fileNames.length < 1) {
-            revert AINFTs__NftToMintLowerThanOne();
+            revert GNFT__NftToMintLowerThanOne();
         }
         if (msg.sender != owner()) {
+            uint256 totalFee = SafeMath.mul(fee, _fileNames.length);
+
+            if (totalFee > msg.value) {
+                revert GNFT__NotEnoughFunds(totalFee);
+            }
+
+            console.log("totalFee %s", totalFee);
+
             require(
-                msg.value >= fee * _fileNames.length,
+                msg.value >= totalFee,
                 "Not enough balance to complete transaction."
             );
         }
@@ -72,18 +79,7 @@ contract GNFT is ERC721URIStorage, Ownable {
         uint256 amount = address(this).balance;
         (bool sent, ) = _owner.call{value: amount}("");
         if (!sent) {
-            revert AINFTs__TransactionNotSent();
+            revert GNFT__TransactionNotSent();
         }
-    }
-
-    // view / pure functions
-    function getTokenUri(
-        uint256 tokenId
-    ) external view returns (string memory) {
-        return tokenURI(tokenId);
-    }
-
-    function getTokenId() external view returns (uint256) {
-        return _tokenId;
     }
 }

@@ -7,6 +7,7 @@ import {
 import { BigNumber, utils } from 'ethers'
 import { returnCid, storeFiles } from '../utils/cid'
 import { useState } from 'react'
+import { Button, Center, Text } from '@mantine/core'
 
 // console.log(contract)
 
@@ -26,7 +27,19 @@ function createMetadataFiles(metadata) {
   })
 }
 
-export default function RunContract({ address, metadata }) {
+function mint(write, isSuccess, images, metadata) {
+  // write?.()
+  isSuccess &&
+    console.log(images, metadata)
+    // console.log(metadata)
+}
+
+export default function RunContract({
+  address,
+  metadata,
+  setMetadata,
+  images,
+}) {
   const [metadataCid, setMetadataCid] = useState('')
 
   const files = createMetadataFiles(metadata)
@@ -38,7 +51,13 @@ export default function RunContract({ address, metadata }) {
     setMetadataCid(res)
   })
 
-  // console.log(metadataCid)
+  const { data: fee } = useContractRead({
+    address: contractAddress,
+    abi: contractAbi,
+    functionName: 'fee',
+  })
+
+  const value = parseInt(fee?.toString()) * names.length
 
   const { config: mintConfig } = usePrepareContractWrite({
     address: contractAddress,
@@ -50,7 +69,8 @@ export default function RunContract({ address, metadata }) {
     // },
     overrides: {
       gasLimit: BigNumber.from('10000000'),
-      // value: utils.parseEther('10'),
+      // value: utils.parseEther(!Number.isNaN(value) ? '10' : value.toString()),
+      value: utils.parseEther('10'),
     },
   })
 
@@ -78,7 +98,7 @@ export default function RunContract({ address, metadata }) {
   // const { data } = useContractRead({
   //   address: contractAddress,
   //   abi: contractAbi,
-  //   functionName: 'getTokenUri',
+  //   functionName: 'tokenURI',
   //   // watch: true,
   //   args: [2],
   //   onSuccess(data) {
@@ -115,9 +135,15 @@ export default function RunContract({ address, metadata }) {
   return (
     <>
       <div>
-        <button disabled={!mintWrite} onClick={() => mintWrite?.()}>
-          Feed
-        </button>
+        <Center>
+          <Text>Generating {}</Text>
+          <Button
+            disabled={!mintWrite}
+            onClick={() => mint(mintWrite, mintIsSuccess, images, metadata)}
+          >
+            MINT
+          </Button>
+        </Center>
         {mintIsLoading && <div>Check Wallet</div>}
         {mintIsSuccess && <div>Transaction: {JSON.stringify(mintData)}</div>}
       </div>

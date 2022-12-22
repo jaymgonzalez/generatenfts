@@ -63,6 +63,8 @@ export default function ImageMetadata({
   setOpenedMap,
   metadata,
   setMetadata,
+  images,
+  setImages,
 }) {
   const { address } = useAccount()
   const { chain } = useNetwork()
@@ -75,6 +77,10 @@ export default function ImageMetadata({
     timestamp: Math.floor(date.getTime() / 1000),
     network: chain.name,
   }
+
+  useEffect(() => {
+    Promise.resolve(createImageFiles(imageData)).then((res) => setImages(res))
+  }, [images])
 
   useEffect(() => {
     refMetadata.current = metadata
