@@ -6,7 +6,7 @@ import {
 } from 'wagmi'
 import { BigNumber, utils } from 'ethers'
 import { returnCid, storeFiles } from '../utils/cid'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Center, Text } from '@mantine/core'
 
 // console.log(contract)
@@ -29,9 +29,8 @@ function createMetadataFiles(metadata) {
 
 function mint(write, isSuccess, images, metadata) {
   // write?.()
-  isSuccess &&
-    console.log(images, metadata)
-    // console.log(metadata)
+  isSuccess && console.log(images, metadata)
+  // console.log(metadata)
 }
 
 export default function RunContract({
@@ -46,10 +45,6 @@ export default function RunContract({
   const names = metadata.map((data) => `${data.name}.json`)
 
   // storeFiles(files)
-
-  returnCid(files).then((res) => {
-    setMetadataCid(res)
-  })
 
   const { data: fee } = useContractRead({
     address: contractAddress,
@@ -132,15 +127,29 @@ export default function RunContract({
 
   // console.log(mintWrite)
 
+  // TODO:
+  // PUT EXECUTION OF FILES UPLOADS IN RETURN
+
+  useEffect(() => {
+    if (mintIsSuccess)
+      return () => {
+        storeFiles(metadata)
+        storeFiles(images)
+      }
+  }, [mintIsSuccess])
+
+  useEffect(() => {
+    returnCid(files).then((res) => {
+      setMetadataCid(res)
+    })
+  }, [images, metadata])
+
   return (
     <>
       <div>
         <Center>
           <Text>Generating {}</Text>
-          <Button
-            disabled={!mintWrite}
-            onClick={() => mint(mintWrite, mintIsSuccess, images, metadata)}
-          >
+          <Button disabled={!mintWrite} onClick={() => mintWrite?.()}>
             MINT
           </Button>
         </Center>

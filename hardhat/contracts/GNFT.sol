@@ -43,13 +43,6 @@ contract GNFT is ERC721URIStorage, Ownable {
             if (totalFee > msg.value) {
                 revert GNFT__NotEnoughFunds(totalFee);
             }
-
-            console.log("totalFee %s", totalFee);
-
-            require(
-                msg.value >= totalFee,
-                "Not enough balance to complete transaction."
-            );
         }
 
         for (uint256 i = 1; i <= _fileNames.length; i++) {

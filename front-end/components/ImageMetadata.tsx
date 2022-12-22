@@ -1,6 +1,6 @@
 import { Center } from '@mantine/core'
-import { useAccount, useNetwork } from 'wagmi'
-import { contractAddress } from '../constants'
+import { useAccount, useContractRead, useNetwork } from 'wagmi'
+import { contractAddress, contractAbi } from '../constants'
 import { useEffect, useRef } from 'react'
 import ImageCarousel from './ImageCarousel'
 import { returnCid } from '../utils/cid'
@@ -25,10 +25,10 @@ async function createImageFiles(images) {
   return files
 }
 
-async function getMetadata(images, metadata) {
+async function getMetadata(images, metadata, tokenId) {
   const files = await createImageFiles(images)
   const cid = await returnCid(files)
-  return images.map((img) => {
+  return images.map((img, i) => {
     const attributes = img.attributes?.map((attr) => {
       if (attr.attribute.length === 0) return
       return {
@@ -38,13 +38,18 @@ async function getMetadata(images, metadata) {
     })
 
     const newMetadata = {
+      title: tokenId
+        ? `Generate NFT Collection #${parseInt(tokenId) + 1 + i}`
+        : 'Generate NFT Collection', // choose by user (Name + Creator)
       id: img.id,
       cid,
       name: img.nftName || img.name,
       ...metadata,
       asset_url: img.nftName
         ? `ipfs://${cid}/${img.nftName.replace(/ /g, '_')}.${img.extension}`
-        : 'PLEASE ADD A NAME TO YOUR NFT',
+        : `ipfs://${cid}/${img.name.substring(0, 14).replace(/ /g, '_')}.${
+            img.extension
+          }`,
       timestamp: metadata.timestamp || Math.floor(date.getTime() / 1000),
     }
 
@@ -69,27 +74,43 @@ export default function ImageMetadata({
   const { address } = useAccount()
   const { chain } = useNetwork()
   const refMetadata = useRef(metadata)
+  const refImages = useRef(images)
 
   const baseMetadata = {
-    title: 'Generate NFT ', // choose by user (Name + Creator)
     contract: contractAddress, // contract that minted it
     owner: address, // wallet address
     timestamp: Math.floor(date.getTime() / 1000),
     network: chain.name,
   }
 
+  const {
+    data: tokenId,
+    isError,
+    isLoading,
+    isSuccess: tokenIdSuccess,
+  } = useContractRead({
+    address: contractAddress,
+    abi: contractAbi,
+    functionName: '_tokenId',
+  })
+
+  // useEffect(() => {
+  //   refImages.current = images
+  // }, [images])
+
   useEffect(() => {
     Promise.resolve(createImageFiles(imageData)).then((res) => setImages(res))
-  }, [images])
+  }, [images.length])
 
   useEffect(() => {
     refMetadata.current = metadata
   }, [metadata])
 
   useEffect(() => {
-    const metadataArray = Promise.resolve(getMetadata(imageData, baseMetadata))
-    metadataArray.then((res) => setMetadata(res))
-  }, [refMetadata.current])
+    Promise.resolve(getMetadata(imageData, baseMetadata, tokenId)).then((res) =>
+      setMetadata(res)
+    )
+  }, [refMetadata.current, tokenIdSuccess])
 
   return (
     <>
