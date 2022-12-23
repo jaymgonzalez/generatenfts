@@ -4,11 +4,10 @@ import {
   usePrepareContractWrite,
   useContractRead,
 } from 'wagmi'
-import { BigNumber, utils } from 'ethers'
+import { BigNumber } from 'ethers'
 import { returnCid, storeFiles } from '../utils/cid'
 import { useEffect, useState } from 'react'
 import { Button, Center, Text } from '@mantine/core'
-import { useEffectOnce } from '../hooks/useEffectOnce'
 import NFTGallery from './NFTGallery'
 
 function createMetadataFiles(metadata) {
@@ -23,12 +22,6 @@ function createMetadataFiles(metadata) {
   })
 }
 
-function mint(write, isSuccess, images, metadata) {
-  // write?.()
-  isSuccess && console.log(images, metadata)
-  // console.log(metadata)
-}
-
 export default function RunContract({ address, metadata, images }) {
   const [metadataCid, setMetadataCid] = useState('')
 
@@ -37,8 +30,6 @@ export default function RunContract({ address, metadata, images }) {
   returnCid(images)
 
   const names = metadata.map((data) => `${data.name}.json`)
-
-  // storeFiles(files)
 
   const { data: fee } = useContractRead({
     address: contractAddress,
@@ -72,7 +63,6 @@ export default function RunContract({ address, metadata, images }) {
     address: contractAddress,
     abi: contractAbi,
     functionName: 'withdraw',
-    // args: [address, metadataCid, names],
     overrides: {
       gasLimit: BigNumber.from('10000000'),
       // value: utils.parseEther(!Number.isNaN(value) ? '10' : value.toString()),
@@ -83,8 +73,6 @@ export default function RunContract({ address, metadata, images }) {
   const { write: withdrawWrite } = useContractWrite(withdrawConfig)
 
   useEffect(() => {
-    console.log(mintIsSuccess)
-
     if (mintIsSuccess) {
       storeFiles(files)
       storeFiles(images)
