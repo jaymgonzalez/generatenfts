@@ -82,34 +82,12 @@ const links = [
     label: 'Home',
   },
   {
-    link: '#1',
-    label: 'CreateNFT',
-    links: [
-      {
-        link: '/upload',
-        label: 'Upload Images',
-      },
-      {
-        link: '/resources',
-        label: 'Resources',
-      },
-      {
-        link: '/community',
-        label: 'Community',
-      },
-      {
-        link: '/blog',
-        label: 'Blog',
-      },
-    ],
-  },
-  {
     link: '/about',
-    label: 'About',
+    label: 'Generate NFT',
   },
   {
-    link: '/pricing',
-    label: 'Pricing',
+    link: '/gallery',
+    label: 'NFT Gallery',
   },
   {
     link: '#2',

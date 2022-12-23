@@ -9,6 +9,7 @@ import { returnCid, storeFiles } from '../utils/cid'
 import { useEffect, useState } from 'react'
 import { Button, Center, Text } from '@mantine/core'
 import { useEffectOnce } from '../hooks/useEffectOnce'
+import NFTGallery from './NFTGallery'
 
 function createMetadataFiles(metadata) {
   return metadata.map((data) => {
@@ -111,6 +112,7 @@ export default function RunContract({ address, metadata, images }) {
         {mintIsLoading && <div>Check Wallet</div>}
         {mintIsSuccess && <div>Transaction: {JSON.stringify(mintData)}</div>}
       </div>
+      <NFTGallery address={address} />
     </>
   )
 }
