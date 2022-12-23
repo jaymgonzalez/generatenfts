@@ -32,6 +32,9 @@ export default function RunContract({ address, metadata, images }) {
   const [metadataCid, setMetadataCid] = useState('')
 
   const files = createMetadataFiles(metadata)
+  console.log(images)
+  returnCid(images)
+
   const names = metadata.map((data) => `${data.name}.json`)
 
   // storeFiles(files)

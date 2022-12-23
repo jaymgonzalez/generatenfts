@@ -1,4 +1,5 @@
 import { pack } from 'ipfs-car/pack'
+import { BaseBlockstore } from 'blockstore-core'
 import makeStorageClient from '../web3storage'
 
 function toImportCandidate(file) {
@@ -13,9 +14,14 @@ function toImportCandidate(file) {
 }
 
 export async function getCid(files) {
+  const blockstore = new BaseBlockstore()
   try {
     const { root } = await pack({
       input: Array.from(files).map(toImportCandidate),
+      // blockstore,
+      wrapWithDirectory: true,
+      maxChunkSize: 1048576,
+      maxChildrenPerNode: 1024,
     })
     return root.toString()
   } catch (err) {

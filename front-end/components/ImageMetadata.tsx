@@ -7,9 +7,9 @@ import { returnCid } from '../utils/cid'
 
 const date = new Date()
 
-async function createImageFiles(images) {
+async function createImageFiles(images, tokenId) {
   const files = await Promise.all(
-    images.map(async (img) => {
+    images.map(async (img, i) => {
       const response = await fetch(img.url)
       const arrayBuffer = await response.arrayBuffer()
 
@@ -17,7 +17,9 @@ async function createImageFiles(images) {
 
       return new File(
         [blob],
-        img.nftName ? `${img.nftName}.${img.extension}` : img.name,
+        img.nftName
+          ? `${img.nftName}.${img.extension}`
+          : `${parseInt(tokenId) + 1 + i}.${img.extension}`,
         { type: `image/${img.extension}` }
       )
     })
@@ -26,7 +28,7 @@ async function createImageFiles(images) {
 }
 
 async function getMetadata(images, metadata, tokenId) {
-  const files = await createImageFiles(images)
+  const files = await createImageFiles(images, tokenId)
   const cid = await returnCid(files)
   return images.map((img, i) => {
     const attributes = img.attributes?.map((attr) => {
@@ -43,13 +45,11 @@ async function getMetadata(images, metadata, tokenId) {
         : 'Generate NFT Collection', // choose by user (Name + Creator)
       id: img.id,
       cid,
-      name: img.nftName || img.name,
+      name: img.nftName || parseInt(tokenId) + 1 + i,
       ...metadata,
-      asset_url: img.nftName
+      image: img.nftName
         ? `ipfs://${cid}/${img.nftName.replace(/ /g, '_')}.${img.extension}`
-        : `ipfs://${cid}/${img.name.substring(0, 14).replace(/ /g, '_')}.${
-            img.extension
-          }`,
+        : `ipfs://${cid}/${parseInt(tokenId) + 1 + i}.${img.extension}`,
       timestamp: metadata.timestamp || Math.floor(date.getTime() / 1000),
     }
 
@@ -99,7 +99,9 @@ export default function ImageMetadata({
   // }, [images])
 
   useEffect(() => {
-    Promise.resolve(createImageFiles(imageData)).then((res) => setImages(res))
+    Promise.resolve(createImageFiles(imageData, tokenId)).then((res) =>
+      setImages(res)
+    )
   }, [images.length])
 
   useEffect(() => {
