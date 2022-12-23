@@ -1,5 +1,4 @@
-import { Contract, providers, utils } from 'ethers'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 
 import {
@@ -133,11 +132,7 @@ export default function Navbar() {
         <>
           <Menu key={link.label} trigger="hover" exitTransitionDuration={0}>
             <Menu.Target>
-              <Link
-                href={link.link}
-                className={classes.link}
-                // onClick={(event) => event.preventDefault()}
-              >
+              <Link href={link.link} className={classes.link}>
                 <Center>
                   <span className={classes.linkLabel}>{link.label}</span>
                   <IconChevronDown size={12} stroke={1.5} />
@@ -151,12 +146,7 @@ export default function Navbar() {
     }
 
     return (
-      <Link
-        key={link.label}
-        href={link.link}
-        className={classes.link}
-        // onClick={(event) => event.preventDefault()}
-      >
+      <Link key={link.label} href={link.link} className={classes.link}>
         {link.label}
       </Link>
     )
@@ -200,8 +190,6 @@ export default function Navbar() {
           )}
           {!address && <ConnectButton />}
         </Group>
-
-        {/* <ConnectButton /> */}
       </Container>
     </Header>
   )
