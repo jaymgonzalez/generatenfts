@@ -1,5 +1,4 @@
-import { Button, Center, Image, Modal } from '@mantine/core'
-import { IconTrash } from '@tabler/icons'
+import { Image, Modal } from '@mantine/core'
 import ImageForm from './ImageForm'
 
 export default function ImageModal({

@@ -58,33 +58,33 @@ export default function NFTGallery({ address }) {
     return (
       <>
         <Grid.Col span={6} sm={4} md={3}>
-          <Link href={`/nft/${nft.contract.address}/${nft.tokenId}`}>
-            <Card
-              shadow="sm"
-              p="lg"
-              radius="md"
-              withBorder
-              miw="200px"
-              className={classes.card}
-            >
-              <Card.Section>
-                <Box sx={{ overflow: 'hidden' }}>
-                  <Image
-                    className={classes.image}
-                    mah="250px"
-                    src={nft.media[0]?.thumbnail}
-                    alt={nft.title}
-                  />
-                </Box>
-              </Card.Section>
-              <Card.Section>
-                <Group position="center" py={16} mih="150px">
-                  <Button>Edit</Button>
-                  <Button>Delete</Button>
-                </Group>
-              </Card.Section>
-            </Card>
-          </Link>
+          {/* <Link href={`/nft/${nft.contract.address}/${nft.tokenId}`}> */}
+          <Card
+            shadow="sm"
+            p="lg"
+            radius="md"
+            withBorder
+            miw="200px"
+            className={classes.card}
+          >
+            <Card.Section>
+              <Box sx={{ overflow: 'hidden' }}>
+                <Image
+                  className={classes.image}
+                  mah="250px"
+                  src={nft.media[0]?.thumbnail}
+                  alt={nft.title}
+                />
+              </Box>
+            </Card.Section>
+            <Card.Section>
+              <Group position="center" py={16} mih="150px">
+                <Button>Edit</Button>
+                <Button>Delete</Button>
+              </Group>
+            </Card.Section>
+          </Card>
+          {/* </Link> */}
         </Grid.Col>
       </>
     )
