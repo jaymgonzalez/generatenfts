@@ -6,12 +6,13 @@ import {
   Grid,
   Group,
   Image,
+  Modal,
 } from '@mantine/core'
 import { Network, Alchemy, OwnedNftsResponse } from 'alchemy-sdk'
 import { useState } from 'react'
 import { contractAddress } from '../constants'
 import { useEffectOnce } from '../hooks/useEffectOnce'
-import Link from 'next/link'
+// import Link from 'next/link'
 
 const useStyles = createStyles((theme, _params, getRef) => ({
   image: {
@@ -22,6 +23,8 @@ const useStyles = createStyles((theme, _params, getRef) => ({
       transform: 'scale(1.1)',
     },
   },
+
+  modalImage: {},
 
   card: {
     '&:hover': {
@@ -37,6 +40,8 @@ const useStyles = createStyles((theme, _params, getRef) => ({
 
 export default function NFTGallery({ address }) {
   const [nftList, setNftList] = useState<OwnedNftsResponse>()
+  const [opened, setOpened] = useState(false)
+  const [loading, setLoading] = useState(false)
   const { classes } = useStyles()
 
   const settings = {
@@ -47,9 +52,11 @@ export default function NFTGallery({ address }) {
   const alchemy = new Alchemy(settings)
 
   useEffectOnce(() => {
+    setLoading(true)
     alchemy.nft
       .getNftsForOwner(address, { contractAddresses: [contractAddress] })
       .then((res) => setNftList(res))
+      .finally(() => setLoading(false))
   })
 
   console.log(nftList)
@@ -59,6 +66,18 @@ export default function NFTGallery({ address }) {
       <>
         <Grid.Col span={6} sm={4} md={3}>
           {/* <Link href={`/nft/${nft.contract.address}/${nft.tokenId}`}> */}
+          <Modal
+            opened={opened}
+            onClose={() => setOpened(false)}
+            title={nft.rawMetadata?.title}
+          >
+            <Image
+              className={classes.modalImage}
+              // mah="250px"
+              src={nft.media[0]?.gateway}
+              alt={nft.title}
+            />
+          </Modal>
           <Card
             shadow="sm"
             p="lg"
@@ -66,6 +85,7 @@ export default function NFTGallery({ address }) {
             withBorder
             miw="200px"
             className={classes.card}
+            onClick={() => setOpened(true)}
           >
             <Card.Section>
               <Box sx={{ overflow: 'hidden' }}>
