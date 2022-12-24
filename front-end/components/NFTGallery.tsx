@@ -7,6 +7,8 @@ import {
   Group,
   Image,
   Modal,
+  Paper,
+  SimpleGrid,
   Text,
   UnstyledButton,
 } from '@mantine/core'
@@ -77,6 +79,8 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     fontSize: theme.fontSizes.md,
     fontWeight: 700,
     color: 'dimmed',
+    paddingBottom: 1,
+    paddingTop: 1,
   },
 
   unstyledButton: {
@@ -87,6 +91,8 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     fontWeight: 700,
     color: 'dimmed',
     textTransform: 'uppercase',
+    paddingBottom: 1,
+    paddingTop: 1,
   },
 }))
 
@@ -117,8 +123,17 @@ export default function NFTGallery({ address }) {
   console.log(nftList)
 
   const nfts = nftList?.ownedNfts.map((nft, index) => {
-    const attributes = nft.rawMetadata?.attributes?.map((attr) => {
-      // console.log(attr)
+    const attributes = nft.rawMetadata?.attributes?.map((attr, i) => {
+      return (
+        <Paper withBorder p="md" radius="md" key={attr.value + i}>
+          <Group position="apart">
+            <Text size="xs" color="dimmed">
+              {attr.trait_type}
+            </Text>
+            <Text>{attr.value}</Text>
+          </Group>
+        </Paper>
+      )
     })
 
     return (
@@ -132,6 +147,8 @@ export default function NFTGallery({ address }) {
                 ...openedMap,
                 [index]: false,
               })
+              setOpenedDescription(false)
+              setOpenedAttributes(false)
             }}
             title={nft.rawMetadata?.title}
             className={classes.modal}
@@ -163,15 +180,17 @@ export default function NFTGallery({ address }) {
                   </UnstyledButton>
                   <Collapse in={openedDescription}>
                     {
-                      <Text>{`${
-                        nft.description.length > 0
-                          ? nft.description
-                          : 'No description'
-                      }`}</Text>
+                      <Paper withBorder p="md" radius="md">
+                        <Text>{`${
+                          nft.description.length > 0
+                            ? nft.description
+                            : 'No description'
+                        }`}</Text>
+                      </Paper>
                     }
                   </Collapse>
                   <Group position="apart" className={classes.modalTable}>
-                    <Text>attributes</Text>
+                    <Text>Token uri</Text>
                     <Text>{`${
                       nft.title.length > 14
                         ? nft.title.substring(0, 132) + '...'
@@ -186,6 +205,27 @@ export default function NFTGallery({ address }) {
                         : nft.title
                     }`}</Text>
                   </Group>
+                  <UnstyledButton
+                    className={classes.unstyledButton}
+                    onClick={() => setOpenedAttributes((o) => !o)}
+                  >
+                    <Text>attributes</Text>
+                    <IconChevronDown />
+                  </UnstyledButton>
+                  <Collapse in={openedAttributes}>
+                    {attributes ? (
+                      <SimpleGrid
+                        cols={2}
+                        breakpoints={[{ maxWidth: 'xs', cols: 1 }]}
+                      >
+                        {attributes}
+                      </SimpleGrid>
+                    ) : (
+                      <Paper withBorder p="md" radius="md">
+                        <Text>No Added attributes</Text>
+                      </Paper>
+                    )}
+                  </Collapse>
                   <Group position="apart" className={classes.modalTable}>
                     <Text>name</Text>
                     <Text>{`${
