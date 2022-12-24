@@ -72,8 +72,8 @@ const useStyles = createStyles((theme, _params, getRef) => ({
 
 export default function NFTGallery({ address }) {
   const [nftList, setNftList] = useState<OwnedNftsResponse>()
-  const [opened, setOpened] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [openedMap, setOpenedMap] = useState({})
   const { classes } = useStyles()
 
   const settings = {
@@ -93,14 +93,19 @@ export default function NFTGallery({ address }) {
 
   console.log(nftList)
 
-  const nfts = nftList?.ownedNfts.map((nft) => {
+  const nfts = nftList?.ownedNfts.map((nft, index) => {
     return (
       <>
         <Grid.Col span={6} sm={4} md={3}>
           {/* <Link href={`/nft/${nft.contract.address}/${nft.tokenId}`}> */}
           <Modal
-            opened={opened}
-            onClose={() => setOpened(false)}
+            opened={openedMap[index] || false}
+            onClose={() => {
+              setOpenedMap({
+                ...openedMap,
+                [index]: false,
+              })
+            }}
             title={nft.rawMetadata?.title}
             className={classes.modal}
           >
@@ -117,7 +122,12 @@ export default function NFTGallery({ address }) {
             withBorder
             miw="200px"
             className={classes.card}
-            onClick={() => setOpened(true)}
+            onClick={() =>
+              setOpenedMap({
+                ...openedMap,
+                [index]: true,
+              })
+            }
           >
             <Card.Section>
               <Box sx={{ overflow: 'hidden' }}>
