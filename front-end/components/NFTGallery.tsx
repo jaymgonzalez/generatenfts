@@ -19,9 +19,9 @@ import { useEffectOnce } from '../hooks/useEffectOnce'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
 import { IconChevronDown, IconChevronDownLeft } from '@tabler/icons'
+import NFTModal from './NFTModal'
 // import Link from 'next/link'
 
-// TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
 const useStyles = createStyles((theme, _params, getRef) => ({
@@ -33,8 +33,6 @@ const useStyles = createStyles((theme, _params, getRef) => ({
       transform: 'scale(1.1)',
     },
   },
-
-  modalImage: {},
 
   modal: {
     textTransform: 'uppercase',
@@ -74,26 +72,6 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     fontWeight: 700,
     letterSpacing: -0.25,
   },
-
-  modalTable: {
-    fontSize: theme.fontSizes.md,
-    fontWeight: 700,
-    color: 'dimmed',
-    paddingBottom: 1,
-    paddingTop: 1,
-  },
-
-  unstyledButton: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '100%',
-    fontSize: theme.fontSizes.md,
-    fontWeight: 700,
-    color: 'dimmed',
-    textTransform: 'uppercase',
-    paddingBottom: 1,
-    paddingTop: 1,
-  },
 }))
 
 export default function NFTGallery({ address }) {
@@ -112,6 +90,8 @@ export default function NFTGallery({ address }) {
 
   const alchemy = new Alchemy(settings)
 
+  useEffectOnce(() => TimeAgo.addDefaultLocale(en))
+
   useEffectOnce(() => {
     setLoading(true)
     alchemy.nft
@@ -123,19 +103,6 @@ export default function NFTGallery({ address }) {
   console.log(nftList)
 
   const nfts = nftList?.ownedNfts.map((nft, index) => {
-    const attributes = nft.rawMetadata?.attributes?.map((attr, i) => {
-      return (
-        <Paper withBorder p="md" radius="md" key={attr.value + i}>
-          <Group position="apart">
-            <Text size="xs" color="dimmed">
-              {attr.trait_type}
-            </Text>
-            <Text>{attr.value}</Text>
-          </Group>
-        </Paper>
-      )
-    })
-
     return (
       <>
         <Grid.Col span={6} sm={4} md={3}>
@@ -153,106 +120,7 @@ export default function NFTGallery({ address }) {
             title={nft.rawMetadata?.title}
             className={classes.modal}
           >
-            <Card shadow="sm" p="lg" radius="md" withBorder>
-              <Card.Section>
-                <Image
-                  className={classes.modalImage}
-                  src={nft.media[0]?.gateway}
-                  alt={nft.title}
-                />
-              </Card.Section>
-              <Card.Section>
-                <Box p={16}>
-                  <Group position="apart" className={classes.modalTable}>
-                    <Text>name</Text>
-                    <Text>{`${
-                      nft.title.length > 14
-                        ? nft.title.substring(0, 12) + '...'
-                        : nft.title
-                    }`}</Text>
-                  </Group>
-                  <UnstyledButton
-                    className={classes.unstyledButton}
-                    onClick={() => setOpenedDescription((o) => !o)}
-                  >
-                    <Text>Description</Text>
-                    <IconChevronDown />
-                  </UnstyledButton>
-                  <Collapse in={openedDescription}>
-                    {
-                      <Paper withBorder p="md" radius="md">
-                        <Text>{`${
-                          nft.description.length > 0
-                            ? nft.description
-                            : 'No description'
-                        }`}</Text>
-                      </Paper>
-                    }
-                  </Collapse>
-                  <Group position="apart" className={classes.modalTable}>
-                    <Text>Token uri</Text>
-                    <Text>{`${
-                      nft.title.length > 14
-                        ? nft.title.substring(0, 132) + '...'
-                        : nft.title
-                    }`}</Text>
-                  </Group>
-                  <Group position="apart" className={classes.modalTable}>
-                    <Text>name</Text>
-                    <Text>{`${
-                      nft.title.length > 14
-                        ? nft.title.substring(0, 12) + '...'
-                        : nft.title
-                    }`}</Text>
-                  </Group>
-                  <UnstyledButton
-                    className={classes.unstyledButton}
-                    onClick={() => setOpenedAttributes((o) => !o)}
-                  >
-                    <Text>attributes</Text>
-                    <IconChevronDown />
-                  </UnstyledButton>
-                  <Collapse in={openedAttributes}>
-                    {attributes ? (
-                      <SimpleGrid
-                        cols={2}
-                        breakpoints={[{ maxWidth: 'xs', cols: 1 }]}
-                      >
-                        {attributes}
-                      </SimpleGrid>
-                    ) : (
-                      <Paper withBorder p="md" radius="md">
-                        <Text>No Added attributes</Text>
-                      </Paper>
-                    )}
-                  </Collapse>
-                  <Group position="apart" className={classes.modalTable}>
-                    <Text>name</Text>
-                    <Text>{`${
-                      nft.title.length > 14
-                        ? nft.title.substring(0, 12) + '...'
-                        : nft.title
-                    }`}</Text>
-                  </Group>
-                  <Group position="apart" className={classes.modalTable}>
-                    <Text>name</Text>
-                    <Text>{`${
-                      nft.title.length > 14
-                        ? nft.title.substring(0, 12) + '...'
-                        : nft.title
-                    }`}</Text>
-                  </Group>
-                  <Group position="apart" className={classes.modalTable}>
-                    <Text>name</Text>
-                    <Text>{`${
-                      nft.title.length > 14
-                        ? nft.title.substring(0, 12) + '...'
-                        : nft.title
-                    }`}</Text>
-                  </Group>
-                </Box>
-              </Card.Section>
-            </Card>
+            <NFTModal nft={nft} timeAgo={timeAgo} />
           </Modal>
           <Card
             shadow="sm"
@@ -279,7 +147,7 @@ export default function NFTGallery({ address }) {
               </Box>
             </Card.Section>
             <Card.Section>
-              <Box mih="140px" my="auto">
+              <Box mih="140px">
                 <Group position="right" className={classes.section}>
                   <Text
                     className={classes.label}
