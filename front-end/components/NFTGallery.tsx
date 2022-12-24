@@ -1,16 +1,12 @@
 import {
   Box,
   Card,
-  Collapse,
   createStyles,
   Grid,
   Group,
   Image,
-  Modal,
-  Paper,
-  SimpleGrid,
   Text,
-  UnstyledButton,
+  LoadingOverlay,
 } from '@mantine/core'
 import { Network, Alchemy, OwnedNftsResponse } from 'alchemy-sdk'
 import { useState } from 'react'
@@ -18,7 +14,6 @@ import { contractAddress } from '../constants'
 import { useEffectOnce } from '../hooks/useEffectOnce'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
-import { IconChevronDown, IconChevronDownLeft } from '@tabler/icons'
 import NFTModal from './NFTModal'
 // import Link from 'next/link'
 
@@ -32,12 +27,6 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     '&:hover': {
       transform: 'scale(1.1)',
     },
-  },
-
-  modal: {
-    textTransform: 'uppercase',
-    fontSize: theme.fontSizes.xs,
-    fontWeight: 700,
   },
 
   card: {
@@ -78,8 +67,6 @@ export default function NFTGallery({ address }) {
   const [nftList, setNftList] = useState<OwnedNftsResponse>()
   const [loading, setLoading] = useState(false)
   const [openedMap, setOpenedMap] = useState({})
-  const [openedDescription, setOpenedDescription] = useState(false)
-  const [openedAttributes, setOpenedAttributes] = useState(false)
 
   const { classes } = useStyles()
 
@@ -90,7 +77,8 @@ export default function NFTGallery({ address }) {
 
   const alchemy = new Alchemy(settings)
 
-  useEffectOnce(() => TimeAgo.addDefaultLocale(en))
+  // @ts-ignore
+  useEffectOnce(() => timeAgo?.locale !== 'en' && TimeAgo.addDefaultLocale(en))
 
   useEffectOnce(() => {
     setLoading(true)
@@ -107,21 +95,13 @@ export default function NFTGallery({ address }) {
       <>
         <Grid.Col span={6} sm={4} md={3}>
           {/* <Link href={`/nft/${nft.contract.address}/${nft.tokenId}`}> */}
-          <Modal
-            opened={openedMap[index] || false}
-            onClose={() => {
-              setOpenedMap({
-                ...openedMap,
-                [index]: false,
-              })
-              setOpenedDescription(false)
-              setOpenedAttributes(false)
-            }}
-            title={nft.rawMetadata?.title}
-            className={classes.modal}
-          >
-            <NFTModal nft={nft} timeAgo={timeAgo} />
-          </Modal>
+          <NFTModal
+            nft={nft}
+            timeAgo={timeAgo}
+            openedMap={openedMap}
+            setOpenedMap={setOpenedMap}
+            index={index}
+          />
           <Card
             shadow="sm"
             p="lg"
@@ -190,7 +170,7 @@ export default function NFTGallery({ address }) {
 
   return (
     <>
-      <div>holi</div>
+      {<LoadingOverlay visible={loading} />}
 
       {nfts && <Grid gutter="xl">{nfts}</Grid>}
     </>
