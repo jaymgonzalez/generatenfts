@@ -1,12 +1,14 @@
 import {
   Box,
   Card,
+  Collapse,
   createStyles,
   Grid,
   Group,
   Image,
   Modal,
   Text,
+  UnstyledButton,
 } from '@mantine/core'
 import { Network, Alchemy, OwnedNftsResponse } from 'alchemy-sdk'
 import { useState } from 'react'
@@ -14,9 +16,10 @@ import { contractAddress } from '../constants'
 import { useEffectOnce } from '../hooks/useEffectOnce'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
+import { IconChevronDown, IconChevronDownLeft } from '@tabler/icons'
 // import Link from 'next/link'
 
-TimeAgo.addDefaultLocale(en)
+// TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
 const useStyles = createStyles((theme, _params, getRef) => ({
@@ -67,6 +70,23 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     textTransform: 'uppercase',
     fontSize: theme.fontSizes.xs,
     fontWeight: 700,
+    letterSpacing: -0.25,
+  },
+
+  modalTable: {
+    fontSize: theme.fontSizes.md,
+    fontWeight: 700,
+    color: 'dimmed',
+  },
+
+  unstyledButton: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+    fontSize: theme.fontSizes.md,
+    fontWeight: 700,
+    color: 'dimmed',
+    textTransform: 'uppercase',
   },
 }))
 
@@ -74,6 +94,9 @@ export default function NFTGallery({ address }) {
   const [nftList, setNftList] = useState<OwnedNftsResponse>()
   const [loading, setLoading] = useState(false)
   const [openedMap, setOpenedMap] = useState({})
+  const [openedDescription, setOpenedDescription] = useState(false)
+  const [openedAttributes, setOpenedAttributes] = useState(false)
+
   const { classes } = useStyles()
 
   const settings = {
@@ -94,6 +117,10 @@ export default function NFTGallery({ address }) {
   console.log(nftList)
 
   const nfts = nftList?.ownedNfts.map((nft, index) => {
+    const attributes = nft.rawMetadata?.attributes?.map((attr) => {
+      // console.log(attr)
+    })
+
     return (
       <>
         <Grid.Col span={6} sm={4} md={3}>
@@ -109,11 +136,83 @@ export default function NFTGallery({ address }) {
             title={nft.rawMetadata?.title}
             className={classes.modal}
           >
-            <Image
-              className={classes.modalImage}
-              src={nft.media[0]?.gateway}
-              alt={nft.title}
-            />
+            <Card shadow="sm" p="lg" radius="md" withBorder>
+              <Card.Section>
+                <Image
+                  className={classes.modalImage}
+                  src={nft.media[0]?.gateway}
+                  alt={nft.title}
+                />
+              </Card.Section>
+              <Card.Section>
+                <Box p={16}>
+                  <Group position="apart" className={classes.modalTable}>
+                    <Text>name</Text>
+                    <Text>{`${
+                      nft.title.length > 14
+                        ? nft.title.substring(0, 12) + '...'
+                        : nft.title
+                    }`}</Text>
+                  </Group>
+                  <UnstyledButton
+                    className={classes.unstyledButton}
+                    onClick={() => setOpenedDescription((o) => !o)}
+                  >
+                    <Text>Description</Text>
+                    <IconChevronDown />
+                  </UnstyledButton>
+                  <Collapse in={openedDescription}>
+                    {
+                      <Text>{`${
+                        nft.description.length > 0
+                          ? nft.description
+                          : 'No description'
+                      }`}</Text>
+                    }
+                  </Collapse>
+                  <Group position="apart" className={classes.modalTable}>
+                    <Text>attributes</Text>
+                    <Text>{`${
+                      nft.title.length > 14
+                        ? nft.title.substring(0, 132) + '...'
+                        : nft.title
+                    }`}</Text>
+                  </Group>
+                  <Group position="apart" className={classes.modalTable}>
+                    <Text>name</Text>
+                    <Text>{`${
+                      nft.title.length > 14
+                        ? nft.title.substring(0, 12) + '...'
+                        : nft.title
+                    }`}</Text>
+                  </Group>
+                  <Group position="apart" className={classes.modalTable}>
+                    <Text>name</Text>
+                    <Text>{`${
+                      nft.title.length > 14
+                        ? nft.title.substring(0, 12) + '...'
+                        : nft.title
+                    }`}</Text>
+                  </Group>
+                  <Group position="apart" className={classes.modalTable}>
+                    <Text>name</Text>
+                    <Text>{`${
+                      nft.title.length > 14
+                        ? nft.title.substring(0, 12) + '...'
+                        : nft.title
+                    }`}</Text>
+                  </Group>
+                  <Group position="apart" className={classes.modalTable}>
+                    <Text>name</Text>
+                    <Text>{`${
+                      nft.title.length > 14
+                        ? nft.title.substring(0, 12) + '...'
+                        : nft.title
+                    }`}</Text>
+                  </Group>
+                </Box>
+              </Card.Section>
+            </Card>
           </Modal>
           <Card
             shadow="sm"
