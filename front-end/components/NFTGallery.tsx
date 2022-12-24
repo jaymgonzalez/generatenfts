@@ -1,18 +1,23 @@
 import {
   Box,
-  Button,
   Card,
   createStyles,
   Grid,
   Group,
   Image,
   Modal,
+  Text,
 } from '@mantine/core'
 import { Network, Alchemy, OwnedNftsResponse } from 'alchemy-sdk'
 import { useState } from 'react'
 import { contractAddress } from '../constants'
 import { useEffectOnce } from '../hooks/useEffectOnce'
+import TimeAgo from 'javascript-time-ago'
+import en from 'javascript-time-ago/locale/en'
 // import Link from 'next/link'
+
+TimeAgo.addDefaultLocale(en)
+const timeAgo = new TimeAgo('en-US')
 
 const useStyles = createStyles((theme, _params, getRef) => ({
   image: {
@@ -26,6 +31,12 @@ const useStyles = createStyles((theme, _params, getRef) => ({
 
   modalImage: {},
 
+  modal: {
+    textTransform: 'uppercase',
+    fontSize: theme.fontSizes.xs,
+    fontWeight: 700,
+  },
+
   card: {
     '&:hover': {
       [`& .${getRef('image')}`]: {
@@ -35,6 +46,27 @@ const useStyles = createStyles((theme, _params, getRef) => ({
         theme.colorScheme === 'dark' ? theme.colors.gray[7] : theme.white,
     },
     cursor: 'pointer',
+  },
+
+  label: {
+    textTransform: 'uppercase',
+    fontSize: theme.fontSizes.sm,
+    fontWeight: 700,
+    marginRight: 4,
+    paddingBottom: 8,
+    paddingTop: 8,
+  },
+
+  section: {
+    borderBottom: `1px solid ${
+      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
+    }`,
+  },
+
+  table: {
+    textTransform: 'uppercase',
+    fontSize: theme.fontSizes.xs,
+    fontWeight: 700,
   },
 }))
 
@@ -70,10 +102,10 @@ export default function NFTGallery({ address }) {
             opened={opened}
             onClose={() => setOpened(false)}
             title={nft.rawMetadata?.title}
+            className={classes.modal}
           >
             <Image
               className={classes.modalImage}
-              // mah="250px"
               src={nft.media[0]?.gateway}
               alt={nft.title}
             />
@@ -98,10 +130,39 @@ export default function NFTGallery({ address }) {
               </Box>
             </Card.Section>
             <Card.Section>
-              <Group position="center" py={16} mih="150px">
-                <Button>Edit</Button>
-                <Button>Delete</Button>
-              </Group>
+              <Box mih="140px" my="auto">
+                <Group position="right" className={classes.section}>
+                  <Text
+                    className={classes.label}
+                  >{`${nft.contract.symbol} #${nft.tokenId}`}</Text>
+                </Group>
+                <Box px={8} pt={40}>
+                  <Group position="apart" className={classes.table}>
+                    <Text>name</Text>
+                    <Text>{`${
+                      nft.title.length > 14
+                        ? nft.title.substring(0, 12) + '...'
+                        : nft.title
+                    }`}</Text>
+                  </Group>
+                  <Group position="apart" className={classes.table}>
+                    <Text>description</Text>
+                    <Text>{`${
+                      nft.description.length > 14
+                        ? nft.description.substring(0, 12) + '...'
+                        : nft.description
+                    }`}</Text>
+                  </Group>
+                  <Group position="apart" className={classes.table}>
+                    <Text>Created</Text>
+                    <Text>
+                      {nft.rawMetadata?.timestamp
+                        ? `${timeAgo.format(nft.rawMetadata?.timestamp * 1000)}`
+                        : 'unknown'}
+                    </Text>
+                  </Group>
+                </Box>
+              </Box>
             </Card.Section>
           </Card>
           {/* </Link> */}
