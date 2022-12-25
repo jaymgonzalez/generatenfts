@@ -16,7 +16,7 @@ function createMetadataFiles(metadata) {
 
     const blob = new Blob([response], { type: 'application/json' })
 
-    return new File([blob], `${data.name}.json`, {
+    return new File([blob], `${data.name.trim().replace(/ /g, '_')}.json`, {
       type: 'application/json',
     })
   })
@@ -26,10 +26,11 @@ export default function RunContract({ address, metadata, images }) {
   const [metadataCid, setMetadataCid] = useState('')
 
   const files = createMetadataFiles(metadata)
-  console.log(images)
-  returnCid(images)
+  // returnCid(images)
 
-  const names = metadata.map((data) => `${data.name}.json`)
+  const names = metadata.map(
+    (data) => `${data.name.trim().replace(/ /g, '_')}.json`
+  )
 
   const { data: fee } = useContractRead({
     address: contractAddress,
@@ -55,7 +56,6 @@ export default function RunContract({ address, metadata, images }) {
     data: mintData,
     isLoading: mintIsLoading,
     isSuccess: mintIsSuccess,
-    isIdle: mintIsIdle,
     write: mintWrite,
   } = useContractWrite(mintConfig)
 
@@ -100,7 +100,7 @@ export default function RunContract({ address, metadata, images }) {
         {mintIsLoading && <div>Check Wallet</div>}
         {mintIsSuccess && <div>Transaction: {JSON.stringify(mintData)}</div>}
       </div>
-      <NFTGallery address={address} />
+      {/* <NFTGallery address={address} /> */}
     </>
   )
 }

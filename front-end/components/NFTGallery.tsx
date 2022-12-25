@@ -17,6 +17,7 @@ import en from 'javascript-time-ago/locale/en'
 import NFTModal from './NFTModal'
 // import Link from 'next/link'
 
+TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
 const useStyles = createStyles((theme, _params, getRef) => ({
@@ -76,9 +77,6 @@ export default function NFTGallery({ address }) {
   }
 
   const alchemy = new Alchemy(settings)
-
-  // @ts-ignore
-  useEffectOnce(() => timeAgo?.locale !== 'en' && TimeAgo.addDefaultLocale(en))
 
   useEffectOnce(() => {
     setLoading(true)

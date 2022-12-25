@@ -1,7 +1,7 @@
 import { Center } from '@mantine/core'
 import { useAccount, useContractRead, useNetwork } from 'wagmi'
 import { contractAddress, contractAbi } from '../constants'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ImageCarousel from './ImageCarousel'
 import { returnCid } from '../utils/cid'
 
@@ -18,7 +18,7 @@ async function createImageFiles(images, tokenId) {
       return new File(
         [blob],
         img.nftName
-          ? `${img.nftName}.${img.extension}`
+          ? `${img.nftName.replace(/ /g, '_')}.${img.extension}`
           : `${parseInt(tokenId) + 1 + i}.${img.extension}`,
         { type: `image/${img.extension}` }
       )
@@ -48,7 +48,9 @@ async function getMetadata(images, metadata, tokenId) {
       name: img.nftName || parseInt(tokenId) + 1 + i,
       ...metadata,
       image: img.nftName
-        ? `ipfs://${cid}/${img.nftName.replace(/ /g, '_')}.${img.extension}`
+        ? `ipfs://${cid}/${img.nftName.trim().replace(/ /g, '_')}.${
+            img.extension
+          }`
         : `ipfs://${cid}/${parseInt(tokenId) + 1 + i}.${img.extension}`,
       timestamp: metadata.timestamp || Math.floor(date.getTime() / 1000),
     }
@@ -74,7 +76,7 @@ export default function ImageMetadata({
   const { address } = useAccount()
   const { chain } = useNetwork()
   const refMetadata = useRef(metadata)
-  const refImages = useRef(images)
+  const [tokenId, setTokenId] = useState(null)
 
   const baseMetadata = {
     contract: contractAddress, // contract that minted it
@@ -84,7 +86,7 @@ export default function ImageMetadata({
   }
 
   const {
-    data: tokenId,
+    data: tokenIdData,
     isError,
     isLoading,
     isSuccess: tokenIdSuccess,
@@ -94,9 +96,9 @@ export default function ImageMetadata({
     functionName: '_tokenId',
   })
 
-  // useEffect(() => {
-  //   refImages.current = images
-  // }, [images])
+  useEffect(() => {
+    setTokenId(tokenIdData.toString())
+  }, [tokenIdData])
 
   useEffect(() => {
     Promise.resolve(createImageFiles(imageData, tokenId)).then((res) =>
@@ -130,5 +132,3 @@ export default function ImageMetadata({
     </>
   )
 }
-
-// bafybeid6tazpnt2i4j3nznx25nt6d2e74cz22kqu2i4nnluyvndv65ekbq
