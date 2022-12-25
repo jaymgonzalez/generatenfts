@@ -81,7 +81,7 @@ const links = [
     label: 'Home',
   },
   {
-    link: '/about',
+    link: '/generate',
     label: 'Generate NFT',
   },
   {
