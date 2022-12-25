@@ -119,7 +119,7 @@ export default function NFTGallery({ address }) {
                 <Image
                   className={classes.image}
                   mah="250px"
-                  src={nft.media[0]?.thumbnail}
+                  src={nft.media[0]?.thumbnail || nft.media[0]?.gateway}
                   alt={nft.title}
                 />
               </Box>
