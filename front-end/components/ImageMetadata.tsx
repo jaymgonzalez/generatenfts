@@ -15,6 +15,12 @@ async function createImageFiles(images, tokenId) {
 
       const blob = new Blob([arrayBuffer], { type: `image/${img.extension}` })
 
+      console.log(
+        img.nftName
+          ? `${img.nftName.replace(/ /g, '_')}.${img.extension}`
+          : `${parseInt(tokenId) + 1 + i}.${img.extension}`
+      )
+
       return new File(
         [blob],
         img.nftName
@@ -39,6 +45,9 @@ async function getMetadata(images, metadata, tokenId) {
       }
     })
 
+    console.log(tokenId)
+    console.log(`img nft: ${img.nftName}`)
+
     const newMetadata = {
       title: tokenId
         ? `Generate NFT Collection #${parseInt(tokenId) + 1 + i}`
@@ -54,6 +63,8 @@ async function getMetadata(images, metadata, tokenId) {
         : `ipfs://${cid}/${parseInt(tokenId) + 1 + i}.${img.extension}`,
       timestamp: metadata.timestamp || Math.floor(date.getTime() / 1000),
     }
+
+    console.log(newMetadata)
 
     if (img.author) newMetadata.author = img.author
     if (attributes && attributes[0]) newMetadata.attributes = attributes
@@ -98,7 +109,7 @@ export default function ImageMetadata({
 
   useEffect(() => {
     setTokenId(tokenIdData.toString())
-  }, [tokenIdData])
+  }, [tokenIdData, tokenIdSuccess])
 
   useEffect(() => {
     Promise.resolve(createImageFiles(imageData, tokenId)).then((res) =>
@@ -132,3 +143,5 @@ export default function ImageMetadata({
     </>
   )
 }
+
+// https://bafybeid55flk2mxmkjkbvrklpbckdhmws66dng4oldgf5lpsfbpydiepkq.ipfs.w3s.link/44.png

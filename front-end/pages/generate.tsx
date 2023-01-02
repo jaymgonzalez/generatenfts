@@ -1,6 +1,6 @@
 import { Stepper, Group, Button, Center, Text, Box } from '@mantine/core'
 import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Upload from '../components/Upload'
 import ImageGrid from '../components/ImageGrid'
 import ImageMetadata from '../components/ImageMetadata'
@@ -34,6 +34,10 @@ export default function About() {
     setActive((current) => (current < 3 ? current + 1 : current))
   const prevStep = () =>
     setActive((current) => (current > 0 ? current - 1 : current))
+
+  useEffect(() => {
+    if (imagesURLs.length === 0) setActive(0)
+  }, [imagesURLs.length])
 
   return (
     <>
