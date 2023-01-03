@@ -192,7 +192,11 @@ export default function NFTGallery({ address }) {
           <Pagination
             page={page}
             onChange={setPage}
-            total={Math.floor(nftList?.ownedNfts.length / PAGE_SIZE) + 1}
+            total={
+              nftList?.ownedNfts.length % PAGE_SIZE !== 0
+                ? Math.floor(nftList?.ownedNfts.length / PAGE_SIZE) + 1
+                : nftList?.ownedNfts.length / PAGE_SIZE
+            }
           />
         </Center>
       )}
