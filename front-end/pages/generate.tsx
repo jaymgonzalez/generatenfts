@@ -125,7 +125,7 @@ export default function About() {
               </Stepper>
 
               <Group position="center" mt="xl">
-                {active < 3 && (
+                {0 < active && active < 3 && (
                   <Button variant="default" onClick={prevStep}>
                     Back
                   </Button>
@@ -135,7 +135,9 @@ export default function About() {
                     Back
                   </Button>
                 )}
-                {active < 2 && <Button onClick={nextStep}>Next step</Button>}
+                {imagesURLs.length > 0 && active < 2 && (
+                  <Button onClick={nextStep}>Next step</Button>
+                )}
                 {active === 2 && (
                   <Button
                     disabled={!mintWrite}
