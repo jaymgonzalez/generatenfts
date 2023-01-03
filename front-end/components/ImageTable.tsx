@@ -16,11 +16,11 @@ export default function ImageTable({
   openedMap,
   setOpenedMap,
 }) {
-  const rows = imageData.map((img, index) => {
+  const rows = imageData.map((img, index, arr) => {
     const attributes = img.attributes?.map(
       (attr) =>
         attr.attribute.length > 0 && (
-          <Text key={index + 3478}>
+          <Text key={arr[index].url + attr.attribute}>
             {attr.attribute}: {attr.value}
           </Text>
         )
