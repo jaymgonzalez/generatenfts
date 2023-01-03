@@ -13,12 +13,6 @@ async function createImageFiles(images, tokenId) {
 
       const blob = new Blob([arrayBuffer], { type: `image/${img.extension}` })
 
-      console.log(
-        img.nftName
-          ? `${img.nftName.replace(/ /g, '_')}.${img.extension}`
-          : `${parseInt(tokenId) + 1 + i}.${img.extension}`
-      )
-
       return new File(
         [blob],
         img.nftName
@@ -43,9 +37,6 @@ async function getMetadata(images, metadata, tokenId) {
       }
     })
 
-    console.log(tokenId)
-    console.log(`img nft: ${img.nftName}`)
-
     const newMetadata = {
       title: tokenId
         ? `Generate NFT Collection #${parseInt(tokenId) + 1 + i}`
@@ -61,8 +52,6 @@ async function getMetadata(images, metadata, tokenId) {
         : `ipfs://${cid}/${parseInt(tokenId) + 1 + i}.${img.extension}`,
       timestamp: metadata.timestamp || Math.floor(date.getTime() / 1000),
     }
-
-    console.log(newMetadata)
 
     if (img.author) newMetadata.author = img.author
     if (attributes && attributes[0]) newMetadata.attributes = attributes
@@ -94,7 +83,7 @@ export default function ImageMetadata({
   const {
     data: tokenIdData,
     isError,
-    isLoading,
+    isLoading: tokenIsLoading,
     isSuccess: tokenIdSuccess,
   } = useContractRead({
     address: contractAddress,
@@ -104,13 +93,13 @@ export default function ImageMetadata({
 
   useEffect(() => {
     setTokenId(tokenIdData.toString())
-  }, [tokenIdData, tokenIdSuccess])
+  }, [tokenIdData, tokenIdSuccess, tokenIsLoading])
 
   useEffect(() => {
     Promise.resolve(createImageFiles(imageData, tokenId)).then((res) =>
       setImages(res)
     )
-  }, [images.length])
+  }, [images.length, tokenIdData])
 
   useEffect(() => {
     refMetadata.current = metadata
@@ -120,9 +109,7 @@ export default function ImageMetadata({
     Promise.resolve(getMetadata(imageData, baseMetadata, tokenId)).then((res) =>
       setMetadata(res)
     )
-  }, [refMetadata.current, tokenIdSuccess])
+  }, [refMetadata.current, tokenIdData])
 
   return <>{children}</>
 }
-
-// https://bafybeid55flk2mxmkjkbvrklpbckdhmws66dng4oldgf5lpsfbpydiepkq.ipfs.w3s.link/44.png

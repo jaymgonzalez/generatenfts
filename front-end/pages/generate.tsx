@@ -43,90 +43,114 @@ export default function About() {
   return (
     <>
       <AuthenticatedPage address={address}>
-        <Stepper active={active} onStepClick={setActive} breakpoint="sm">
-          <Stepper.Step label="First step" description="Add images">
-            <Upload
-              imagesURLs={imagesURLs}
-              setImagesURLs={setImagesURLs}
-              imageData={imageData}
-              setImageData={setImageData}
-            />
-            <ImageGrid
-              imagesURLs={imagesURLs}
-              setImagesURLs={setImagesURLs}
-              imageData={imageData}
-              openedMap={openedMap}
-              setOpenedMap={setOpenedMap}
-            />
-          </Stepper.Step>
-          <Stepper.Step
-            label="Second step"
-            description="Confirm information"
-            allowStepSelect={imagesURLs.length > 0}
-          >
-            <ImageMetadata
-              imageData={imageData}
-              metadata={metadata}
-              setMetadata={setMetadata}
-              images={images}
-              setImages={setImages}
-            >
-              <Center mt={24}>
-                <ImageCarousel
-                  imagesURLs={imagesURLs}
-                  setImagesURLs={setImagesURLs}
-                  imageData={imageData}
-                  openedMap={openedMap}
-                  setOpenedMap={setOpenedMap}
-                  metadata={metadata}
-                  setMetadata={setMetadata}
-                />
-              </Center>
-            </ImageMetadata>
-          </Stepper.Step>
-          <Stepper.Step
-            label="Final step"
-            description="Generate your NFTs"
-            allowStepSelect={imagesURLs.length > 0}
-          >
-            <ImageMetadata
-              imageData={imageData}
-              metadata={metadata}
-              setMetadata={setMetadata}
-              images={images}
-              setImages={setImages}
-            >
-              <>
-                <RunContract
-                  address={address}
-                  metadata={metadata}
-                  images={images}
-                />
-                <ImageTable
-                  imagesURLs={imagesURLs}
-                  setImagesURLs={setImagesURLs}
-                  imageData={imageData}
-                  openedMap={openedMap}
-                  setOpenedMap={setOpenedMap}
-                />
-              </>
-            </ImageMetadata>
-          </Stepper.Step>
-          <Stepper.Completed>Visit the gallery</Stepper.Completed>
-        </Stepper>
+        <RunContract address={address} metadata={metadata} images={images}>
+          {(mintData, mintWrite, mintIsLoading, mintIsSuccess, mintIsError) => (
+            <>
+              <Stepper active={active} onStepClick={setActive} breakpoint="sm">
+                <Stepper.Step label="First step" description="Add images">
+                  <Upload
+                    imagesURLs={imagesURLs}
+                    setImagesURLs={setImagesURLs}
+                    imageData={imageData}
+                    setImageData={setImageData}
+                  />
+                  <ImageGrid
+                    imagesURLs={imagesURLs}
+                    setImagesURLs={setImagesURLs}
+                    imageData={imageData}
+                    openedMap={openedMap}
+                    setOpenedMap={setOpenedMap}
+                  />
+                </Stepper.Step>
+                <Stepper.Step
+                  label="Second step"
+                  description="Confirm information"
+                  allowStepSelect={imagesURLs.length > 0}
+                >
+                  <ImageMetadata
+                    imageData={imageData}
+                    metadata={metadata}
+                    setMetadata={setMetadata}
+                    images={images}
+                    setImages={setImages}
+                  >
+                    <Center mt={24}>
+                      <ImageCarousel
+                        imagesURLs={imagesURLs}
+                        setImagesURLs={setImagesURLs}
+                        imageData={imageData}
+                        openedMap={openedMap}
+                        setOpenedMap={setOpenedMap}
+                        metadata={metadata}
+                        setMetadata={setMetadata}
+                      />
+                    </Center>
+                  </ImageMetadata>
+                </Stepper.Step>
+                <Stepper.Step
+                  label="Final step"
+                  description="Generate your NFTs"
+                  allowStepSelect={imagesURLs.length > 0}
+                >
+                  <ImageMetadata
+                    imageData={imageData}
+                    metadata={metadata}
+                    setMetadata={setMetadata}
+                    images={images}
+                    setImages={setImages}
+                  >
+                    <ImageTable
+                      imagesURLs={imagesURLs}
+                      setImagesURLs={setImagesURLs}
+                      imageData={imageData}
+                      openedMap={openedMap}
+                      setOpenedMap={setOpenedMap}
+                    />
+                  </ImageMetadata>
+                </Stepper.Step>
+                <Stepper.Completed>
+                  <Center>
+                    {mintIsLoading && <div>Check Wallet</div>}
+                    {mintIsSuccess && (
+                      <div>Transaction: {JSON.stringify(mintData)}</div>
+                    )}
+                    {mintIsError && (
+                      <Text>
+                        There has been an error in the transaction. Please try
+                        again!
+                      </Text>
+                    )}
+                  </Center>
+                </Stepper.Completed>
+              </Stepper>
 
-        <Group position="center" mt="xl">
-          {active < 3 && (
-            <Button variant="default" onClick={prevStep}>
-              Back
-            </Button>
+              <Group position="center" mt="xl">
+                {active < 3 && (
+                  <Button variant="default" onClick={prevStep}>
+                    Back
+                  </Button>
+                )}
+                {active === 3 && mintIsError && (
+                  <Button variant="default" onClick={prevStep}>
+                    Back
+                  </Button>
+                )}
+                {active < 2 && <Button onClick={nextStep}>Next step</Button>}
+                {active === 2 && (
+                  <Button
+                    disabled={!mintWrite}
+                    onClick={() => {
+                      mintWrite?.()
+                      nextStep()
+                    }}
+                  >
+                    Generate NFTs
+                  </Button>
+                )}
+              </Group>
+            </>
           )}
-          {active !== 3 && (
-            <Button onClick={nextStep}>
-              {active === 2 ? 'Generate NFTs' : 'Next step'}
-            </Button>
-          )}
-        </Group>
+        </RunContract>
       </AuthenticatedPage>
     </>
   )
