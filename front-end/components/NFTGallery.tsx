@@ -7,9 +7,11 @@ import {
   Image,
   Text,
   LoadingOverlay,
+  Pagination,
+  Center,
 } from '@mantine/core'
 import { Network, Alchemy, OwnedNftsResponse } from 'alchemy-sdk'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { contractAddress } from '../constants'
 import { useEffectOnce } from '../hooks/useEffectOnce'
 import TimeAgo from 'javascript-time-ago'
@@ -64,10 +66,14 @@ const useStyles = createStyles((theme, _params, getRef) => ({
   },
 }))
 
+const PAGE_SIZE = 12
+
 export default function NFTGallery({ address }) {
   const [nftList, setNftList] = useState<OwnedNftsResponse>()
   const [loading, setLoading] = useState(false)
   const [openedMap, setOpenedMap] = useState({})
+  const [page, setPage] = useState(1)
+  const [records, setRecords] = useState(null)
 
   const { classes } = useStyles()
 
@@ -81,14 +87,25 @@ export default function NFTGallery({ address }) {
   useEffectOnce(() => {
     setLoading(true)
     alchemy.nft
-      .getNftsForOwner(address, { contractAddresses: [contractAddress] })
-      .then((res) => setNftList(res))
+      .getNftsForOwner(address, {
+        contractAddresses: [contractAddress],
+      })
+      .then((res) => {
+        setNftList(res)
+        setRecords(res.ownedNfts.slice(0, PAGE_SIZE))
+      })
       .finally(() => setLoading(false))
   })
 
+  useEffect(() => {
+    const from = (page - 1) * PAGE_SIZE
+    const to = from + PAGE_SIZE
+    setRecords(nftList?.ownedNfts.slice(from, to))
+  }, [page])
+
   console.log(nftList)
 
-  const nfts = nftList?.ownedNfts.map((nft, index) => {
+  const nfts = records?.map((nft, index) => {
     return (
       <>
         <Grid.Col span={6} sm={4} md={3}>
@@ -169,8 +186,16 @@ export default function NFTGallery({ address }) {
   return (
     <>
       {<LoadingOverlay visible={loading} />}
-
       {nfts && <Grid gutter="xl">{nfts}</Grid>}
+      {nftList?.ownedNfts.length > PAGE_SIZE && (
+        <Center py={32}>
+          <Pagination
+            page={page}
+            onChange={setPage}
+            total={Math.floor(nftList?.ownedNfts.length / PAGE_SIZE) + 1}
+          />
+        </Center>
+      )}
     </>
   )
 }
