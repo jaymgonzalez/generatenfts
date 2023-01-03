@@ -1,8 +1,6 @@
-import { Center } from '@mantine/core'
 import { useAccount, useContractRead, useNetwork } from 'wagmi'
 import { contractAddress, contractAbi } from '../constants'
 import { useEffect, useRef, useState } from 'react'
-import ImageCarousel from './ImageCarousel'
 import { returnCid } from '../utils/cid'
 
 const date = new Date()
@@ -74,15 +72,12 @@ async function getMetadata(images, metadata, tokenId) {
 }
 
 export default function ImageMetadata({
-  imagesURLs,
-  setImagesURLs,
   imageData,
-  openedMap,
-  setOpenedMap,
   metadata,
   setMetadata,
   images,
   setImages,
+  children,
 }) {
   const { address } = useAccount()
   const { chain } = useNetwork()
@@ -127,21 +122,7 @@ export default function ImageMetadata({
     )
   }, [refMetadata.current, tokenIdSuccess])
 
-  return (
-    <>
-      <Center mt={24}>
-        <ImageCarousel
-          imagesURLs={imagesURLs}
-          setImagesURLs={setImagesURLs}
-          imageData={imageData}
-          openedMap={openedMap}
-          setOpenedMap={setOpenedMap}
-          metadata={metadata}
-          setMetadata={setMetadata}
-        />
-      </Center>
-    </>
-  )
+  return <>{children}</>
 }
 
 // https://bafybeid55flk2mxmkjkbvrklpbckdhmws66dng4oldgf5lpsfbpydiepkq.ipfs.w3s.link/44.png

@@ -7,6 +7,7 @@ import ImageMetadata from '../components/ImageMetadata'
 import ImageTable from '../components/ImageTable'
 import AuthenticatedPage from '../components/Authenticated'
 import RunContract from '../components/RunContract'
+import ImageCarousel from '../components/ImageCarousel'
 
 type Attribute = {
   attribute: string
@@ -64,36 +65,52 @@ export default function About() {
             allowStepSelect={imagesURLs.length > 0}
           >
             <ImageMetadata
-              imagesURLs={imagesURLs}
-              setImagesURLs={setImagesURLs}
               imageData={imageData}
-              openedMap={openedMap}
-              setOpenedMap={setOpenedMap}
               metadata={metadata}
               setMetadata={setMetadata}
               images={images}
               setImages={setImages}
-            />
+            >
+              <Center mt={24}>
+                <ImageCarousel
+                  imagesURLs={imagesURLs}
+                  setImagesURLs={setImagesURLs}
+                  imageData={imageData}
+                  openedMap={openedMap}
+                  setOpenedMap={setOpenedMap}
+                  metadata={metadata}
+                  setMetadata={setMetadata}
+                />
+              </Center>
+            </ImageMetadata>
           </Stepper.Step>
           <Stepper.Step
             label="Final step"
             description="Generate your NFTs"
             allowStepSelect={imagesURLs.length > 0}
           >
-            <>
-              <RunContract
-                address={address}
-                metadata={metadata}
-                images={images}
-              />
-              <ImageTable
-                imagesURLs={imagesURLs}
-                setImagesURLs={setImagesURLs}
-                imageData={imageData}
-                openedMap={openedMap}
-                setOpenedMap={setOpenedMap}
-              />
-            </>
+            <ImageMetadata
+              imageData={imageData}
+              metadata={metadata}
+              setMetadata={setMetadata}
+              images={images}
+              setImages={setImages}
+            >
+              <>
+                <RunContract
+                  address={address}
+                  metadata={metadata}
+                  images={images}
+                />
+                <ImageTable
+                  imagesURLs={imagesURLs}
+                  setImagesURLs={setImagesURLs}
+                  imageData={imageData}
+                  openedMap={openedMap}
+                  setOpenedMap={setOpenedMap}
+                />
+              </>
+            </ImageMetadata>
           </Stepper.Step>
           <Stepper.Completed>Visit the gallery</Stepper.Completed>
         </Stepper>
