@@ -37,7 +37,7 @@ export default function About() {
 
   useEffect(() => {
     if (imagesURLs.length === 0) setActive(0)
-  }, [imagesURLs.length])
+  }, [imagesURLs.length, active])
 
   return (
     <>
@@ -58,16 +58,11 @@ export default function About() {
               setOpenedMap={setOpenedMap}
             />
           </Stepper.Step>
-          <Stepper.Step label="Second step" description="Confirm information">
-            <ImageTable
-              imagesURLs={imagesURLs}
-              setImagesURLs={setImagesURLs}
-              imageData={imageData}
-              openedMap={openedMap}
-              setOpenedMap={setOpenedMap}
-            />
-          </Stepper.Step>
-          <Stepper.Step label="Final step" description="Generate your NFTs">
+          <Stepper.Step
+            label="Second step"
+            description="Confirm information"
+            allowStepSelect={imagesURLs.length > 0}
+          >
             <ImageMetadata
               imagesURLs={imagesURLs}
               setImagesURLs={setImagesURLs}
@@ -80,15 +75,27 @@ export default function About() {
               setImages={setImages}
             />
           </Stepper.Step>
-          <Stepper.Completed>
+          <Stepper.Step
+            label="Final step"
+            description="Generate your NFTs"
+            allowStepSelect={imagesURLs.length > 0}
+          >
             <>
               <RunContract
                 address={address}
                 metadata={metadata}
                 images={images}
               />
+              <ImageTable
+                imagesURLs={imagesURLs}
+                setImagesURLs={setImagesURLs}
+                imageData={imageData}
+                openedMap={openedMap}
+                setOpenedMap={setOpenedMap}
+              />
             </>
-          </Stepper.Completed>
+          </Stepper.Step>
+          <Stepper.Completed>Visit the gallery</Stepper.Completed>
         </Stepper>
 
         <Group position="center" mt="xl">
