@@ -1,4 +1,6 @@
 import { useForm } from '@mantine/form'
+import { useDispatch, useSelector } from 'react-redux'
+import { setImageUrls, selectImagesUrls } from '../store/slices/imageSlice'
 import {
   TextInput,
   Button,
@@ -22,8 +24,11 @@ export default function ImageForm({
   setImagesURLs,
 }) {
   const { address } = useAccount()
+  const dispatch = useDispatch()
 
-  const initialValues = imagesURLs.map((img) =>
+  const reduxImages = useSelector(selectImagesUrls)
+
+  const initialValues = reduxImages.map((img) =>
     imageData.find((data) => data.url === img)
   )
 
@@ -140,6 +145,7 @@ export default function ImageForm({
               newImagesUrls.splice(index, 1)
               imageData.splice(index, 1)
               setImagesURLs(newImagesUrls)
+              dispatch(setImageUrls(newImagesUrls))
               setOpenedMap({
                 ...openedMap,
                 [index]: false,

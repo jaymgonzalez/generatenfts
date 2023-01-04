@@ -2,7 +2,10 @@ import { createSlice } from '@reduxjs/toolkit'
 import { HYDRATE } from 'next-redux-wrapper'
 
 const initialState = {
-  value: [],
+  value: {
+    urls: [],
+    metadata: [],
+  },
 }
 
 export const imageSlice = createSlice({
@@ -10,8 +13,8 @@ export const imageSlice = createSlice({
   initialState,
   reducers: {
     // Action to add images
-    addImage: (state, action) => {
-      state.value = action.payload
+    setImageUrls: (state, action) => {
+      state.value.urls = action.payload
     },
 
     // Special reducer for hydrating the state
@@ -27,6 +30,6 @@ export const imageSlice = createSlice({
   },
 })
 
-export const { addImage } = imageSlice.actions
-export const selectImages = (state) => state.images.value
+export const { setImageUrls } = imageSlice.actions
+export const selectImagesUrls = (state) => state.images.value.urls
 export default imageSlice.reducer

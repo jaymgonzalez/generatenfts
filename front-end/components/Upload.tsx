@@ -3,7 +3,7 @@ import { Text, Group, Button, createStyles } from '@mantine/core'
 import { Dropzone, FileWithPath, MIME_TYPES } from '@mantine/dropzone'
 import { IconCloudUpload, IconX, IconDownload } from '@tabler/icons'
 import { useDispatch, useSelector } from 'react-redux'
-import { addImage } from '../store/slices/imageSlice'
+import { setImageUrls } from '../store/slices/imageSlice'
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -62,7 +62,7 @@ export default function Upload({
     )
     setImageData(imageData)
     setImagesURLs(newImageURLs)
-    dispatch(addImage(newImageURLs))
+    dispatch(setImageUrls(newImageURLs))
   }, [images])
 
   function onImageDrop(files: any) {
