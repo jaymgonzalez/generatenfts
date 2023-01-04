@@ -49,16 +49,8 @@ export default function About() {
             <>
               <Stepper active={active} onStepClick={setActive} breakpoint="sm">
                 <Stepper.Step label="First step" description="Add images">
-                  <Upload
-                    imagesURLs={imagesURLs}
-                    setImagesURLs={setImagesURLs}
-                    imageData={imageData}
-                    setImageData={setImageData}
-                  />
+                  <Upload />
                   <ImageGrid
-                    imagesURLs={imagesURLs}
-                    setImagesURLs={setImagesURLs}
-                    imageData={imageData}
                     openedMap={openedMap}
                     setOpenedMap={setOpenedMap}
                   />

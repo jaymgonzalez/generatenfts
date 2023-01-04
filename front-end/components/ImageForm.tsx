@@ -1,6 +1,11 @@
 import { useForm } from '@mantine/form'
 import { useDispatch, useSelector } from 'react-redux'
-import { setImageUrls, selectImagesUrls } from '../store/slices/imageSlice'
+import {
+  setImageUrls,
+  selectImagesUrls,
+  setImageMetadata,
+  selectImagesMetadata,
+} from '../store/slices/imageSlice'
 import {
   TextInput,
   Button,
@@ -15,31 +20,28 @@ import {
 import { IconCircleMinus, IconCirclePlus, IconTrash } from '@tabler/icons'
 import { useAccount } from 'wagmi'
 
-export default function ImageForm({
-  imagesURLs,
-  imageData,
-  index,
-  setOpenedMap,
-  openedMap,
-  setImagesURLs,
-}) {
+export default function ImageForm({ index, setOpenedMap, openedMap }) {
   const { address } = useAccount()
   const dispatch = useDispatch()
 
-  const reduxImages = useSelector(selectImagesUrls)
+  const reduxImageUrls = useSelector(selectImagesUrls)
+  const reduxImagesMetadata = useSelector(selectImagesMetadata)
 
-  const initialValues = reduxImages.map((img) =>
-    imageData.find((data) => data.url === img)
-  )
+  // const initialValues = reduxImageUrls.map((img) =>
+  //   reduxImagesMetadata.find((data) => data.url === img)
+  // )
+
+  // console.log('redux', reduxImagesMetadata)
 
   const form = useForm({
     initialValues: {
-      nftName: initialValues[index].nftName || initialValues[index].name,
-      author: initialValues[index].author || address,
-      attributes: initialValues[index].attributes || [
+      nftName:
+        reduxImagesMetadata[index].nftName || reduxImagesMetadata[index].name, // TODO: add owner here
+      author: reduxImagesMetadata[index].author || address,
+      attributes: reduxImagesMetadata[index].attributes || [
         { attribute: '', value: '' },
       ],
-      description: initialValues[index].description || '',
+      description: reduxImagesMetadata[index].description || '',
     },
   })
 
@@ -76,8 +78,8 @@ export default function ImageForm({
         onSubmit={form.onSubmit((values) => {
           const { nftName, author, attributes, description } = values
 
-          imageData[index] = {
-            ...imageData[index],
+          reduxImagesMetadata[index] = {
+            ...reduxImagesMetadata[index],
             nftName,
             author,
             attributes,
@@ -141,11 +143,15 @@ export default function ImageForm({
             variant="light"
             color="red"
             onClick={() => {
-              const newImagesUrls = imagesURLs.slice()
+              const newImagesUrls = reduxImageUrls.slice()
               newImagesUrls.splice(index, 1)
-              imageData.splice(index, 1)
-              setImagesURLs(newImagesUrls)
+
+              const newImageMetadata = reduxImagesMetadata.slice()
+              newImageMetadata.splice(index, 1)
+
+              // setImagesURLs(newImagesUrls)
               dispatch(setImageUrls(newImagesUrls))
+              dispatch(setImageMetadata(newImageMetadata))
               setOpenedMap({
                 ...openedMap,
                 [index]: false,

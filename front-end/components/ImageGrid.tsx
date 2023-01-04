@@ -19,13 +19,7 @@ const useStyles = createStyles(() => ({
   },
 }))
 
-export default function ImageGrid({
-  imagesURLs,
-  setImagesURLs,
-  imageData,
-  openedMap,
-  setOpenedMap,
-}) {
+export default function ImageGrid({ openedMap, setOpenedMap }) {
   const { classes } = useStyles()
 
   const reduxImages = useSelector(selectImagesUrls)
@@ -48,9 +42,6 @@ export default function ImageGrid({
         />
         <ImageModal
           index={i}
-          imagesURLs={imagesURLs}
-          setImagesURLs={setImagesURLs}
-          imageData={imageData}
           setOpenedMap={setOpenedMap}
           openedMap={openedMap}
           imageSrc={imageSrc}
@@ -61,24 +52,24 @@ export default function ImageGrid({
 
   return (
     <>
-      {imagesURLs.length > 0 && (
+      {reduxImages.length > 0 && (
         <Title className={classes.title} order={2}>
           Images
         </Title>
       )}
       <SimpleGrid
         className={classes.container}
-        cols={imagesURLs.length <= 4 ? imagesURLs.length : 4}
+        cols={reduxImages.length <= 4 ? reduxImages.length : 4}
         spacing="lg"
         breakpoints={[
           {
             maxWidth: 'md',
-            cols: imagesURLs.length <= 3 ? imagesURLs.length : 3,
+            cols: reduxImages.length <= 3 ? reduxImages.length : 3,
             spacing: 'md',
           },
           {
             maxWidth: 'sm',
-            cols: imagesURLs.length <= 2 ? imagesURLs.length : 2,
+            cols: reduxImages.length <= 2 ? reduxImages.length : 2,
             spacing: 'sm',
           },
           {

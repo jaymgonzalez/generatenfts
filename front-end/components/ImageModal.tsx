@@ -2,9 +2,6 @@ import { Image, Modal } from '@mantine/core'
 import ImageForm from './ImageForm'
 
 export default function ImageModal({
-  imagesURLs,
-  setImagesURLs,
-  imageData,
   openedMap,
   setOpenedMap,
   imageSrc,
@@ -23,11 +20,8 @@ export default function ImageModal({
       <Image py="lg" mx="auto" radius="sm" src={imageSrc} />
       <ImageForm
         index={index}
-        imagesURLs={imagesURLs}
-        imageData={imageData}
         setOpenedMap={setOpenedMap}
         openedMap={openedMap}
-        setImagesURLs={setImagesURLs}
       ></ImageForm>
     </Modal>
   )

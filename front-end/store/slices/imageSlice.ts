@@ -17,6 +17,10 @@ export const imageSlice = createSlice({
       state.value.urls = action.payload
     },
 
+    setImageMetadata: (state, action) => {
+      state.value.metadata = action.payload
+    },
+
     // Special reducer for hydrating the state
     // extraReducers: {
     //   // @ts-ignore
@@ -30,6 +34,8 @@ export const imageSlice = createSlice({
   },
 })
 
-export const { setImageUrls } = imageSlice.actions
+export const { setImageUrls, setImageMetadata } = imageSlice.actions
 export const selectImagesUrls = (state) => state.images.value.urls
+export const selectImagesMetadata = (state) => state.images.value.metadata
+
 export default imageSlice.reducer

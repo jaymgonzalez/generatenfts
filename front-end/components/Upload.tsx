@@ -3,7 +3,11 @@ import { Text, Group, Button, createStyles } from '@mantine/core'
 import { Dropzone, FileWithPath, MIME_TYPES } from '@mantine/dropzone'
 import { IconCloudUpload, IconX, IconDownload } from '@tabler/icons'
 import { useDispatch, useSelector } from 'react-redux'
-import { setImageUrls } from '../store/slices/imageSlice'
+import {
+  selectImagesUrls,
+  setImageMetadata,
+  setImageUrls,
+} from '../store/slices/imageSlice'
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -37,32 +41,29 @@ function genId() {
   return `0x${Math.random().toString(36).substring(2, 12)}`
 }
 
-export default function Upload({
-  imagesURLs,
-  setImagesURLs,
-  imageData,
-  setImageData,
-}) {
+export default function Upload() {
   const { classes, theme } = useStyles()
   const openRef = useRef<() => void>(null)
   const [images, setImages] = useState<FileWithPath[]>([])
   const dispatch = useDispatch()
 
+  const reduxImageUrls = useSelector(selectImagesUrls)
+
   useEffect(() => {
     if (images.length < 1) return
-    const newImageURLs = imagesURLs.concat(
+    const imageMetadata = []
+    const newImageURLs = reduxImageUrls.concat(
       images.map((image) => {
         const { name } = image
         const url = URL.createObjectURL(image)
         const extension = name.split('.')[name.split('.').length - 1]
         const id = genId()
-        imageData.push({ name, extension, url, id })
+        imageMetadata.push({ name, extension, url, id })
         return url
       })
     )
-    setImageData(imageData)
-    setImagesURLs(newImageURLs)
     dispatch(setImageUrls(newImageURLs))
+    dispatch(setImageMetadata(imageMetadata))
   }, [images])
 
   function onImageDrop(files: any) {
