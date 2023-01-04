@@ -1,5 +1,6 @@
 import { SimpleGrid, Image, createStyles, Title, Box } from '@mantine/core'
-import { randomId } from '@mantine/hooks'
+import { useSelector } from 'react-redux'
+import { selectImages } from '../store/slices/imageSlice'
 import ImageModal from './ImageModal'
 
 const useStyles = createStyles(() => ({
@@ -27,9 +28,13 @@ export default function ImageGrid({
 }) {
   const { classes } = useStyles()
 
-  const images = imagesURLs.map((imageSrc: string, i: number) => {
+  const reduxImages = useSelector(selectImages)
+
+  console.log(reduxImages)
+
+  const images = reduxImages.map((imageSrc: string, i: number) => {
     return (
-      <Box key={randomId()}>
+      <Box key={imageSrc}>
         <Image
           sx={{ cursor: 'pointer' }}
           mx="auto"
