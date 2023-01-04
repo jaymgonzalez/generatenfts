@@ -6,7 +6,7 @@ import {
 } from 'wagmi'
 import { BigNumber } from 'ethers'
 import { returnCid, storeFiles } from '../utils/cid'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import NFTGallery from './NFTGallery'
 
 function createMetadataFiles(metadata) {
@@ -27,6 +27,7 @@ function createMetadataFiles(metadata) {
 
 export default function RunContract({ address, metadata, images, children }) {
   const [metadataCid, setMetadataCid] = useState('')
+  const filesRef = useRef('')
 
   const files = createMetadataFiles(metadata)
   // returnCid(images)
@@ -84,10 +85,13 @@ export default function RunContract({ address, metadata, images, children }) {
   }, [mintIsSuccess])
 
   useEffect(() => {
-    if (metadata.length > 0)
+    const metadataString = JSON.stringify(metadata)
+    if (metadata.length > 0 && metadataString !== filesRef.current) {
+      filesRef.current = metadataString
       returnCid(files).then((res) => {
         setMetadataCid(res)
       })
+    }
   }, [metadata])
 
   return (

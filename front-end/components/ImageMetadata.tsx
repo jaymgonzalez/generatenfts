@@ -43,7 +43,7 @@ async function getMetadata(images, metadata, tokenId) {
         : 'Generate NFT Collection', // choose by user (Name + Creator)
       id: img.id,
       cid,
-      tokenId: parseInt(tokenId) + 1,
+      tokenId: parseInt(tokenId) + 1 + i,
       name: img.nftName || parseInt(tokenId) + 1 + i,
       ...metadata,
       image: img.nftName
