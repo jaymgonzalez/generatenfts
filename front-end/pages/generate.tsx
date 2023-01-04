@@ -1,5 +1,13 @@
-import { Stepper, Group, Button, Center, Text, Box } from '@mantine/core'
-import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi'
+import {
+  Stepper,
+  Group,
+  Button,
+  Center,
+  Text,
+  Box,
+  Notification,
+} from '@mantine/core'
+import { useAccount, useNetwork } from 'wagmi'
 import { useEffect, useState } from 'react'
 import Upload from '../components/Upload'
 import ImageGrid from '../components/ImageGrid'
@@ -8,6 +16,7 @@ import ImageTable from '../components/ImageTable'
 import AuthenticatedPage from '../components/Authenticated'
 import RunContract from '../components/RunContract'
 import ImageCarousel from '../components/ImageCarousel'
+import { IconCheck, IconX } from '@tabler/icons'
 
 type Attribute = {
   attribute: string
@@ -110,15 +119,53 @@ export default function About() {
                 </Stepper.Step>
                 <Stepper.Completed>
                   <Center>
-                    {mintIsLoading && <div>Check Wallet</div>}
+                    {mintIsLoading && (
+                      <Notification
+                        loading
+                        title="Generating NFT"
+                        disallowClose
+                      >
+                        Please accept the transaction in your wallet
+                      </Notification>
+                    )}
                     {mintIsSuccess && (
-                      <div>Transaction: {JSON.stringify(mintData)}</div>
+                      <Notification
+                        icon={<IconCheck size={20} />}
+                        color="teal"
+                        title="Success"
+                        disallowClose
+                        sx={(theme) => ({
+                          a: {
+                            textDecoration: 'none',
+                            color:
+                              theme.colorScheme === 'dark'
+                                ? theme.colors.blue[4]
+                                : theme.colors.gray[3],
+                            '&:hover': {
+                              color: theme.colors.blue[7],
+                            },
+                          },
+                        })}
+                      >
+                        Transaction successful! Check it{' '}
+                        <a
+                          target="_blank"
+                          href={`https://mumbai.polygonscan.com/tx/${mintData.hash}`}
+                        >
+                          here
+                        </a>
+                      </Notification>
                     )}
                     {mintIsError && (
-                      <Text>
-                        There has been an error in the transaction. Please try
+                      <Notification
+                        icon={<IconX size={20} />}
+                        color="red"
+                        title="Error"
+                        disallowClose
+                      >
+                        There has been an error in the transaction, please try
                         again!
-                      </Text>
+                      </Notification>
                     )}
                   </Center>
                 </Stepper.Completed>
