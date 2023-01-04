@@ -51,8 +51,8 @@ export default function ImageCard({
           <Image height={400} src={imagesURLs[index]} alt={card.name} />
         </Card.Section>
         <Card.Section
-          onMouseEnter={() => embla.reInit({ draggable: false })}
-          onMouseLeave={() => embla.reInit({ draggable: true })}
+          onMouseEnter={embla && (() => embla.reInit({ draggable: false }))}
+          onMouseLeave={embla && (() => embla.reInit({ draggable: true }))}
         >
           <Prism
             getPrismTheme={() => theme}

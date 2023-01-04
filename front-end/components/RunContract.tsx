@@ -6,8 +6,7 @@ import {
 } from 'wagmi'
 import { BigNumber } from 'ethers'
 import { returnCid, storeFiles } from '../utils/cid'
-import { useEffect, useState, cloneElement } from 'react'
-import { Button, Center, Text } from '@mantine/core'
+import { useEffect, useState } from 'react'
 import NFTGallery from './NFTGallery'
 
 function createMetadataFiles(metadata) {
