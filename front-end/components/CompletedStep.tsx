@@ -1,5 +1,6 @@
 import { Center, Notification } from '@mantine/core'
 import { IconCheck, IconX } from '@tabler/icons'
+import Link from 'next/link'
 
 export default function CompletedStep({
   mintData,
@@ -34,13 +35,15 @@ export default function CompletedStep({
               },
             })}
           >
-            Transaction successful! Check it{' '}
+            Transaction successful! Check it on the blockchain{' '}
             <a
               target="_blank"
               href={`https://mumbai.polygonscan.com/tx/${mintData.hash}`}
             >
               here
             </a>
+            <br />
+            Or visit the Gallery <Link href="/gallery">here</Link>
           </Notification>
         )}
         {mintIsError && (
