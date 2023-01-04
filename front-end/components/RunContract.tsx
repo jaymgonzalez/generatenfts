@@ -36,13 +36,13 @@ export default function RunContract({ address, metadata, images, children }) {
     (data) => `${data.name.toString().trim().replace(/ /g, '_')}.json`
   )
 
-  const { data: fee } = useContractRead({
-    address: contractAddress,
-    abi: contractAbi,
-    functionName: 'fee',
-  })
+  // const { data: fee } = useContractRead({
+  //   address: contractAddress,
+  //   abi: contractAbi,
+  //   functionName: 'fee',
+  // })
 
-  const value = parseInt(fee?.toString()) * names.length
+  // const value = parseInt(fee?.toString()) * names.length
 
   const { config: mintConfig } = usePrepareContractWrite({
     address: contractAddress,
