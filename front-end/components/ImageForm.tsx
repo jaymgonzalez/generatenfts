@@ -5,6 +5,7 @@ import {
   selectImagesUrls,
   setImageMetadata,
   selectImagesMetadata,
+  setNftMetadata,
 } from '../store/slices/imageSlice'
 import {
   TextInput,
@@ -27,17 +28,11 @@ export default function ImageForm({ index, setOpenedMap, openedMap }) {
   const reduxImageUrls = useSelector(selectImagesUrls)
   const reduxImagesMetadata = useSelector(selectImagesMetadata)
 
-  // const initialValues = reduxImageUrls.map((img) =>
-  //   reduxImagesMetadata.find((data) => data.url === img)
-  // )
-
-  // console.log('redux', reduxImagesMetadata)
-
   const form = useForm({
     initialValues: {
       nftName:
-        reduxImagesMetadata[index].nftName || reduxImagesMetadata[index].name, // TODO: add owner here
-      author: reduxImagesMetadata[index].author || address,
+        reduxImagesMetadata[index].nftName || reduxImagesMetadata[index].name, // TODO: add owner
+      author: reduxImagesMetadata[index].author,
       attributes: reduxImagesMetadata[index].attributes || [
         { attribute: '', value: '' },
       ],
@@ -78,13 +73,17 @@ export default function ImageForm({ index, setOpenedMap, openedMap }) {
         onSubmit={form.onSubmit((values) => {
           const { nftName, author, attributes, description } = values
 
-          reduxImagesMetadata[index] = {
+          const updatedMetadata = {
             ...reduxImagesMetadata[index],
             nftName,
             author,
             attributes,
             description,
           }
+          dispatch(setNftMetadata(updatedMetadata))
+
+          console.log(setNftMetadata(updatedMetadata))
+
           setOpenedMap({
             ...openedMap,
             [index]: false,
@@ -93,14 +92,14 @@ export default function ImageForm({ index, setOpenedMap, openedMap }) {
       >
         <TextInput
           placeholder="NFT name"
-          label="NFT name"
+          label="Add NFT name"
           radius="md"
           withAsterisk
           {...form.getInputProps('nftName')}
         />
         <TextInput
           label="Author"
-          placeholder="Creator's name"
+          placeholder="Add creator's name"
           {...form.getInputProps('author')}
         />
         <Textarea
@@ -149,7 +148,6 @@ export default function ImageForm({ index, setOpenedMap, openedMap }) {
               const newImageMetadata = reduxImagesMetadata.slice()
               newImageMetadata.splice(index, 1)
 
-              // setImagesURLs(newImagesUrls)
               dispatch(setImageUrls(newImagesUrls))
               dispatch(setImageMetadata(newImageMetadata))
               setOpenedMap({

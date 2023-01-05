@@ -5,7 +5,6 @@ import { returnCid } from '../utils/cid'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   selectImagesMetadata,
-  selectNftMetadata,
   setNftMetadata,
 } from '../store/slices/imageSlice'
 
@@ -74,7 +73,6 @@ export default function ImageMetadata({ images, setImages, children }) {
   const [tokenId, setTokenId] = useState(null)
 
   const reduxImageMetadata = useSelector(selectImagesMetadata)
-  const reduxNftMetadata = useSelector(selectNftMetadata)
 
   const dispacth = useDispatch()
 
@@ -108,11 +106,11 @@ export default function ImageMetadata({ images, setImages, children }) {
 
   useEffect(() => {
     if (
-      JSON.stringify(refMetadata.current) !== JSON.stringify(reduxNftMetadata)
+      JSON.stringify(refMetadata.current) !== JSON.stringify(reduxImageMetadata)
     ) {
-      refMetadata.current = reduxNftMetadata
+      refMetadata.current = reduxImageMetadata
     }
-  }, [reduxNftMetadata])
+  }, [reduxImageMetadata])
 
   useEffect(() => {
     Promise.resolve(

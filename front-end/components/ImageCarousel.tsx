@@ -2,10 +2,7 @@ import { Carousel, Embla } from '@mantine/carousel'
 import { createStyles } from '@mantine/core'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import {
-  selectImagesMetadata,
-  selectNftMetadata,
-} from '../store/slices/imageSlice'
+import { selectImagesMetadata } from '../store/slices/imageSlice'
 import ImageCard from './ImageCard'
 import ImageModal from './ImageModal'
 
@@ -61,10 +58,9 @@ export default function ImageCarousel({
   const { classes } = useStyles()
   const [embla, setEmbla] = useState<Embla | null>(null)
 
-  const reduxNftMetadata = useSelector(selectNftMetadata)
   const reduxImagesMetadata = useSelector(selectImagesMetadata)
 
-  const cards = reduxNftMetadata.map((card, index) => {
+  const cards = reduxImagesMetadata.map((card, index) => {
     return (
       <Carousel.Slide key={card.id}>
         <ImageModal

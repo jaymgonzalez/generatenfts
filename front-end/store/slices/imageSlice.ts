@@ -2,11 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 import { HYDRATE } from 'next-redux-wrapper'
 
 const initialState = {
-  value: {
-    urls: [],
-    metadata: [],
-    nftMetadata: [],
-  },
+  urls: [],
+  metadata: [],
 }
 
 export const imageSlice = createSlice({
@@ -15,15 +12,25 @@ export const imageSlice = createSlice({
   reducers: {
     // Action to add images
     setImageUrls: (state, action) => {
-      state.value.urls = action.payload
+      state.urls = action.payload
     },
 
     setImageMetadata: (state, action) => {
-      state.value.metadata = action.payload
+      state.metadata = action.payload
     },
 
     setNftMetadata: (state, action) => {
-      state.value.nftMetadata = action.payload
+      // const index = state.nftMetadata.indexOf(action.payload)
+      const updatedMetadata = state.metadata.map((data) => {
+        if (data.id === action.payload.id) {
+          return {
+            ...data,
+            ...action.payload,
+          }
+        }
+        return data
+      })
+      state.metadata = updatedMetadata
     },
 
     // Special reducer for hydrating the state
@@ -41,8 +48,7 @@ export const imageSlice = createSlice({
 
 export const { setImageUrls, setImageMetadata, setNftMetadata } =
   imageSlice.actions
-export const selectImagesUrls = (state) => state.images.value.urls
-export const selectImagesMetadata = (state) => state.images.value.metadata
-export const selectNftMetadata = (state) => state.images.value.nftMetadata
+export const selectImagesUrls = (state) => state.images.urls
+export const selectImagesMetadata = (state) => state.images.metadata
 
 export default imageSlice.reducer
