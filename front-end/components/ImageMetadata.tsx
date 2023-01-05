@@ -5,6 +5,7 @@ import { returnCid } from '../utils/cid'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   selectImagesMetadata,
+  setImageMetadata,
   setNftMetadata,
 } from '../store/slices/imageSlice'
 
@@ -42,6 +43,8 @@ async function getMetadata(images, metadata, tokenId) {
       }
     })
 
+    console.log(img)
+
     const newMetadata = {
       title: tokenId
         ? `Generate NFT Collection #${parseInt(tokenId) + 1 + i}`
@@ -57,6 +60,7 @@ async function getMetadata(images, metadata, tokenId) {
           }`
         : `ipfs://${cid}/${parseInt(tokenId) + 1 + i}.${img.extension}`,
       timestamp: metadata.timestamp || Math.floor(date.getTime() / 1000),
+      extension: img.extension,
     }
 
     if (img.author) newMetadata.author = img.author
@@ -115,7 +119,7 @@ export default function ImageMetadata({ images, setImages, children }) {
   useEffect(() => {
     Promise.resolve(
       getMetadata(reduxImageMetadata, baseMetadata, tokenId)
-    ).then((res) => dispacth(setNftMetadata(res)))
+    ).then((res) => dispacth(setImageMetadata(res)))
   }, [refMetadata.current, tokenIdData])
 
   return <>{children}</>

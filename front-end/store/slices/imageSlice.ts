@@ -50,5 +50,4 @@ export const { setImageUrls, setImageMetadata, setNftMetadata } =
   imageSlice.actions
 export const selectImagesUrls = (state) => state.images.urls
 export const selectImagesMetadata = (state) => state.images.metadata
-
 export default imageSlice.reducer
