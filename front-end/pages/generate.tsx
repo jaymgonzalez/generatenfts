@@ -1,6 +1,9 @@
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { selectImagesUrls } from '../store/slices/imageSlice'
 import { Stepper, Group, Button, Center } from '@mantine/core'
 import { useAccount, useNetwork } from 'wagmi'
-import { useEffect, useState } from 'react'
+
 import Upload from '../components/Upload'
 import ImageGrid from '../components/ImageGrid'
 import ImageMetadata from '../components/ImageMetadata'
@@ -23,7 +26,7 @@ export type ImageData = {
   attributes?: Attribute[]
 }
 
-export default function About() {
+export default function GenerateNft() {
   const [active, setActive] = useState(0)
   const [imagesURLs, setImagesURLs] = useState([])
   const [imageData, setImageData] = useState<ImageData[]>([])
@@ -32,14 +35,16 @@ export default function About() {
   const [images, setImages] = useState([])
   const { address } = useAccount()
 
+  const reduxImageUrls = useSelector(selectImagesUrls)
+
   const nextStep = () =>
     setActive((current) => (current < 3 ? current + 1 : current))
   const prevStep = () =>
     setActive((current) => (current > 0 ? current - 1 : current))
 
   useEffect(() => {
-    if (imagesURLs.length === 0) setActive(0)
-  }, [imagesURLs.length, active])
+    if (reduxImageUrls.length === 0) setActive(0)
+  }, [reduxImageUrls.length, active])
 
   return (
     <>
@@ -58,15 +63,9 @@ export default function About() {
                 <Stepper.Step
                   label="Second step"
                   description="Confirm information"
-                  allowStepSelect={imagesURLs.length > 0}
+                  allowStepSelect={reduxImageUrls.length > 0}
                 >
-                  <ImageMetadata
-                    imageData={imageData}
-                    metadata={metadata}
-                    setMetadata={setMetadata}
-                    images={images}
-                    setImages={setImages}
-                  >
+                  <ImageMetadata images={images} setImages={setImages}>
                     <Center mt={24}>
                       <ImageCarousel
                         imagesURLs={imagesURLs}
@@ -83,15 +82,9 @@ export default function About() {
                 <Stepper.Step
                   label="Final step"
                   description="Generate your NFTs"
-                  allowStepSelect={imagesURLs.length > 0}
+                  allowStepSelect={reduxImageUrls.length > 0}
                 >
-                  <ImageMetadata
-                    imageData={imageData}
-                    metadata={metadata}
-                    setMetadata={setMetadata}
-                    images={images}
-                    setImages={setImages}
-                  >
+                  <ImageMetadata images={images} setImages={setImages}>
                     <ImageTable
                       imagesURLs={imagesURLs}
                       setImagesURLs={setImagesURLs}
@@ -122,7 +115,7 @@ export default function About() {
                     Back
                   </Button>
                 )}
-                {imagesURLs.length > 0 && active < 2 && (
+                {reduxImageUrls.length > 0 && active < 2 && (
                   <Button onClick={nextStep}>Next step</Button>
                 )}
                 {active === 2 && (

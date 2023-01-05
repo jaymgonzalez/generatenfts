@@ -5,6 +5,7 @@ const initialState = {
   value: {
     urls: [],
     metadata: [],
+    nftMetadata: [],
   },
 }
 
@@ -21,6 +22,10 @@ export const imageSlice = createSlice({
       state.value.metadata = action.payload
     },
 
+    setNftMetadata: (state, action) => {
+      state.value.nftMetadata = action.payload
+    },
+
     // Special reducer for hydrating the state
     // extraReducers: {
     //   // @ts-ignore
@@ -34,8 +39,10 @@ export const imageSlice = createSlice({
   },
 })
 
-export const { setImageUrls, setImageMetadata } = imageSlice.actions
+export const { setImageUrls, setImageMetadata, setNftMetadata } =
+  imageSlice.actions
 export const selectImagesUrls = (state) => state.images.value.urls
 export const selectImagesMetadata = (state) => state.images.value.metadata
+export const selectNftMetadata = (state) => state.images.value.nftMetadata
 
 export default imageSlice.reducer

@@ -2,6 +2,12 @@ import { useAccount, useContractRead, useNetwork } from 'wagmi'
 import { contractAddress, contractAbi } from '../constants'
 import { useEffect, useRef, useState } from 'react'
 import { returnCid } from '../utils/cid'
+import { useSelector, useDispatch } from 'react-redux'
+import {
+  selectImagesMetadata,
+  selectNftMetadata,
+  setNftMetadata,
+} from '../store/slices/imageSlice'
 
 const date = new Date()
 
@@ -61,18 +67,16 @@ async function getMetadata(images, metadata, tokenId) {
   })
 }
 
-export default function ImageMetadata({
-  imageData,
-  metadata,
-  setMetadata,
-  images,
-  setImages,
-  children,
-}) {
+export default function ImageMetadata({ images, setImages, children }) {
   const { address } = useAccount()
   const { chain } = useNetwork()
-  const refMetadata = useRef(metadata)
+  const refMetadata = useRef(null)
   const [tokenId, setTokenId] = useState(null)
+
+  const reduxImageMetadata = useSelector(selectImagesMetadata)
+  const reduxNftMetadata = useSelector(selectNftMetadata)
+
+  const dispacth = useDispatch()
 
   const baseMetadata = {
     contract: contractAddress, // contract that minted it
@@ -97,19 +101,23 @@ export default function ImageMetadata({
   }, [tokenIdData, tokenIdSuccess, tokenIsLoading])
 
   useEffect(() => {
-    Promise.resolve(createImageFiles(imageData, tokenId)).then((res) =>
+    Promise.resolve(createImageFiles(reduxImageMetadata, tokenId)).then((res) =>
       setImages(res)
     )
   }, [images.length, tokenIdData])
 
   useEffect(() => {
-    refMetadata.current = metadata
-  }, [metadata])
+    if (
+      JSON.stringify(refMetadata.current) !== JSON.stringify(reduxNftMetadata)
+    ) {
+      refMetadata.current = reduxNftMetadata
+    }
+  }, [reduxNftMetadata])
 
   useEffect(() => {
-    Promise.resolve(getMetadata(imageData, baseMetadata, tokenId)).then((res) =>
-      setMetadata(res)
-    )
+    Promise.resolve(
+      getMetadata(reduxImageMetadata, baseMetadata, tokenId)
+    ).then((res) => dispacth(setNftMetadata(res)))
   }, [refMetadata.current, tokenIdData])
 
   return <>{children}</>

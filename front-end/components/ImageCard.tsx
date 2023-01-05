@@ -1,17 +1,12 @@
-import {
-  Card,
-  Image,
-  Text,
-  Badge,
-  Button,
-  Group,
-  Box,
-  createStyles,
-} from '@mantine/core'
+import { Card, Image, Button, Group, createStyles } from '@mantine/core'
 import { Prism } from '@mantine/prism'
-import { IconEdit, IconPencil, IconTrash } from '@tabler/icons'
+import { IconPencil, IconTrash } from '@tabler/icons'
 import theme from 'prism-react-renderer/themes/nightOwl'
-import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import {
+  selectImagesMetadata,
+  selectImagesUrls,
+} from '../store/slices/imageSlice'
 
 const useStyles = createStyles(() => ({
   group: {
@@ -33,6 +28,9 @@ export default function ImageCard({
 }) {
   const { classes } = useStyles()
 
+  const reduxImagesUrls = useSelector(selectImagesUrls)
+  const reduxImageMetadata = useSelector(selectImagesMetadata)
+
   const imageCode = JSON.stringify(card)
     .replace(/,(?![^\[]*\])/g, '\n')
     .replace(/\{|\}/g, '')
@@ -48,7 +46,7 @@ export default function ImageCard({
         className={classes.group}
       >
         <Card.Section>
-          <Image height={400} src={imagesURLs[index]} alt={card.name} />
+          <Image height={400} src={reduxImagesUrls[index]} alt={card.name} />
         </Card.Section>
         <Card.Section
           onMouseEnter={embla && (() => embla.reInit({ draggable: false }))}
@@ -73,7 +71,7 @@ export default function ImageCard({
             </Button>
             <Button
               onClick={() => {
-                const newImagesUrls = imagesURLs.slice()
+                const newImagesUrls = reduxImagesUrls.slice()
                 newImagesUrls.splice(index, 1)
                 imageData.splice(index, 1)
                 metadata.splice(index, 1)

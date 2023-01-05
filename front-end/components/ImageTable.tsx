@@ -30,9 +30,6 @@ export default function ImageTable({
       <tbody key={img.url}>
         <ImageModal
           index={index}
-          imagesURLs={imagesURLs}
-          setImagesURLs={setImagesURLs}
-          imageData={imageData}
           setOpenedMap={setOpenedMap}
           openedMap={openedMap}
           imageSrc={img.url}
