@@ -2,10 +2,13 @@ import { Card, Image, Button, Group, createStyles } from '@mantine/core'
 import { Prism } from '@mantine/prism'
 import { IconPencil, IconTrash } from '@tabler/icons'
 import theme from 'prism-react-renderer/themes/nightOwl'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
-  selectImagesMetadata,
+  setImageUrls,
   selectImagesUrls,
+  setImageMetadata,
+  selectImagesMetadata,
+  setNftMetadata,
 } from '../store/slices/imageSlice'
 
 const useStyles = createStyles(() => ({
@@ -29,7 +32,9 @@ export default function ImageCard({
   const { classes } = useStyles()
 
   const reduxImagesUrls = useSelector(selectImagesUrls)
-  const reduxImageMetadata = useSelector(selectImagesMetadata)
+  const reduxImagesMetadata = useSelector(selectImagesMetadata)
+
+  const dispatch = useDispatch()
 
   const imageCode = JSON.stringify(card)
     .replace(/,(?![^\[]*\])/g, '\n')
@@ -73,9 +78,12 @@ export default function ImageCard({
               onClick={() => {
                 const newImagesUrls = reduxImagesUrls.slice()
                 newImagesUrls.splice(index, 1)
-                imageData.splice(index, 1)
-                metadata.splice(index, 1)
-                setImagesURLs(newImagesUrls)
+
+                const newImageMetadata = reduxImagesMetadata.slice()
+                newImageMetadata.splice(index, 1)
+
+                dispatch(setImageUrls(newImagesUrls))
+                dispatch(setImageMetadata(newImageMetadata))
                 setOpenedMap({
                   ...openedMap,
                   [index]: false,

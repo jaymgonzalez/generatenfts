@@ -30,11 +30,10 @@ export default function ImageForm({ index, setOpenedMap, openedMap }) {
 
   const form = useForm({
     initialValues: {
-      nftName:
-        reduxImagesMetadata[index].nftName || reduxImagesMetadata[index].name, // TODO: add owner
+      name: reduxImagesMetadata[index].name,
       author: reduxImagesMetadata[index].author,
       attributes: reduxImagesMetadata[index].attributes || [
-        { attribute: '', value: '' },
+        { trait_type: '', value: '' },
       ],
       description: reduxImagesMetadata[index].description || '',
     },
@@ -47,7 +46,7 @@ export default function ImageForm({ index, setOpenedMap, openedMap }) {
           label="Attribute"
           placeholder="Attribute"
           display="inline-block"
-          {...form.getInputProps(`attributes.${_index}.attribute`)}
+          {...form.getInputProps(`attributes.${_index}.trait_type`)}
         />
         <TextInput
           label="Value"
@@ -71,19 +70,16 @@ export default function ImageForm({ index, setOpenedMap, openedMap }) {
     <Box sx={{ maxWidth: 500 }} mx="auto">
       <form
         onSubmit={form.onSubmit((values) => {
-          const { nftName, author, attributes, description } = values
+          const { name, author, attributes, description } = values
 
           const updatedMetadata = {
             ...reduxImagesMetadata[index],
-            nftName,
+            name,
             author,
             attributes,
             description,
           }
           dispatch(setNftMetadata(updatedMetadata))
-
-          console.log(setNftMetadata(updatedMetadata))
-
           setOpenedMap({
             ...openedMap,
             [index]: false,
@@ -95,7 +91,7 @@ export default function ImageForm({ index, setOpenedMap, openedMap }) {
           label="Add NFT name"
           radius="md"
           withAsterisk
-          {...form.getInputProps('nftName')}
+          {...form.getInputProps('name')}
         />
         <TextInput
           label="Author"
@@ -123,7 +119,7 @@ export default function ImageForm({ index, setOpenedMap, openedMap }) {
                     size={26}
                     onClick={() =>
                       form.insertListItem('attributes', {
-                        attribute: '',
+                        trait_type: '',
                         value: '',
                       })
                     }
