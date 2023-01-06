@@ -19,6 +19,12 @@ export const imageSlice = createSlice({
       state.metadata = action.payload
     },
 
+    setInitialImageMetadata: (state, action) => {
+      if (!state.metadata.some((obj) => obj.id === action.payload.id)) {
+        state.metadata.push(action.payload)
+      }
+    },
+
     setNftMetadata: (state, action) => {
       // const index = state.nftMetadata.indexOf(action.payload)
       const updatedMetadata = state.metadata.map((data) => {
@@ -46,8 +52,12 @@ export const imageSlice = createSlice({
   },
 })
 
-export const { setImageUrls, setImageMetadata, setNftMetadata } =
-  imageSlice.actions
+export const {
+  setImageUrls,
+  setInitialImageMetadata,
+  setImageMetadata,
+  setNftMetadata,
+} = imageSlice.actions
 export const selectImagesUrls = (state) => state.images.urls
 export const selectImagesMetadata = (state) => state.images.metadata
 export default imageSlice.reducer

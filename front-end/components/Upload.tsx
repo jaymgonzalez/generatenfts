@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   selectImagesUrls,
   setImageUrls,
+  setInitialImageMetadata,
   setNftMetadata,
 } from '../store/slices/imageSlice'
 
@@ -57,7 +58,7 @@ export default function Upload() {
         const url = URL.createObjectURL(image)
         const extension = name.split('.')[name.split('.').length - 1]
         const id = genId()
-        dispatch(setNftMetadata({ name, extension, url, id }))
+        dispatch(setInitialImageMetadata({ name, extension, url, id }))
         return url
       })
     )
