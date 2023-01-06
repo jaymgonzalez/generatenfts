@@ -5,8 +5,8 @@ import { IconCloudUpload, IconX, IconDownload } from '@tabler/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   selectImagesUrls,
-  setImageMetadata,
   setImageUrls,
+  setNftMetadata,
 } from '../store/slices/imageSlice'
 
 const useStyles = createStyles((theme) => ({
@@ -51,19 +51,17 @@ export default function Upload() {
 
   useEffect(() => {
     if (images.length < 1) return
-    const imageMetadata = []
     const newImageURLs = reduxImageUrls.concat(
       images.map((image) => {
         const { name } = image
         const url = URL.createObjectURL(image)
         const extension = name.split('.')[name.split('.').length - 1]
         const id = genId()
-        imageMetadata.push({ name, extension, url, id })
+        dispatch(setNftMetadata({ name, extension, url, id }))
         return url
       })
     )
     dispatch(setImageUrls(newImageURLs))
-    dispatch(setImageMetadata(imageMetadata))
   }, [images])
 
   function onImageDrop(files: any) {

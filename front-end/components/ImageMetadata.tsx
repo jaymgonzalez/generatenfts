@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
   selectImagesMetadata,
   setImageMetadata,
+  setNftMetadata,
 } from '../store/slices/imageSlice'
 
 const date = new Date()
@@ -31,11 +32,7 @@ async function createImageFiles(images, tokenId) {
 }
 
 async function getMetadata(imagesMetadata, baseMetadata, tokenId, files) {
-  console.log(files)
-
   const cid = await returnCid(files)
-
-  console.log(cid)
 
   return imagesMetadata.map((img, i) => {
     const attributes = img.attributes?.map((attr) => {
@@ -53,10 +50,12 @@ async function getMetadata(imagesMetadata, baseMetadata, tokenId, files) {
       id: img.id,
       cid,
       tokenId: parseInt(tokenId) + 1 + i,
-      name: img.name || `${parseInt(tokenId) + 1 + i}`,
+      name: img.name || parseInt(tokenId) + 1 + i,
       ...baseMetadata,
       image: img.name
-        ? `ipfs://${cid}/${img.name.trim().replace(/ /g, '_')}.${img.extension}`
+        ? `ipfs://${cid}/${img.name.toString().trim().replace(/ /g, '_')}.${
+            img.extension
+          }`
         : `ipfs://${cid}/${parseInt(tokenId) + 1 + i}.${img.extension}`,
       timestamp: baseMetadata.timestamp || Math.floor(date.getTime() / 1000),
       extension: img.extension,
@@ -111,20 +110,13 @@ export default function ImageMetadata({ images, setImages, children }) {
     if (
       JSON.stringify(refMetadata.current) !== JSON.stringify(reduxImageMetadata)
     ) {
-      console.log(
-        JSON.stringify(refMetadata.current),
-        JSON.stringify(reduxImageMetadata)
-      )
-
       refMetadata.current = reduxImageMetadata
     }
   }, [reduxImageMetadata])
 
   useEffect(() => {
     Promise.resolve(
-      createImageFiles(reduxImageMetadata, tokenId).then((res) =>
-        getMetadata(reduxImageMetadata, baseMetadata, tokenId, res)
-      )
+      getMetadata(reduxImageMetadata, baseMetadata, tokenId, images)
     ).then((res) => dispacth(setImageMetadata(res)))
   }, [refMetadata.current, tokenIdData])
 

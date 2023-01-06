@@ -19,10 +19,8 @@ import {
   Textarea,
 } from '@mantine/core'
 import { IconCircleMinus, IconCirclePlus, IconTrash } from '@tabler/icons'
-import { useAccount } from 'wagmi'
 
 export default function ImageForm({ index, setOpenedMap, openedMap }) {
-  const { address } = useAccount()
   const dispatch = useDispatch()
 
   const reduxImageUrls = useSelector(selectImagesUrls)
@@ -87,8 +85,8 @@ export default function ImageForm({ index, setOpenedMap, openedMap }) {
         })}
       >
         <TextInput
-          placeholder="NFT name"
-          label="Add NFT name"
+          placeholder="Add NFT name"
+          label="NFT name"
           radius="md"
           withAsterisk
           {...form.getInputProps('name')}

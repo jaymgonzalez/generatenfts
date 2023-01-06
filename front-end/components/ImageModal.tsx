@@ -1,12 +1,11 @@
 import { Image, Modal } from '@mantine/core'
 import ImageForm from './ImageForm'
+import { useSelector } from 'react-redux'
+import { selectImagesUrls } from '../store/slices/imageSlice'
 
-export default function ImageModal({
-  openedMap,
-  setOpenedMap,
-  imageSrc,
-  index,
-}) {
+export default function ImageModal({ openedMap, setOpenedMap, index }) {
+  const images = useSelector(selectImagesUrls)
+
   return (
     <Modal
       opened={openedMap[index] || false}
@@ -17,7 +16,7 @@ export default function ImageModal({
         })
       }}
     >
-      <Image py="lg" mx="auto" radius="sm" src={imageSrc} />
+      <Image py="lg" mx="auto" radius="sm" src={images[index]} />
       <ImageForm
         index={index}
         setOpenedMap={setOpenedMap}

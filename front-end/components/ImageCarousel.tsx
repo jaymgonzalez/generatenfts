@@ -67,7 +67,6 @@ export default function ImageCarousel({
           index={index}
           setOpenedMap={setOpenedMap}
           openedMap={openedMap}
-          imageSrc={reduxImagesMetadata[index]?.url}
         />
         <ImageCard
           card={card}
