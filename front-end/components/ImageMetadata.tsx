@@ -48,9 +48,9 @@ async function getMetadata(imagesMetadata, baseMetadata, tokenId, files) {
         ? `Generate NFT Collection #${parseInt(tokenId) + 1 + i}`
         : 'Generate NFT Collection', // choose by user (Name + Creator)
       id: img.id,
+      name: img.name || parseInt(tokenId) + 1 + i,
       cid,
       tokenId: parseInt(tokenId) + 1 + i,
-      name: img.name || parseInt(tokenId) + 1 + i,
       ...baseMetadata,
       image: img.name
         ? `ipfs://${cid}/${img.name.toString().trim().replace(/ /g, '_')}.${
@@ -61,6 +61,9 @@ async function getMetadata(imagesMetadata, baseMetadata, tokenId, files) {
       extension: img.extension,
       attributes,
     }
+
+    if (img.author) newMetadata.author = img.author
+    if (img.description) newMetadata.description = img.description
 
     return newMetadata
   })

@@ -30,7 +30,7 @@ export const imageSlice = createSlice({
           if (!action.payload.author) delete action.payload.author
           if (action.payload.attributes[0]?.value === '')
             delete action.payload.attributes
-          if (!data.description) delete action.payload.description
+          if (!action.payload.description) delete action.payload.description
           return {
             ...data,
             ...action.payload,

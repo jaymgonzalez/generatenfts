@@ -24,15 +24,15 @@ export default function ImageTable({ openedMap, setOpenedMap }) {
   const rows = reduxImagesMetadata.map((img, index, arr) => {
     const attributes = img.attributes?.map(
       (attr) =>
-        attr.attribute?.length > 0 && (
-          <Text key={arr[index].url + attr.attribute}>
-            {attr.attribute}: {attr.value}
+        attr.trait_type?.length > 0 && (
+          <Text key={arr[index].url + attr.trait_type}>
+            {attr.trait_type}: {attr.value}
           </Text>
         )
     )
 
     return (
-      <tbody key={img.url}>
+      <tbody key={reduxImagesUrls[index]}>
         <ImageModal
           index={index}
           setOpenedMap={setOpenedMap}

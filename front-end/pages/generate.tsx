@@ -13,19 +13,6 @@ import RunContract from '../components/RunContract'
 import ImageCarousel from '../components/ImageCarousel'
 import CompletedStep from '../components/CompletedStep'
 
-type Attribute = {
-  attribute: string
-  value: string
-}
-export type ImageData = {
-  name: string
-  extension: string
-  url: string
-  nftName?: string
-  author?: string
-  attributes?: Attribute[]
-}
-
 export default function GenerateNft() {
   const [active, setActive] = useState(0)
   const [openedMap, setOpenedMap] = useState({})
