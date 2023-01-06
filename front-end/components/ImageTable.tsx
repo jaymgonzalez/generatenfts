@@ -8,18 +8,23 @@ import {
 } from '@mantine/core'
 import { IconPencil, IconTrash } from '@tabler/icons'
 import ImageModal from './ImageModal'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  setImageUrls,
+  selectImagesUrls,
+  setImageMetadata,
+  selectImagesMetadata,
+} from '../store/slices/imageSlice'
 
-export default function ImageTable({
-  imagesURLs,
-  setImagesURLs,
-  imageData,
-  openedMap,
-  setOpenedMap,
-}) {
-  const rows = imageData.map((img, index, arr) => {
+export default function ImageTable({ openedMap, setOpenedMap }) {
+  const dispatch = useDispatch()
+  const reduxImagesMetadata = useSelector(selectImagesMetadata)
+  const reduxImagesUrls = useSelector(selectImagesUrls)
+
+  const rows = reduxImagesMetadata.map((img, index, arr) => {
     const attributes = img.attributes?.map(
       (attr) =>
-        attr.attribute.length > 0 && (
+        attr.attribute?.length > 0 && (
           <Text key={arr[index].url + attr.attribute}>
             {attr.attribute}: {attr.value}
           </Text>
@@ -32,13 +37,12 @@ export default function ImageTable({
           index={index}
           setOpenedMap={setOpenedMap}
           openedMap={openedMap}
-          imageSrc={img.url}
         />
         <tr>
           <td>
             <Image
               sx={{ cursor: 'pointer' }}
-              src={img.url}
+              src={reduxImagesUrls[index]}
               width={60}
               onClick={() =>
                 setOpenedMap({
@@ -48,14 +52,14 @@ export default function ImageTable({
               }
             />
           </td>
-          <td>{img.nftName || img.name}</td>
+          <td>{img.name}</td>
           <td>
-            {img.author?.length === 42 && img.author.substring(0, 2) === '0x'
-              ? `${img.author.slice(0, 4)}...${img.author.slice(
-                  img.author.length - 4,
-                  img.author.length
-                )}`
-              : img.author}
+            {img.author
+              ? img.author
+              : `${img.owner.slice(0, 4)}...${img.owner.slice(
+                  img.owner.length - 4,
+                  img.owner.length
+                )}`}
           </td>
           <td>{attributes}</td>
           <td>
@@ -73,10 +77,14 @@ export default function ImageTable({
               <ActionIcon
                 color="red"
                 onClick={() => {
-                  const newImagesUrls = imagesURLs.slice()
+                  const newImagesUrls = reduxImagesUrls.slice()
                   newImagesUrls.splice(index, 1)
-                  imageData.splice(index, 1)
-                  setImagesURLs(newImagesUrls)
+
+                  const newImageMetadata = reduxImagesMetadata.slice()
+                  newImageMetadata.splice(index, 1)
+
+                  dispatch(setImageUrls(newImagesUrls))
+                  dispatch(setImageMetadata(newImageMetadata))
                   setOpenedMap({
                     ...openedMap,
                     [index]: false,

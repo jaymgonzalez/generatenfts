@@ -28,8 +28,6 @@ export type ImageData = {
 
 export default function GenerateNft() {
   const [active, setActive] = useState(0)
-  const [imagesURLs, setImagesURLs] = useState([])
-  const [imageData, setImageData] = useState<ImageData[]>([])
   const [openedMap, setOpenedMap] = useState({})
   const [metadata, setMetadata] = useState([])
   const [images, setImages] = useState([])
@@ -81,9 +79,6 @@ export default function GenerateNft() {
                 >
                   <ImageMetadata images={images} setImages={setImages}>
                     <ImageTable
-                      imagesURLs={imagesURLs}
-                      setImagesURLs={setImagesURLs}
-                      imageData={imageData}
                       openedMap={openedMap}
                       setOpenedMap={setOpenedMap}
                     />
