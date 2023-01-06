@@ -16,7 +16,6 @@ import CompletedStep from '../components/CompletedStep'
 export default function GenerateNft() {
   const [active, setActive] = useState(0)
   const [openedMap, setOpenedMap] = useState({})
-  const [metadata, setMetadata] = useState([])
   const [images, setImages] = useState([])
   const { address } = useAccount()
 
@@ -34,7 +33,7 @@ export default function GenerateNft() {
   return (
     <>
       <AuthenticatedPage address={address}>
-        <RunContract address={address} metadata={metadata} images={images}>
+        <RunContract address={address} images={images}>
           {(mintData, mintWrite, mintIsLoading, mintIsSuccess, mintIsError) => (
             <>
               <Stepper active={active} onStepClick={setActive} breakpoint="sm">

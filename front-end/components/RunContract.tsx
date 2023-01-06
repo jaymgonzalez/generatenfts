@@ -8,6 +8,8 @@ import { BigNumber } from 'ethers'
 import { returnCid, storeFiles } from '../utils/cid'
 import { useEffect, useRef, useState } from 'react'
 import NFTGallery from './NFTGallery'
+import { useSelector } from 'react-redux'
+import { selectImagesMetadata } from '../store/slices/imageSlice'
 
 function createMetadataFiles(metadata) {
   return metadata.map((data) => {
@@ -17,7 +19,7 @@ function createMetadataFiles(metadata) {
 
     return new File(
       [blob],
-      `${data.name.toString().trim().replace(/ /g, '_')}.json`,
+      `${data.name?.toString().trim().replace(/ /g, '_')}.json`,
       {
         type: 'application/json',
       }
@@ -25,7 +27,8 @@ function createMetadataFiles(metadata) {
   })
 }
 
-export default function RunContract({ address, metadata, images, children }) {
+export default function RunContract({ address, images, children }) {
+  const metadata = useSelector(selectImagesMetadata)
   const [metadataCid, setMetadataCid] = useState('')
   const filesRef = useRef('')
 
@@ -33,7 +36,7 @@ export default function RunContract({ address, metadata, images, children }) {
   // returnCid(images)
 
   const names = metadata.map(
-    (data) => `${data.name.toString().trim().replace(/ /g, '_')}.json`
+    (data) => `${data.name?.toString().trim().replace(/ /g, '_')}.json`
   )
 
   // const { data: fee } = useContractRead({
