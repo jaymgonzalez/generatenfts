@@ -1,6 +1,9 @@
 import { Center, Notification } from '@mantine/core'
 import { IconCheck, IconX } from '@tabler/icons'
 import Link from 'next/link'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { setImageUrls, setImageMetadata } from '../store/slices/imageSlice'
 
 export default function CompletedStep({
   mintData,
@@ -8,6 +11,14 @@ export default function CompletedStep({
   mintIsSuccess,
   mintIsError,
 }) {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (mintIsSuccess) {
+      dispatch(setImageUrls([]))
+      dispatch(setImageMetadata([]))
+    }
+  }, [mintIsSuccess])
   return (
     <>
       <Center>

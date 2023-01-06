@@ -27,7 +27,7 @@ export default function GenerateNft() {
     setActive((current) => (current > 0 ? current - 1 : current))
 
   useEffect(() => {
-    if (reduxImageUrls.length === 0) setActive(0)
+    if (reduxImageUrls.length === 0 && active !== 3) setActive(0)
   }, [reduxImageUrls.length, active])
 
   return (
