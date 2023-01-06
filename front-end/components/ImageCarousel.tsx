@@ -1,6 +1,6 @@
 import { Carousel, Embla } from '@mantine/carousel'
 import { createStyles } from '@mantine/core'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { selectImagesMetadata } from '../store/slices/imageSlice'
 import ImageCard from './ImageCard'
@@ -46,15 +46,7 @@ const useStyles = createStyles((_theme, _params, getRef) => ({
   },
 }))
 
-export default function ImageCarousel({
-  imagesURLs,
-  setImagesURLs,
-  imageData,
-  openedMap,
-  setOpenedMap,
-  metadata,
-  setMetadata,
-}) {
+export default function ImageCarousel({ openedMap, setOpenedMap }) {
   const { classes } = useStyles()
   const [embla, setEmbla] = useState<Embla | null>(null)
 
@@ -71,13 +63,8 @@ export default function ImageCarousel({
         <ImageCard
           card={card}
           index={index}
-          imagesURLs={imagesURLs}
-          setImagesURLs={setImagesURLs}
-          imageData={imageData}
           openedMap={openedMap}
           setOpenedMap={setOpenedMap}
-          metadata={metadata}
-          setMetadata={setMetadata}
           embla={embla}
         />
       </Carousel.Slide>

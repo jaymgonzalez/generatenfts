@@ -8,7 +8,6 @@ import {
   selectImagesUrls,
   setImageMetadata,
   selectImagesMetadata,
-  setNftMetadata,
 } from '../store/slices/imageSlice'
 
 const useStyles = createStyles(() => ({
@@ -20,13 +19,8 @@ const useStyles = createStyles(() => ({
 export default function ImageCard({
   card,
   index,
-  imagesURLs,
-  setImagesURLs,
-  imageData,
   openedMap,
   setOpenedMap,
-  metadata,
-  setMetadata,
   embla,
 }) {
   const { classes } = useStyles()

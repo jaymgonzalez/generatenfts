@@ -68,13 +68,8 @@ export default function GenerateNft() {
                   <ImageMetadata images={images} setImages={setImages}>
                     <Center mt={24}>
                       <ImageCarousel
-                        imagesURLs={imagesURLs}
-                        setImagesURLs={setImagesURLs}
-                        imageData={imageData}
                         openedMap={openedMap}
                         setOpenedMap={setOpenedMap}
-                        metadata={metadata}
-                        setMetadata={setMetadata}
                       />
                     </Center>
                   </ImageMetadata>
