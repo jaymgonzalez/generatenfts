@@ -59,11 +59,9 @@ async function getMetadata(imagesMetadata, baseMetadata, tokenId, files) {
         : `ipfs://${cid}/${parseInt(tokenId) + 1 + i}.${img.extension}`,
       timestamp: baseMetadata.timestamp || Math.floor(date.getTime() / 1000),
       extension: img.extension,
+      attributes,
     }
 
-    if (img.author) newMetadata.author = img.author
-    if (attributes && attributes[0]) newMetadata.attributes = attributes
-    if (img.description) newMetadata.description = img.description
     return newMetadata
   })
 }

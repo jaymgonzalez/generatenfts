@@ -77,6 +77,7 @@ export default function ImageForm({ index, setOpenedMap, openedMap }) {
             attributes,
             description,
           }
+          // console.log(dispatch(setNftMetadata(updatedMetadata)))
           dispatch(setNftMetadata(updatedMetadata))
           setOpenedMap({
             ...openedMap,
