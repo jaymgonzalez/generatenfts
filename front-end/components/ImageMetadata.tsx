@@ -5,16 +5,16 @@ import { returnCid } from '../utils/cid'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   selectImagesMetadata,
+  selectImagesUrls,
   setImageMetadata,
-  setNftMetadata,
 } from '../store/slices/imageSlice'
 
 const date = new Date()
 
-async function createImageFiles(images, tokenId) {
+async function createImageFiles(images, tokenId, urls) {
   const files = await Promise.all(
     images.map(async (img, i) => {
-      const response = await fetch(img.url)
+      const response = await fetch(urls[i])
       const arrayBuffer = await response.arrayBuffer()
 
       const blob = new Blob([arrayBuffer], { type: `image/${img.extension}` })
@@ -74,9 +74,9 @@ export default function ImageMetadata({ images, setImages, children }) {
   const refMetadata = useRef(null)
   const [tokenId, setTokenId] = useState(null)
 
-  const reduxImageMetadata = useSelector(selectImagesMetadata)
-
   const dispacth = useDispatch()
+  const reduxImageMetadata = useSelector(selectImagesMetadata)
+  const urls = useSelector(selectImagesUrls)
 
   const baseMetadata = {
     contract: contractAddress, // contract that minted it
@@ -101,8 +101,8 @@ export default function ImageMetadata({ images, setImages, children }) {
   }, [tokenIdData, tokenIdSuccess, tokenIsLoading])
 
   useEffect(() => {
-    Promise.resolve(createImageFiles(reduxImageMetadata, tokenId)).then((res) =>
-      setImages(res)
+    Promise.resolve(createImageFiles(reduxImageMetadata, tokenId, urls)).then(
+      (res) => setImages(res)
     )
   }, [images.length, tokenIdData])
 

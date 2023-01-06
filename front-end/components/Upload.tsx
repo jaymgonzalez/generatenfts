@@ -54,11 +54,11 @@ export default function Upload() {
     if (images.length < 1) return
     const newImageURLs = reduxImageUrls.concat(
       images.map((image) => {
-        const { name } = image
+        const { name: imageName } = image
         const url = URL.createObjectURL(image)
-        const extension = name.split('.')[name.split('.').length - 1]
+        const extension = imageName.split('.')[imageName.split('.').length - 1]
         const id = genId()
-        dispatch(setInitialImageMetadata({ name, extension, url, id }))
+        dispatch(setInitialImageMetadata({ imageName, extension, url, id }))
         return url
       })
     )
