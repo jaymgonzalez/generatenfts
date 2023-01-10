@@ -4,13 +4,13 @@ import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { publicProvider } from 'wagmi/providers/public'
 
 const localhostChain = {
-  id: 31337,
-  name: 'Hardhat',
+  id: 1337,
+  name: 'Hardhat (Local Test)',
   network: 'localhost',
   nativeCurrency: {
     decimals: 18,
-    name: 'Polygon',
-    symbol: 'MATIC',
+    name: 'Ethereum',
+    symbol: 'ETH',
   },
   rpcUrls: {
     default: {

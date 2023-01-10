@@ -11,8 +11,18 @@ import {
   Badge,
   MediaQuery,
 } from '@mantine/core'
-import { IconChevronDown, IconChevronUp } from '@tabler/icons'
-import PolygonIcon from './misc/PolygonIcon'
+import {
+  IconChevronDown,
+  IconChevronUp,
+  IconAlertTriangle,
+} from '@tabler/icons'
+import { Matic, Testnet } from '@web3uikit/icons'
+
+const iconMap = {
+  80001: <Matic fontSize="20px" />,
+  137: <Matic fontSize="20px" />,
+  1337: <Testnet fontSize="20px" />,
+}
 
 const useStyles = createStyles((theme, _params, getRef) => ({
   group: {
@@ -62,10 +72,10 @@ export default function NetworkButton({
         <UnstyledButton className={classes.buttonList} mx="sm" py="sm">
           <Group spacing="xs">
             <ThemeIcon variant="default" size="sm" className={classes.iconMenu}>
-              <PolygonIcon />
+              {iconMap[_chain.id]}
             </ThemeIcon>
             <Text color="white" size="sm" weight="200" mr="2" fw={600} lts={0}>
-              {_chain?.name}
+              {_chain.name}
             </Text>
           </Group>
           {_chain.id === chain?.id && !isLoading && (
@@ -123,13 +133,20 @@ export default function NetworkButton({
             >
               <Group spacing="xs">
                 <ThemeIcon variant="default" size="sm" className={classes.icon}>
-                  <PolygonIcon />
+                  {!chain.unsupported ? (
+                    iconMap[chain.id]
+                  ) : (
+                    <IconAlertTriangle fontSize="20px" />
+                  )}
                 </ThemeIcon>
                 <MediaQuery
                   query="(max-width: 900px) and (min-width: 500px)"
                   styles={{ display: 'none' }}
                 >
-                  <Text>{chain?.name}</Text>
+                  <Text>
+                    {' '}
+                    {!chain.unsupported ? chain.name : 'Unsupported'}
+                  </Text>
                 </MediaQuery>
                 {!opened ? (
                   <IconChevronDown size={16} stroke={1.5} />
