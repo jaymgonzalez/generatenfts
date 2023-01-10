@@ -1,20 +1,21 @@
 import { useEffect, useState } from 'react'
 import { Provider } from 'react-redux'
 import { wrapper } from '../store/store'
-import { Session } from 'next-auth'
-import { SessionProvider } from 'next-auth/react'
-import { type AppProps } from 'next/app'
 import { MantineProvider } from '@mantine/core'
 import { WagmiConfig } from 'wagmi'
 import { client, chains } from '../wagmi'
 import { RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit'
-import { RainbowKitSiweNextAuthProvider } from '@rainbow-me/rainbowkit-siwe-next-auth'
+// import { RainbowKitSiweNextAuthProvider } from '@rainbow-me/rainbowkit-siwe-next-auth'
+// import { SessionProvider } from 'next-auth/react'
+// import { Session } from 'next-auth'
+// import { type AppProps } from 'next/app'
 
 import Navbar from '../components/Navbar'
 
 import '@rainbow-me/rainbowkit/styles.css'
 
-export default function App(props: AppProps<{ session: Session }>) {
+export default function App(props) {
+  // props: AppProps<{ session: Session }>
   const { Component, pageProps, ...rest } = props
 
   const { store } = wrapper.useWrappedStore(rest)
@@ -52,22 +53,20 @@ export default function App(props: AppProps<{ session: Session }>) {
             }}
           >
             <WagmiConfig client={client}>
-              <SessionProvider session={pageProps.session} refetchInterval={0}>
-                <RainbowKitSiweNextAuthProvider>
-                  <RainbowKitProvider
-                    theme={darkTheme({
-                      accentColor: '#1971C2',
-                      accentColorForeground: 'white',
-                      fontStack: 'system',
-                    })}
-                    modalSize="compact"
-                    chains={chains}
-                  >
-                    <Navbar />
-                    <Component {...pageProps} />
-                  </RainbowKitProvider>
-                </RainbowKitSiweNextAuthProvider>
-              </SessionProvider>
+              {/* <SessionProvider session={pageProps.session} refetchInterval={0}>  <RainbowKitSiweNextAuthProvider> */}
+              <RainbowKitProvider
+                theme={darkTheme({
+                  accentColor: '#1971C2',
+                  accentColorForeground: 'white',
+                  fontStack: 'system',
+                })}
+                modalSize="compact"
+                chains={chains}
+              >
+                <Navbar />
+                <Component {...pageProps} />
+              </RainbowKitProvider>
+              {/* </RainbowKitSiweNextAuthProvider> </SessionProvider> */}
             </WagmiConfig>
           </MantineProvider>
         </Provider>

@@ -1844,6 +1844,18 @@
   resolved "https://registry.yarnpkg.com/@web3-storage/parse-link-header/-/parse-link-header-3.1.0.tgz#4562724987649dd6d3e07c87be1826804d212ef7"
   integrity sha512-K1undnK70vLLauqdE8bq/l98isTF2FDhcP0UPpXVSjkSWe3xhAn5eRXk5jfA1E5ycNm84Ws/rQFUD7ue11nciw==
 
+"@web3uikit/config@*":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@web3uikit/config/-/config-0.1.2.tgz#0f61701c094ce40269c59e61cb19d8326dba76ec"
+  integrity sha512-fOY0jxen7nEfivZc7BKm63WRcNEncidFhk+dIVR/0bj4tt5Xl0xyomPgyQqe38d3/PJ3RvqVTdupWFbWNJULkA==
+
+"@web3uikit/icons@^0.2.37":
+  version "0.2.37"
+  resolved "https://registry.yarnpkg.com/@web3uikit/icons/-/icons-0.2.37.tgz#49fded58b4bab0d8ce3bc77799a8603c86791bcc"
+  integrity sha512-N2CU4bTqeV+PI6PdV/dqAzTDS/7q+omE7T146rgElkg+b5TOD+Bz77ZqFWOAJfoVnnmCImpMQ5e0YhOIgAX6gw==
+  dependencies:
+    "@web3uikit/config" "*"
+
 "@zxing/text-encoding@0.9.0":
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/@zxing/text-encoding/-/text-encoding-0.9.0.tgz#fb50ffabc6c7c66a0c96b4c03e3d9be74864b70b"
