@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build  && next export",
+    "build": "next build  && next export && yarn deploy",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "../worker/uploading_script.sh"
+    "deploy": "export $(cat .env.local | xargs) && ../worker/uploading_script.sh"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",

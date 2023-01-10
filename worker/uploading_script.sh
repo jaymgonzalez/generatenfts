@@ -15,5 +15,7 @@ for file in $(find "$UPLOAD_DIR" -type f); do
   full_filename=${subdir_path#'/'}
 
   # Upload the file to Cloudflare Workers
-  curl -X PUT "https://generatenfts.jaimedevelops.workers.dev/$full_filename" --data-binary "@$file"
+  curl -X PUT "https://generatenfts.jaimedevelops.workers.dev/$full_filename" --header "X-Custom-Auth-Key: $SECRET" --data-binary "@$file"
 done
+
+# unsecretomuysecreto
