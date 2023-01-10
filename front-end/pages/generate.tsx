@@ -8,7 +8,7 @@ import Upload from '../components/Upload'
 import ImageGrid from '../components/ImageGrid'
 import ImageMetadata from '../components/ImageMetadata'
 import ImageTable from '../components/ImageTable'
-import AuthenticatedPage from '../components/Authenticated'
+import SiweAuthenticatedPage from '../components/SiweAuthenticated'
 import RunContract from '../components/RunContract'
 import ImageCarousel from '../components/ImageCarousel'
 import CompletedStep from '../components/CompletedStep'
@@ -32,7 +32,7 @@ export default function GenerateNft() {
 
   return (
     <>
-      <AuthenticatedPage address={address}>
+      <SiweAuthenticatedPage address={address}>
         <RunContract address={address} images={images}>
           {(mintData, mintWrite, mintIsLoading, mintIsSuccess, mintIsError) => (
             <>
@@ -109,7 +109,7 @@ export default function GenerateNft() {
             </>
           )}
         </RunContract>
-      </AuthenticatedPage>
+      </SiweAuthenticatedPage>
     </>
   )
 }

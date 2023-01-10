@@ -1,15 +1,15 @@
 import NFTGallery from '../components/NFTGallery'
 
 import { useAccount } from 'wagmi'
-import AuthenticatedPage from '../components/Authenticated'
+import SiweAuthenticatedPage from '../components/SiweAuthenticated'
 
 export default function Gallery() {
   const { address } = useAccount()
   return (
     <>
-      <AuthenticatedPage address={address}>
+      <SiweAuthenticatedPage address={address}>
         <NFTGallery address={address} />
-      </AuthenticatedPage>
+      </SiweAuthenticatedPage>
     </>
   )
 }

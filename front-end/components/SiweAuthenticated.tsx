@@ -22,7 +22,7 @@ type AuthenticatedPageProps = InferGetServerSidePropsType<
   typeof getServerSideProps
 >
 
-export default function AuthenticatedPage({
+export default function SiweAuthenticatedPage({
   address,
   children,
 }: AuthenticatedPageProps) {
