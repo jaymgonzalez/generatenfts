@@ -44,7 +44,6 @@ export default function ImageGrid({ openedMap, setOpenedMap }) {
           index={i}
           setOpenedMap={setOpenedMap}
           openedMap={openedMap}
-          imageSrc={imageSrc}
         />
       </Box>
     )
