@@ -8,10 +8,11 @@ import Upload from '../components/Upload'
 import ImageGrid from '../components/ImageGrid'
 import ImageMetadata from '../components/ImageMetadata'
 import ImageTable from '../components/ImageTable'
-import SiweAuthenticatedPage from '../components/SiweAuthenticated'
 import RunContract from '../components/RunContract'
 import ImageCarousel from '../components/ImageCarousel'
 import CompletedStep from '../components/CompletedStep'
+import ConnectWallet from '../components/ConnectWallet'
+// import SiweAuthenticatedPage from '../components/SiweAuthenticated'
 
 export default function GenerateNft() {
   const [active, setActive] = useState(0)
@@ -32,7 +33,8 @@ export default function GenerateNft() {
 
   return (
     <>
-      <SiweAuthenticatedPage address={address}>
+      {/* <SiweAuthenticatedPage address={address}> */}
+      {address ? (
         <RunContract address={address} images={images}>
           {(mintData, mintWrite, mintIsLoading, mintIsSuccess, mintIsError) => (
             <>
@@ -109,7 +111,10 @@ export default function GenerateNft() {
             </>
           )}
         </RunContract>
-      </SiweAuthenticatedPage>
+      ) : (
+        <ConnectWallet />
+      )}
+      {/* </SiweAuthenticatedPage> */}
     </>
   )
 }
