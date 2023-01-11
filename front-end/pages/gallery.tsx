@@ -1,15 +1,25 @@
 import NFTGallery from '../components/NFTGallery'
 
-import { useAccount } from 'wagmi'
-import SiweAuthenticatedPage from '../components/SiweAuthenticated'
+import { useAccount, useNetwork } from 'wagmi'
 import ConnectWallet from '../components/ConnectWallet'
+import ConnectNetwork from '../components/ConnectNetwork'
+// import SiweAuthenticatedPage from '../components/SiweAuthenticated'
 
 export default function Gallery() {
   const { address } = useAccount()
+  const { chain } = useNetwork()
   return (
     <>
       {/* <SiweAuthenticatedPage address={address}> */}
-      {address ? <NFTGallery address={address} /> : <ConnectWallet />}
+      {address ? (
+        !chain.unsupported ? (
+          <NFTGallery address={address} />
+        ) : (
+          <ConnectNetwork />
+        )
+      ) : (
+        <ConnectWallet />
+      )}
       {/* </SiweAuthenticatedPage> */}
     </>
   )
