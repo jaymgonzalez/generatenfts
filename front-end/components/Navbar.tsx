@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import Link from 'next/link'
-
 import {
   createStyles,
   Menu,
@@ -8,15 +7,16 @@ import {
   Header,
   Container,
   Group,
-  Button,
   Burger,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { IconChevronDown } from '@tabler/icons'
-import AccountMenu from './AccountMenu'
-import CustomConnectButton from './ConnectButton'
+import { showNotification } from '@mantine/notifications'
 import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { IconUrgent, IconChevronDown } from '@tabler/icons'
+
+import AccountMenu from './AccountMenu'
+import CustomConnectButton from './ConnectButton'
 import NetworkButton from './NetworkButton'
 
 const HEADER_HEIGHT = 60
@@ -118,6 +118,24 @@ export default function Navbar() {
   const { chains, isLoading, pendingChainId, switchNetwork } =
     useSwitchNetwork()
 
+  chain?.unsupported &&
+    showNotification({
+      title: 'ATTENTION!',
+      color: 'red',
+      message: 'Unsupported network. Please change it!',
+      icon: <IconUrgent size={20} />,
+      styles: (theme) => ({
+        title: {
+          color: 'red',
+          fontSize: '16px',
+          fontWeight: 'bold',
+        },
+        icon: {
+          fontSize: '16px',
+        },
+      }),
+    })
+
   const items = links.map((link) => {
     const menuItems = link.links?.map((item) => (
       <Menu.Item key={item.link}>
@@ -155,7 +173,7 @@ export default function Navbar() {
   return (
     <Header
       height={HEADER_HEIGHT}
-      bg="gray.8"
+      // bg="gray.8"
       sx={{ borderBottom: 0 }}
       mb={120}
     >

@@ -64,7 +64,7 @@ export default function App(props) {
               // },
             }}
           >
-            <NotificationsProvider>
+            <NotificationsProvider autoClose={4500} limit={5}>
               <WagmiConfig client={client}>
                 {/* <SessionProvider session={pageProps.session} refetchInterval={0}>  <RainbowKitSiweNextAuthProvider> */}
                 <RainbowKitProvider
