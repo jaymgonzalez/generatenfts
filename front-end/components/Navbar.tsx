@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import {
   createStyles,
@@ -118,23 +118,25 @@ export default function Navbar() {
   const { chains, isLoading, pendingChainId, switchNetwork } =
     useSwitchNetwork()
 
-  chain?.unsupported &&
-    showNotification({
-      title: 'ATTENTION!',
-      color: 'red',
-      message: 'Unsupported network. Please change it!',
-      icon: <IconUrgent size={20} />,
-      styles: (theme) => ({
-        title: {
-          color: 'red',
-          fontSize: '16px',
-          fontWeight: 'bold',
-        },
-        icon: {
-          fontSize: '16px',
-        },
-      }),
-    })
+  useEffect(() => {
+    chain?.unsupported &&
+      showNotification({
+        title: 'ATTENTION!',
+        color: 'red',
+        message: 'Unsupported network. Please change it!',
+        icon: <IconUrgent size={20} />,
+        styles: (theme) => ({
+          title: {
+            color: 'red',
+            fontSize: '16px',
+            fontWeight: 'bold',
+          },
+          icon: {
+            fontSize: '16px',
+          },
+        }),
+      })
+  }, [chain.unsupported])
 
   const items = links.map((link) => {
     const menuItems = link.links?.map((item) => (
