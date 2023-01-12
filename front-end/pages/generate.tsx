@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { selectImagesUrls } from '../store/slices/imageSlice'
-import { Stepper, Group, Button, Center } from '@mantine/core'
+import { Stepper, Group, Button, Center, createStyles } from '@mantine/core'
 import { useAccount, useNetwork } from 'wagmi'
 
 import Upload from '../components/Upload'
@@ -16,12 +16,22 @@ import ConnectNetwork from '../components/ConnectNetwork'
 import Navbar from '../components/Navbar'
 // import SiweAuthenticatedPage from '../components/SiweAuthenticated'
 
+const useStyles = createStyles(() => ({
+  stepWrapper: {
+    alignItems: 'center',
+  },
+  stepDescription: {
+    minWidth: '130px',
+  },
+}))
+
 export default function GenerateNft() {
   const [active, setActive] = useState(0)
   const [openedMap, setOpenedMap] = useState({})
   const [images, setImages] = useState([])
   const { address } = useAccount()
   const { chain } = useNetwork()
+  const { classes } = useStyles()
 
   const reduxImageUrls = useSelector(selectImagesUrls)
 
@@ -55,8 +65,15 @@ export default function GenerateNft() {
                   breakpoint="sm"
                   py={48}
                   px={16}
+                  classNames={{
+                    stepWrapper: classes.stepWrapper,
+                    stepDescription: classes.stepDescription,
+                  }}
                 >
-                  <Stepper.Step label="First step" description="Add images">
+                  <Stepper.Step
+                    label="First step"
+                    description="Upload your images"
+                  >
                     <Upload />
                     <ImageGrid
                       openedMap={openedMap}
