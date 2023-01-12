@@ -13,6 +13,7 @@ import ImageCarousel from '../components/ImageCarousel'
 import CompletedStep from '../components/CompletedStep'
 import ConnectWallet from '../components/ConnectWallet'
 import ConnectNetwork from '../components/ConnectNetwork'
+import Navbar from '../components/Navbar'
 // import SiweAuthenticatedPage from '../components/SiweAuthenticated'
 
 export default function GenerateNft() {
@@ -35,6 +36,7 @@ export default function GenerateNft() {
 
   return (
     <>
+      <Navbar />
       {/* <SiweAuthenticatedPage address={address}> */}
       {address ? (
         !chain.unsupported ? (
@@ -51,6 +53,8 @@ export default function GenerateNft() {
                   active={active}
                   onStepClick={setActive}
                   breakpoint="sm"
+                  py={48}
+                  px={16}
                 >
                   <Stepper.Step label="First step" description="Add images">
                     <Upload />

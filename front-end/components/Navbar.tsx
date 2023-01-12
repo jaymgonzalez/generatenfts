@@ -21,6 +21,39 @@ import NetworkButton from './NetworkButton'
 
 const HEADER_HEIGHT = 60
 
+const links = [
+  {
+    link: '/',
+    label: 'Home',
+  },
+  {
+    link: '/generate',
+    label: 'Generate NFT',
+  },
+  {
+    link: '/gallery',
+    label: 'NFT Gallery',
+  },
+  {
+    link: '#2',
+    label: 'Support',
+    links: [
+      {
+        link: '/faq',
+        label: 'FAQ',
+      },
+      {
+        link: '/demo',
+        label: 'Book a demo',
+      },
+      {
+        link: '/forums',
+        label: 'Forums',
+      },
+    ],
+  },
+]
+
 const useStyles = createStyles((theme) => ({
   inner: {
     height: HEADER_HEIGHT,
@@ -67,47 +100,6 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-interface HeaderActionProps {
-  links: {
-    link: string
-    label: string
-    links: { link: string; label: string }[]
-  }[]
-}
-
-const links = [
-  {
-    link: '/',
-    label: 'Home',
-  },
-  {
-    link: '/generate',
-    label: 'Generate NFT',
-  },
-  {
-    link: '/gallery',
-    label: 'NFT Gallery',
-  },
-  {
-    link: '#2',
-    label: 'Support',
-    links: [
-      {
-        link: '/faq',
-        label: 'FAQ',
-      },
-      {
-        link: '/demo',
-        label: 'Book a demo',
-      },
-      {
-        link: '/forums',
-        label: 'Forums',
-      },
-    ],
-  },
-]
-
 export default function Navbar() {
   const { classes } = useStyles()
   const [opened, { toggle }] = useDisclosure(false)
@@ -136,7 +128,7 @@ export default function Navbar() {
           },
         }),
       })
-  }, [chain.unsupported])
+  }, [chain?.unsupported])
 
   const items = links.map((link) => {
     const menuItems = link.links?.map((item) => (
@@ -175,9 +167,9 @@ export default function Navbar() {
   return (
     <Header
       height={HEADER_HEIGHT}
-      // bg="gray.8"
+      bg="rgba(76, 175, 80, 0)"
       sx={{ borderBottom: 0 }}
-      mb={120}
+      // mb={120}
     >
       <Container className={classes.inner} fluid>
         <Group>

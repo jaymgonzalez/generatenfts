@@ -76,7 +76,6 @@ export default function App(props) {
                   modalSize="compact"
                   chains={chains}
                 >
-                  <Navbar />
                   <Component {...pageProps} />
                 </RainbowKitProvider>
                 {/* </RainbowKitSiweNextAuthProvider> </SessionProvider> */}
