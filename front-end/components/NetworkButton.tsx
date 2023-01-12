@@ -140,7 +140,7 @@ export default function NetworkButton({
                   )}
                 </ThemeIcon>
                 <MediaQuery
-                  query="(max-width: 900px) and (min-width: 500px)"
+                  query="(max-width: 900px)"
                   styles={{ display: 'none' }}
                 >
                   <Text>

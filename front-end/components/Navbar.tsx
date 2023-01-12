@@ -169,7 +169,6 @@ export default function Navbar() {
       height={HEADER_HEIGHT}
       bg="rgba(76, 175, 80, 0)"
       sx={{ borderBottom: 0 }}
-      // mb={120}
     >
       <Container className={classes.inner} fluid>
         <Group>

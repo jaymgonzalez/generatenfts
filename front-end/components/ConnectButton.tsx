@@ -47,10 +47,7 @@ const ConnectButton = forwardRef<HTMLButtonElement, ConnectButtonProps>(
         >
           <Group spacing="xs">
             <Identicon size={24} />
-            <MediaQuery
-              query="(max-width: 900px) and (min-width: 500px)"
-              styles={{ display: 'none' }}
-            >
+            <MediaQuery query="(max-width: 900px)" styles={{ display: 'none' }}>
               <Text color="white" size="md" weight="600" mr="2">
                 {`${address.slice(0, 6)}...${address.slice(
                   address.length - 4,

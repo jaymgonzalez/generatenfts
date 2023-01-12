@@ -51,16 +51,22 @@ export default function App(props) {
             withGlobalStyles
             withNormalizeCSS
             theme={{
+              globalStyles: (theme) => ({
+                body: {
+                  maxWidth: '1280px',
+                  margin: '0 auto',
+                },
+              }),
+
               /** Put your mantine theme override here */
               colorScheme: 'dark',
               cursorType: 'default',
               fontFamily: 'Roboto, sans-serif',
               // breakpoints: {
-              //   xs: 500,
-              //   sm: 800,
-              //   md: 1000,
-              //   lg: 1200,
-              //   xl: 1400,
+              //   sm: 640,
+              //   md: 768,
+              //   lg: 1024,
+              //   xl: 1280,
               // },
             }}
           >
