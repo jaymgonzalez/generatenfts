@@ -98,7 +98,7 @@ export default function ImageMetadata({ images, setImages, children }) {
   })
 
   useEffect(() => {
-    setTokenId(tokenIdData.toString())
+    setTokenId(tokenIdData?.toString())
   }, [tokenIdData, tokenIdSuccess, tokenIsLoading])
 
   useEffect(() => {
