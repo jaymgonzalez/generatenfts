@@ -5,6 +5,7 @@ import {
   Stack,
   Title,
 } from '@mantine/core'
+import Link from 'next/link'
 import Navbar from '../components/Navbar'
 
 const useStyles = createStyles(() => ({
@@ -47,7 +48,27 @@ export default function Home() {
             Upload your images, add the meta data and get the NFTs in your
             wallet.
           </Title>
-          <Button mx="auto">Start Now</Button>
+          <Button
+            variant="gradient"
+            gradient={{ from: 'indigo', to: 'cyan' }}
+            size="lg"
+            radius="md"
+            mx="auto"
+            px={28}
+            sx={(theme) => ({
+              transition: 'all .25s ease-in-out',
+              '&:hover': {
+                transform: 'scale(1.025)',
+              },
+              a: {
+                textDecoration: 'none',
+                color: theme.colors.blue[1],
+              },
+            })}
+            onClick={() => {}}
+          >
+            <Link href="/generate">Start Now</Link>
+          </Button>
         </Stack>
       </BackgroundImage>
     </>
