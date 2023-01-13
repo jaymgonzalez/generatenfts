@@ -105,7 +105,7 @@ export default function ImageMetadata({ images, setImages, children }) {
     Promise.resolve(createImageFiles(reduxImageMetadata, tokenId, urls)).then(
       (res) => setImages(res)
     )
-  }, [images.length, tokenIdData])
+  }, [images.length, tokenIdData, refMetadata.current])
 
   useEffect(() => {
     if (
