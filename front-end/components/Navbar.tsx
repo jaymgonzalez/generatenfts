@@ -1,19 +1,11 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import {
-  createStyles,
-  Menu,
-  Center,
-  Header,
-  Container,
-  Group,
-  Burger,
-} from '@mantine/core'
+import { createStyles, Header, Container, Group, Burger } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { showNotification } from '@mantine/notifications'
 import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { IconUrgent, IconChevronDown } from '@tabler/icons'
+import { IconUrgent } from '@tabler/icons'
 
 import AccountMenu from './AccountMenu'
 import CustomConnectButton from './ConnectButton'
@@ -35,22 +27,22 @@ const links = [
     label: 'NFT Gallery',
   },
   {
-    link: '#2',
+    link: '',
     label: 'Support',
-    links: [
-      {
-        link: '/faq',
-        label: 'FAQ',
-      },
-      {
-        link: '/demo',
-        label: 'Book a demo',
-      },
-      {
-        link: '/forums',
-        label: 'Forums',
-      },
-    ],
+    // links: [
+    //   {
+    //     link: '/faq',
+    //     label: 'FAQ',
+    //   },
+    //   {
+    //     link: '/demo',
+    //     label: 'Book a demo',
+    //   },
+    //   {
+    //     link: '/contact',
+    //     label: 'Contact us',
+    //   },
+    // ],
   },
 ]
 
@@ -131,32 +123,6 @@ export default function Navbar() {
   }, [chain?.unsupported])
 
   const items = links.map((link) => {
-    const menuItems = link.links?.map((item) => (
-      <Menu.Item key={item.link}>
-        <Link href={item.link} className={classes.link}>
-          {item.label}
-        </Link>
-      </Menu.Item>
-    ))
-
-    if (menuItems) {
-      return (
-        <>
-          <Menu key={link.label} trigger="hover" exitTransitionDuration={0}>
-            <Menu.Target>
-              <Link href={link.link} className={classes.link}>
-                <Center>
-                  <span className={classes.linkLabel}>{link.label}</span>
-                  <IconChevronDown size={12} stroke={1.5} />
-                </Center>
-              </Link>
-            </Menu.Target>
-            <Menu.Dropdown>{menuItems}</Menu.Dropdown>
-          </Menu>
-        </>
-      )
-    }
-
     return (
       <Link key={link.label} href={link.link} className={classes.link}>
         {link.label}
@@ -167,7 +133,7 @@ export default function Navbar() {
   return (
     <Header
       height={HEADER_HEIGHT}
-      bg="rgba(76, 175, 80, 0)"
+      bg="rgba(0, 0, 0, 0)"
       sx={{ borderBottom: 0 }}
     >
       <Container className={classes.inner} fluid>
