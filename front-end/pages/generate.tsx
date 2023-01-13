@@ -18,11 +18,14 @@ import WIPOverlay from '../components/WorkInProgressOverlay'
 // import SiweAuthenticatedPage from '../components/SiweAuthenticated'
 
 const useStyles = createStyles(() => ({
-  stepWrapper: {
-    alignItems: 'center',
+  step: {
+    alignSelf: 'center',
   },
   stepDescription: {
     minWidth: '130px',
+  },
+  separator: {
+    alignSelf: 'center',
   },
 }))
 
@@ -68,8 +71,9 @@ export default function GenerateNft() {
                   py={48}
                   px={16}
                   classNames={{
-                    stepWrapper: classes.stepWrapper,
+                    step: classes.step,
                     stepDescription: classes.stepDescription,
+                    separator: classes.separator,
                   }}
                 >
                   <Stepper.Step
