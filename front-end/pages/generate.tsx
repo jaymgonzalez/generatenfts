@@ -14,6 +14,7 @@ import CompletedStep from '../components/CompletedStep'
 import ConnectWallet from '../components/ConnectWallet'
 import ConnectNetwork from '../components/ConnectNetwork'
 import Navbar from '../components/Navbar'
+import WIPOverlay from '../components/WorkInProgressOverlay'
 // import SiweAuthenticatedPage from '../components/SiweAuthenticated'
 
 const useStyles = createStyles(() => ({
@@ -46,6 +47,7 @@ export default function GenerateNft() {
 
   return (
     <>
+      <WIPOverlay />
       <Navbar />
       {/* <SiweAuthenticatedPage address={address}> */}
       {address ? (

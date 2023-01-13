@@ -11,8 +11,6 @@ import { NotificationsProvider } from '@mantine/notifications'
 // import { Session } from 'next-auth'
 // import { type AppProps } from 'next/app'
 
-import Navbar from '../components/Navbar'
-
 import '@rainbow-me/rainbowkit/styles.css'
 
 export default function App(props) {

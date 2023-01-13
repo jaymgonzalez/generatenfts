@@ -1,11 +1,8 @@
 import {
   BackgroundImage,
   Button,
-  Center,
   createStyles,
-  Group,
   Stack,
-  Text,
   Title,
 } from '@mantine/core'
 import Navbar from '../components/Navbar'
@@ -53,13 +50,6 @@ export default function Home() {
           <Button mx="auto">Start Now</Button>
         </Stack>
       </BackgroundImage>
-      {/* <Image
-        src="/assets/imgs/backgroundImage.png"
-        alt="background"
-        width={1080}
-        height={720}
-        priority
-      /> */}
     </>
   )
 }
