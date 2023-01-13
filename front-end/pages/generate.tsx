@@ -51,113 +51,114 @@ export default function GenerateNft() {
   return (
     <>
       <WIPOverlay />
-      <Navbar />
-      {/* <SiweAuthenticatedPage address={address}> */}
-      {address ? (
-        !chain.unsupported ? (
-          <RunContract address={address} images={images}>
-            {(
-              mintData,
-              mintWrite,
-              mintIsLoading,
-              mintIsSuccess,
-              mintIsError
-            ) => (
-              <>
-                <Stepper
-                  active={active}
-                  onStepClick={setActive}
-                  breakpoint="sm"
-                  py={48}
-                  px={16}
-                  classNames={{
-                    step: classes.step,
-                    stepDescription: classes.stepDescription,
-                    separator: classes.separator,
-                  }}
-                >
-                  <Stepper.Step
-                    label="First step"
-                    description="Upload your images"
+      <Navbar>
+        {/* <SiweAuthenticatedPage address={address}> */}
+        {address ? (
+          !chain.unsupported ? (
+            <RunContract address={address} images={images}>
+              {(
+                mintData,
+                mintWrite,
+                mintIsLoading,
+                mintIsSuccess,
+                mintIsError
+              ) => (
+                <>
+                  <Stepper
+                    active={active}
+                    onStepClick={setActive}
+                    breakpoint="sm"
+                    py={48}
+                    px={16}
+                    classNames={{
+                      step: classes.step,
+                      stepDescription: classes.stepDescription,
+                      separator: classes.separator,
+                    }}
                   >
-                    <Upload />
-                    <ImageGrid
-                      openedMap={openedMap}
-                      setOpenedMap={setOpenedMap}
-                    />
-                  </Stepper.Step>
-                  <Stepper.Step
-                    label="Second step"
-                    description="Confirm information"
-                    allowStepSelect={reduxImageUrls.length > 0}
-                  >
-                    <ImageMetadata images={images} setImages={setImages}>
-                      <Center mt={24}>
-                        <ImageCarousel
-                          openedMap={openedMap}
-                          setOpenedMap={setOpenedMap}
-                        />
-                      </Center>
-                    </ImageMetadata>
-                  </Stepper.Step>
-                  <Stepper.Step
-                    label="Final step"
-                    description="Generate your NFTs"
-                    allowStepSelect={reduxImageUrls.length > 0}
-                  >
-                    <ImageMetadata images={images} setImages={setImages}>
-                      <ImageTable
+                    <Stepper.Step
+                      label="First step"
+                      description="Upload your images"
+                    >
+                      <Upload />
+                      <ImageGrid
                         openedMap={openedMap}
                         setOpenedMap={setOpenedMap}
                       />
-                    </ImageMetadata>
-                  </Stepper.Step>
-                  <Stepper.Completed>
-                    <CompletedStep
-                      mintData={mintData}
-                      mintIsError={mintIsError}
-                      mintIsLoading={mintIsLoading}
-                      mintIsSuccess={mintIsSuccess}
-                    />
-                  </Stepper.Completed>
-                </Stepper>
-
-                <Group position="center" mt="xl">
-                  {0 < active && active < 3 && (
-                    <Button variant="default" onClick={prevStep}>
-                      Back
-                    </Button>
-                  )}
-                  {active === 3 && mintIsError && (
-                    <Button variant="default" onClick={prevStep}>
-                      Back
-                    </Button>
-                  )}
-                  {reduxImageUrls.length > 0 && active < 2 && (
-                    <Button onClick={nextStep}>Next step</Button>
-                  )}
-                  {active === 2 && (
-                    <Button
-                      disabled={!mintWrite}
-                      onClick={() => {
-                        mintWrite?.()
-                        nextStep()
-                      }}
+                    </Stepper.Step>
+                    <Stepper.Step
+                      label="Second step"
+                      description="Confirm information"
+                      allowStepSelect={reduxImageUrls.length > 0}
                     >
-                      Generate NFTs
-                    </Button>
-                  )}
-                </Group>
-              </>
-            )}
-          </RunContract>
+                      <ImageMetadata images={images} setImages={setImages}>
+                        <Center mt={24}>
+                          <ImageCarousel
+                            openedMap={openedMap}
+                            setOpenedMap={setOpenedMap}
+                          />
+                        </Center>
+                      </ImageMetadata>
+                    </Stepper.Step>
+                    <Stepper.Step
+                      label="Final step"
+                      description="Generate your NFTs"
+                      allowStepSelect={reduxImageUrls.length > 0}
+                    >
+                      <ImageMetadata images={images} setImages={setImages}>
+                        <ImageTable
+                          openedMap={openedMap}
+                          setOpenedMap={setOpenedMap}
+                        />
+                      </ImageMetadata>
+                    </Stepper.Step>
+                    <Stepper.Completed>
+                      <CompletedStep
+                        mintData={mintData}
+                        mintIsError={mintIsError}
+                        mintIsLoading={mintIsLoading}
+                        mintIsSuccess={mintIsSuccess}
+                      />
+                    </Stepper.Completed>
+                  </Stepper>
+
+                  <Group position="center" mt="xl">
+                    {0 < active && active < 3 && (
+                      <Button variant="default" onClick={prevStep}>
+                        Back
+                      </Button>
+                    )}
+                    {active === 3 && mintIsError && (
+                      <Button variant="default" onClick={prevStep}>
+                        Back
+                      </Button>
+                    )}
+                    {reduxImageUrls.length > 0 && active < 2 && (
+                      <Button onClick={nextStep}>Next step</Button>
+                    )}
+                    {active === 2 && (
+                      <Button
+                        disabled={!mintWrite}
+                        onClick={() => {
+                          mintWrite?.()
+                          nextStep()
+                        }}
+                      >
+                        Generate NFTs
+                      </Button>
+                    )}
+                  </Group>
+                </>
+              )}
+            </RunContract>
+          ) : (
+            <ConnectNetwork />
+          )
         ) : (
-          <ConnectNetwork />
-        )
-      ) : (
-        <ConnectWallet />
-      )}
-      {/* </SiweAuthenticatedPage> */}
+          <ConnectWallet />
+        )}
+        {/* </SiweAuthenticatedPage> */}
+      </Navbar>
     </>
   )
 }

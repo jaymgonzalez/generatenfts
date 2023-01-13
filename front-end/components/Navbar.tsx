@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { createStyles, Header, Container, Group, Burger } from '@mantine/core'
+import {
+  createStyles,
+  Header,
+  Container,
+  Group,
+  Burger,
+  Navbar,
+  AppShell,
+} from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { showNotification } from '@mantine/notifications'
 import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi'
@@ -60,6 +68,19 @@ const useStyles = createStyles((theme) => ({
     },
   },
 
+  body: {
+    display: 'block',
+  },
+
+  navbar: {
+    [theme.fn.largerThan('sm')]: {
+      display: 'none',
+    },
+    flexWrap: 'wrap',
+    width: '100%',
+    height: '122px',
+  },
+
   burger: {
     [theme.fn.largerThan('sm')]: {
       display: 'none',
@@ -80,10 +101,9 @@ const useStyles = createStyles((theme) => ({
     fontWeight: 500,
 
     '&:hover': {
-      backgroundColor:
-        theme.colorScheme === 'dark'
-          ? theme.colors.dark[6]
-          : theme.colors.gray[0],
+      border: '1px solid',
+      borderColor: theme.colors.blue[4],
+      backgroundColor: theme.colors.gray[9],
     },
   },
 
@@ -92,7 +112,7 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-export default function Navbar() {
+export default function CustomNavbar({ children }) {
   const { classes } = useStyles()
   const [opened, { toggle }] = useDisclosure(false)
   const [isOpen, setIsOpen] = useState(false)
@@ -131,43 +151,63 @@ export default function Navbar() {
   })
 
   return (
-    <Header
-      height={HEADER_HEIGHT}
-      bg="rgba(0, 0, 0, 0)"
-      sx={{ borderBottom: 0 }}
-    >
-      <Container className={classes.inner} fluid>
-        <Group>
-          <Burger
-            opened={opened}
-            onClick={toggle}
-            className={classes.burger}
-            size="sm"
-          />
-        </Group>
-        <Group spacing={5} className={classes.links}>
+    <AppShell
+      fixed={false}
+      header={
+        <Header
+          height={HEADER_HEIGHT}
+          bg="rgba(0, 0, 0, 0)"
+          sx={{ borderBottom: 0 }}
+        >
+          <Container className={classes.inner} fluid>
+            <Group>
+              <Burger
+                opened={opened}
+                onClick={toggle}
+                className={classes.burger}
+                size="sm"
+              />
+            </Group>
+            <Group spacing={5} className={classes.links}>
+              {items}
+            </Group>
+            <Group>
+              {address && (
+                <NetworkButton
+                  chain={chain}
+                  chains={chains}
+                  isLoading={isLoading}
+                  switchNetwork={switchNetwork}
+                  pendingChainId={pendingChainId}
+                  opened={networkOpened}
+                  onChange={setNetworkOpened}
+                />
+              )}
+              {address && (
+                <AccountMenu
+                  opened={isOpen}
+                  onChange={setIsOpen}
+                  address={address}
+                >
+                  <CustomConnectButton address={address} isOpen={isOpen} />
+                </AccountMenu>
+              )}
+              {!address && <ConnectButton />}
+            </Group>
+          </Container>
+        </Header>
+      }
+      navbar={
+        <Navbar
+          className={classes.navbar}
+          hidden={!opened}
+          bg="rgba(0, 0, 0, 0)"
+        >
           {items}
-        </Group>
-        <Group>
-          {address && (
-            <NetworkButton
-              chain={chain}
-              chains={chains}
-              isLoading={isLoading}
-              switchNetwork={switchNetwork}
-              pendingChainId={pendingChainId}
-              opened={networkOpened}
-              onChange={setNetworkOpened}
-            />
-          )}
-          {address && (
-            <AccountMenu opened={isOpen} onChange={setIsOpen} address={address}>
-              <CustomConnectButton address={address} isOpen={isOpen} />
-            </AccountMenu>
-          )}
-          {!address && <ConnectButton />}
-        </Group>
-      </Container>
-    </Header>
+        </Navbar>
+      }
+    >
+      {children}
+    </AppShell>
   )
 }
