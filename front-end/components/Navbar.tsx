@@ -153,6 +153,11 @@ export default function CustomNavbar({ children }) {
   return (
     <AppShell
       fixed={false}
+      styles={{
+        body: {
+          display: 'block',
+        },
+      }}
       header={
         <Header
           height={HEADER_HEIGHT}
