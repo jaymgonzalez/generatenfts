@@ -17,7 +17,10 @@ import Navbar from '../components/Navbar'
 import WIPOverlay from '../components/WorkInProgressOverlay'
 // import SiweAuthenticatedPage from '../components/SiweAuthenticated'
 
-const useStyles = createStyles(() => ({
+const useStyles = createStyles((theme) => ({
+  root: {
+    maxWidth: theme.breakpoints.xl,
+  },
   step: {
     alignSelf: 'center',
   },
@@ -71,6 +74,7 @@ export default function GenerateNft() {
                     py={48}
                     px={16}
                     classNames={{
+                      root: classes.root,
                       step: classes.step,
                       stepDescription: classes.stepDescription,
                       separator: classes.separator,

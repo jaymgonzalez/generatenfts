@@ -51,7 +51,7 @@ export default function App(props) {
             theme={{
               globalStyles: (theme) => ({
                 body: {
-                  maxWidth: '1280px',
+                  maxWidth: theme.breakpoints.xl,
                   margin: '0 auto',
                 },
               }),
@@ -60,12 +60,12 @@ export default function App(props) {
               colorScheme: 'dark',
               cursorType: 'default',
               fontFamily: 'Roboto, sans-serif',
-              // breakpoints: {
-              //   sm: 640,
-              //   md: 768,
-              //   lg: 1024,
-              //   xl: 1280,
-              // },
+              breakpoints: {
+                sm: 640,
+                md: 768,
+                lg: 1024,
+                xl: 1280,
+              },
             }}
           >
             <NotificationsProvider autoClose={4500} limit={5}>
