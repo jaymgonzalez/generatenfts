@@ -7,7 +7,6 @@ import {
   selectImagesUrls,
   setImageUrls,
   setInitialImageMetadata,
-  setNftMetadata,
 } from '../store/slices/imageSlice'
 
 const useStyles = createStyles((theme) => ({
@@ -76,7 +75,7 @@ export default function Upload() {
         onDrop={onImageDrop}
         className={classes.dropzone}
         radius="md"
-        accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
+        accept={[MIME_TYPES.png, MIME_TYPES.jpeg, MIME_TYPES.gif]}
         maxSize={3 * 1024 ** 2}
       >
         <div style={{ pointerEvents: 'none' }}>
@@ -107,13 +106,14 @@ export default function Upload() {
           <Text align="center" weight={700} size="lg" mt="xl">
             <Dropzone.Accept>Drop files here</Dropzone.Accept>
             <Dropzone.Reject>
-              JPEG and PNG files only. Not bigger than 3mb
+              JPEG GIF or PNG files only. Not bigger than 3mb
             </Dropzone.Reject>
             <Dropzone.Idle>Upload your images</Dropzone.Idle>
           </Text>
           <Text align="center" size="sm" mt="xs" color="dimmed">
             Drag&apos;n&apos;drop files here to upload. We can accept only{' '}
-            <i>.png</i> or <i>.jpeg</i> files that are less than 3mb in size.
+            <i>.png</i> <i>.gif</i> or <i>.jpeg</i> files that are less than 3mb
+            in size.
           </Text>
         </div>
       </Dropzone>
