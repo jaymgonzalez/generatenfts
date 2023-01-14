@@ -2,6 +2,7 @@ import {
   BackgroundImage,
   Button,
   createStyles,
+  Group,
   Stack,
   Title,
 } from '@mantine/core'
@@ -48,29 +49,28 @@ export default function Home() {
               Upload your images, add the meta data and get the NFTs in your
               wallet.
             </Title>
-            <Link href="/generate">
-              <Button
-                variant="gradient"
-                gradient={{ from: 'indigo', to: 'cyan' }}
-                size="lg"
-                radius="md"
-                mx="auto"
-                px={28}
-                sx={(theme) => ({
-                  transition: 'all .25s ease-in-out',
-                  '&:hover': {
-                    transform: 'scale(1.025)',
-                  },
-                  a: {
-                    textDecoration: 'none',
-                    color: theme.colors.blue[1],
-                  },
-                })}
-                onClick={() => {}}
-              >
-                Start Now
-              </Button>
-            </Link>
+            <Group mx="auto" px={28}>
+              <Link href="/generate">
+                <Button
+                  variant="gradient"
+                  gradient={{ from: 'indigo', to: 'cyan' }}
+                  size="lg"
+                  radius="md"
+                  sx={(theme) => ({
+                    transition: 'all .25s ease-in-out',
+                    '&:hover': {
+                      transform: 'scale(1.025)',
+                    },
+                    a: {
+                      textDecoration: 'none',
+                      color: theme.colors.blue[1],
+                    },
+                  })}
+                >
+                  Start Now
+                </Button>
+              </Link>
+            </Group>
           </Stack>
         </Navbar>
       </BackgroundImage>
