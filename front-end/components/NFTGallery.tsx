@@ -108,7 +108,7 @@ export default function NFTGallery({ address }) {
   const nfts = records?.map((nft, index) => {
     return (
       <>
-        <Grid.Col span={6} sm={4} md={3}>
+        <Grid.Col span={12} xs={6} sm={4} lg={3}>
           {/* <Link href={`/nft/${nft.contract.address}/${nft.tokenId}`}> */}
           <NFTModal
             nft={nft}
