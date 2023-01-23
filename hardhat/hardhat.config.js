@@ -5,7 +5,7 @@ require('hardhat-deploy')
 require('hardhat-gas-reporter')
 require('dotenv').config()
 
-const QUICKNODE_HTTP_URL = process.env.QUICKNODE_HTTP_URL
+const GOERLI_RPC_URL = process.env.GOERLI_RPC_URL
 const POLYGON_MUMBAI_RPC_URL = process.env.POLYGON_MUMBAI_RPC_URL
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY
@@ -24,7 +24,7 @@ module.exports = {
       accounts: [PRIVATE_KEY2],
     },
     goerli: {
-      url: QUICKNODE_HTTP_URL,
+      url: GOERLI_RPC_URL,
       accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [PRIVATE_KEY2],
       chainId: 5,
     },

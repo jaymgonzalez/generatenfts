@@ -2,6 +2,7 @@
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
@@ -14,7 +15,7 @@ error GNFT__TransactionNotSent();
 error GNFT__MintingIsPaused();
 error GNFT__NftToMintLowerThanOne();
 
-contract GNFT is ERC721URIStorage, Ownable {
+contract GNFT is ERC721URIStorage, Initializable, Ownable {
     using Strings for uint256;
     using SafeMath for uint256;
     using Counters for Counters.Counter;
@@ -22,7 +23,7 @@ contract GNFT is ERC721URIStorage, Ownable {
 
     uint256 public _tokenId;
     bool public paused = false;
-    uint256 public fee = 10 ether;
+    uint256 public fee = 0 ether;
 
     constructor() ERC721("GenerateNFT.com Collection", "GNFT") {}
 
@@ -76,5 +77,3 @@ contract GNFT is ERC721URIStorage, Ownable {
         }
     }
 }
-
-// TODO: implement a way to check which NFTS you own.
