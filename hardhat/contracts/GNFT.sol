@@ -1,45 +1,59 @@
 // SPDX-License-Identifier: MIT LICENSE
 
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721URIStorageUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol";
 
-import "hardhat/console.sol";
+// import "hardhat/console.sol";
 
 pragma solidity ^0.8.0;
 
 error GNFT__NotEnoughFunds(uint256 neededFunds);
 error GNFT__TransactionNotSent();
-error GNFT__MintingIsPaused();
+// error GNFT__MintingIsPaused();
 error GNFT__NftToMintLowerThanOne();
 
-contract GNFT is ERC721URIStorage, Initializable, Ownable {
-    using Strings for uint256;
-    using SafeMath for uint256;
-    using Counters for Counters.Counter;
-    Counters.Counter private _tokenIdCounter;
+contract GNFT is
+    Initializable,
+    ERC721Upgradeable,
+    ERC721URIStorageUpgradeable,
+    PausableUpgradeable,
+    OwnableUpgradeable
+{
+    using CountersUpgradeable for CountersUpgradeable.Counter;
+    using SafeMathUpgradeable for uint256;
+
+    CountersUpgradeable.Counter private _tokenIdCounter;
 
     uint256 public _tokenId;
-    bool public paused = false;
     uint256 public fee = 0 ether;
 
-    constructor() ERC721("GenerateNFT.com Collection", "GNFT") {}
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor() {
+        _disableInitializers();
+    }
+
+    function initialize() public initializer {
+        __ERC721_init("GenerateNFTs.xyz Collection", "GNFT");
+        __ERC721URIStorage_init();
+        __Pausable_init();
+        __Ownable_init();
+    }
 
     function mint(
         address _to,
         string memory _baseUri,
         string[] memory _fileNames
-    ) public payable {
-        if (paused) {
-            revert GNFT__MintingIsPaused();
-        }
+    ) public payable whenNotPaused {
         if (_fileNames.length < 1) {
             revert GNFT__NftToMintLowerThanOne();
         }
         if (msg.sender != owner()) {
-            uint256 totalFee = SafeMath.mul(fee, _fileNames.length);
+            uint256 totalFee = SafeMathUpgradeable.mul(fee, _fileNames.length);
 
             if (totalFee > msg.value) {
                 revert GNFT__NotEnoughFunds(totalFee);
@@ -64,8 +78,12 @@ contract GNFT is ERC721URIStorage, Initializable, Ownable {
         fee = _fee;
     }
 
-    function pause(bool _state) public onlyOwner {
-        paused = _state;
+    function pause() public onlyOwner {
+        _pause();
+    }
+
+    function unpause() public onlyOwner {
+        _unpause();
     }
 
     function withdraw() public onlyOwner {
@@ -75,5 +93,24 @@ contract GNFT is ERC721URIStorage, Initializable, Ownable {
         if (!sent) {
             revert GNFT__TransactionNotSent();
         }
+    }
+
+    // The following functions are overrides required by Solidity.
+
+    function _burn(
+        uint256 tokenId
+    ) internal override(ERC721Upgradeable, ERC721URIStorageUpgradeable) {
+        super._burn(tokenId);
+    }
+
+    function tokenURI(
+        uint256 tokenId
+    )
+        public
+        view
+        override(ERC721Upgradeable, ERC721URIStorageUpgradeable)
+        returns (string memory)
+    {
+        return super.tokenURI(tokenId);
     }
 }
