@@ -26,6 +26,11 @@ async function main() {
     proxy.address
   )
 
+  console.log(
+    await upgrades.erc1967.getAdminAddress(proxy.address),
+    ' getAdminAddress'
+  )
+
   console.log('Proxy contract address: ' + proxy.address)
 
   console.log('Implementation contract address: ' + implementationAddress)
