@@ -73,9 +73,11 @@ export default function App(props) {
                 {/* <SessionProvider session={pageProps.session} refetchInterval={0}>  <RainbowKitSiweNextAuthProvider> */}
                 <RainbowKitProvider
                   theme={darkTheme({
-                    accentColor: '#1971C2',
-                    accentColorForeground: 'white',
-                    fontStack: 'system',
+                    accentColor: 'rgba(34, 139, 230, 0.15)',
+                    accentColorForeground: '#C1C2C5',
+                    fontStack: 'rounded',
+                    overlayBlur: 'large',
+                    borderRadius: 'medium',
                   })}
                   modalSize="compact"
                   chains={chains}

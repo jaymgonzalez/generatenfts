@@ -36,7 +36,7 @@ export const { chains, provider } = configureChains(
 )
 
 const { connectors } = getDefaultWallets({
-  appName: 'Generate your NFT minting dApp',
+  appName: 'Generate NFTs dApp',
   chains,
 })
 
