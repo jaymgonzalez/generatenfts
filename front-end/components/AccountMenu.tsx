@@ -6,6 +6,7 @@ import {
   Button,
   Center,
   createStyles,
+  Flex,
   Group,
   Menu,
   Text,
@@ -20,6 +21,7 @@ import {
 import Identicon from './Identicon'
 import { useBalance, useDisconnect } from 'wagmi'
 import { formatEther } from '@ethersproject/units'
+import Link from 'next/link'
 
 const useStyles = createStyles((theme) => ({
   menu: {
@@ -32,6 +34,13 @@ const useStyles = createStyles((theme) => ({
   },
   header: {
     cursor: 'default',
+  },
+  link: {
+    a: {
+      display: 'block',
+      textDecoration: 'none',
+    },
+    width: '100%',
   },
 }))
 
@@ -123,11 +132,13 @@ export default function AccountMenu({ children, opened, onChange, address }) {
               {`$${usdAmount.toFixed(2)} USD`}
             </Text>
           </Center>
-          <Center pb={60}>
-            <Button fullWidth variant="outline" maw={'70%'} radius="md">
-              Mint NFT
-            </Button>
-          </Center>
+          <Group position="center" pb={60} className={classes.link}>
+            <Link href="/generate">
+              <Button px={32} variant="outline" radius="md">
+                Generate NFTs
+              </Button>
+            </Link>
+          </Group>
           <Menu.Divider />
           <Menu.Item rightSection={<IconChevronRight size={14} />}>
             Transactions
