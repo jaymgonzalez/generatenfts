@@ -7,9 +7,9 @@ import {
 import { BigNumber } from 'ethers'
 import { returnCid, storeFiles } from '../utils/cid'
 import { useEffect, useRef, useState } from 'react'
-import NFTGallery from './NFTGallery'
 import { useSelector } from 'react-redux'
 import { selectImagesMetadata } from '../store/slices/imageSlice'
+import { utils } from 'ethers'
 
 function createMetadataFiles(metadata) {
   return metadata.map((data) => {
@@ -55,7 +55,7 @@ export default function RunContract({ address, images, children }) {
     overrides: {
       gasLimit: BigNumber.from('10000000'),
       // value: utils.parseEther(!Number.isNaN(value) ? '10' : value.toString()),
-      // value: utils.parseEther('10'),
+      value: utils.parseEther('0.5'),
     },
   })
 

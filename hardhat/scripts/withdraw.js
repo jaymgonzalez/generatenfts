@@ -1,4 +1,4 @@
-const contract = require('../artifacts/contracts/GNFTs.sol/GNFTs.json')
+const contract = require('../artifacts/contracts/GNFT.sol/GNFT.json')
 const { contractAddress } = require('../constants')
 require('dotenv').config({ path: '.env' })
 
@@ -19,7 +19,7 @@ async function main() {
 
   await tx.wait()
 
-  console.log('You successfully withdraw your token funds :)')
+  console.log('You successfully withdraw contract funds :)')
 }
 
 main()

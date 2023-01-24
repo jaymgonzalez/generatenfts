@@ -14,7 +14,7 @@ async function main() {
     signer
   )
   console.log('Setting fee...')
-  const setFeeTx = await GNFT.setFee(ethers.utils.parseEther('0.01'))
+  const setFeeTx = await GNFT.setFee(ethers.utils.parseEther('1'))
   await setFeeTx.wait()
   console.log('Fee setted!')
 }
