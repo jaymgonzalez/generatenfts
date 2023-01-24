@@ -1,6 +1,5 @@
 import {
   createStyles,
-  Button,
   Menu,
   Group,
   UnstyledButton,
@@ -104,59 +103,48 @@ export default function NetworkButton({
       onChange={onChange}
     >
       <Menu.Target>
-        <UnstyledButton>
-          <Box
-            sx={(theme) => ({
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              border: '1px transparent',
-              backgroundColor: theme.colors.gray[7],
-              borderRadius: theme.radius.md,
-            })}
-          >
-            <Button
-              sx={(theme) => ({
-                maring: '1px',
-                '&:hover': {
-                  border: '1px',
-                  borderStyle: 'solid',
-                  borderColor: theme.colors.blue[4],
-                  backgroundColor: theme.colors.gray[9],
-                },
-              })}
-              bg="gray.9"
-              radius="md"
-              m={1}
-              px={8}
-              size="sm"
-            >
-              <Group spacing="xs">
-                <ThemeIcon variant="default" size="sm" className={classes.icon}>
-                  {!chain.unsupported ? (
-                    iconMap[chain.id]
-                  ) : (
-                    <IconAlertTriangle fontSize="20px" />
-                  )}
-                </ThemeIcon>
-                <MediaQuery
-                  query="(max-width: 900px)"
-                  styles={{ display: 'none' }}
-                >
-                  <Text>
-                    {' '}
-                    {!chain.unsupported ? chain.name : 'Unsupported'}
-                  </Text>
-                </MediaQuery>
-                {!opened ? (
-                  <IconChevronDown size={16} stroke={1.5} />
-                ) : (
-                  <IconChevronUp size={16} stroke={1.5} />
-                )}
-              </Group>
-            </Button>
-          </Box>
-        </UnstyledButton>
+        <Box
+          sx={(theme) => ({
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: theme.colors.gray[7],
+            borderRadius: theme.radius.md,
+            border: '1px solid transparent',
+            borderColor: theme.colors.gray[7],
+            maring: '1px',
+            cursor: 'pointer',
+            '&:hover': {
+              border: '1px',
+              borderStyle: 'solid',
+              borderColor: theme.colors.blue[4],
+              backgroundColor: theme.colors.gray[9],
+            },
+          })}
+          bg="gray.9"
+          h={35}
+        >
+          <Group spacing="xs" px={8}>
+            <ThemeIcon variant="default" size="sm" className={classes.icon}>
+              {!chain.unsupported ? (
+                iconMap[chain.id]
+              ) : (
+                <IconAlertTriangle fontSize="20px" />
+              )}
+            </ThemeIcon>
+            <MediaQuery query="(max-width: 900px)" styles={{ display: 'none' }}>
+              <Text size="sm" weight="600">
+                {' '}
+                {!chain.unsupported ? chain.name : 'Unsupported'}
+              </Text>
+            </MediaQuery>
+            {!opened ? (
+              <IconChevronDown size={16} stroke={1.5} />
+            ) : (
+              <IconChevronUp size={16} stroke={1.5} />
+            )}
+          </Group>
+        </Box>
       </Menu.Target>
       <Menu.Dropdown
         sx={() => ({

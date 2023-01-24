@@ -1,70 +1,88 @@
 import {
   Box,
   Button,
+  createStyles,
   Group,
   MediaQuery,
   Text,
-  UnstyledButton,
+  ThemeIcon,
 } from '@mantine/core'
 import { IconChevronDown, IconChevronUp } from '@tabler/icons'
-import { ComponentPropsWithoutRef, forwardRef } from 'react'
 import Identicon from './Identicon'
 
-interface ConnectButtonProps extends ComponentPropsWithoutRef<'button'> {
-  address: string
-  isOpen: boolean
-}
+const useStyles = createStyles((theme, _params, getRef) => ({
+  group: {
+    borderRadius: theme.radius.md,
+    '&:hover': {
+      backgroundColor: theme.colors.gray[9],
+      [`& .${getRef('child')}`]: {
+        backgroundColor: theme.colors.gray[9],
+      },
+    },
+  },
+  buttonList: {
+    borderRadius: theme.radius.md,
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'space-between',
+  },
+  icon: {
+    border: 0,
+    paddingTop: '6px',
+  },
+  iconMenu: {
+    ref: getRef('child'),
+    backgroundColor:
+      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+    border: 0,
+  },
+}))
 
-const ConnectButton = forwardRef<HTMLButtonElement, ConnectButtonProps>(
-  ({ address, isOpen }: ConnectButtonProps, ref) => (
-    <UnstyledButton ref={ref}>
-      <Box
-        sx={(theme) => ({
-          display: 'flex',
-          alignItems: 'center',
-          backgroundColor:
-            theme.colorScheme === 'dark' ? theme.colors.gray[7] : theme.white,
-          borderRadius: theme.radius.md,
-          justifyContent: 'center',
-        })}
-      >
-        <Button
-          sx={(theme) => ({
-            border: '1px solid transparent',
-            maring: '1px',
-            '&:hover': {
-              border: '1px',
-              borderStyle: 'solid',
-              borderColor: theme.colors.blue[4],
-              backgroundColor: theme.colors.gray[9],
-            },
-          })}
-          bg="gray.9"
-          radius="md"
-          m={1}
-          px={8}
-          size="sm"
-        >
-          <Group spacing="xs">
-            <Identicon size={24} />
-            <MediaQuery query="(max-width: 900px)" styles={{ display: 'none' }}>
-              <Text color="white" size="md" weight="600" mr="2">
-                {`${address.slice(0, 6)}...${address.slice(
-                  address.length - 4,
-                  address.length
-                )}`}
-              </Text>
-            </MediaQuery>
-            {!isOpen ? (
-              <IconChevronDown size={16} stroke={1.5} />
-            ) : (
-              <IconChevronUp size={16} stroke={1.5} />
-            )}
-          </Group>
-        </Button>
-      </Box>
-    </UnstyledButton>
+const ConnectButton = ({ address, isOpen }) => {
+  const { classes, theme } = useStyles()
+
+  return (
+    <Box
+      sx={(theme) => ({
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: theme.colors.gray[7],
+        borderRadius: theme.radius.md,
+        border: '1px solid transparent',
+        borderColor: theme.colors.gray[7],
+        maring: '1px',
+        cursor: 'pointer',
+        '&:hover': {
+          border: '1px',
+          borderStyle: 'solid',
+          borderColor: theme.colors.blue[4],
+          backgroundColor: theme.colors.gray[9],
+        },
+      })}
+      bg="gray.9"
+      h={35}
+    >
+      <Group spacing="xs" px={8}>
+        <ThemeIcon variant="default" size="sm" className={classes.icon}>
+          <Identicon size={24} />
+        </ThemeIcon>
+        <MediaQuery query="(max-width: 900px)" styles={{ display: 'none' }}>
+          <Text size="md" weight="600">
+            {`${address.slice(0, 6)}...${address.slice(
+              address.length - 4,
+              address.length
+            )}`}
+          </Text>
+        </MediaQuery>
+        {!isOpen ? (
+          <IconChevronDown size={16} stroke={1.5} />
+        ) : (
+          <IconChevronUp size={16} stroke={1.5} />
+        )}
+      </Group>
+    </Box>
   )
-)
+}
 
 export default ConnectButton
