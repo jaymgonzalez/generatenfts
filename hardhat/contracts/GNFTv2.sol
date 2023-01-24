@@ -17,7 +17,7 @@ error GNFT__TransactionNotSent();
 // error GNFT__MintingIsPaused();
 error GNFT__NftToMintLowerThanOne();
 
-contract GNFT is
+contract GNFTv2 is
     Initializable,
     ERC721Upgradeable,
     ERC721URIStorageUpgradeable,
