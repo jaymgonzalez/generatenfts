@@ -1,16 +1,17 @@
 // SPDX-License-Identifier: MIT LICENSE
 
+pragma solidity ^0.8.0;
+
 import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721URIStorageUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol";
 
 // import "hardhat/console.sol";
-
-pragma solidity ^0.8.0;
 
 error GNFT__NotEnoughFunds(uint256 neededFunds);
 error GNFT__TransactionNotSent();
@@ -22,7 +23,8 @@ contract GNFT is
     ERC721Upgradeable,
     ERC721URIStorageUpgradeable,
     PausableUpgradeable,
-    OwnableUpgradeable
+    OwnableUpgradeable,
+    UUPSUpgradeable
 {
     using CountersUpgradeable for CountersUpgradeable.Counter;
     using SafeMathUpgradeable for uint256;
@@ -42,6 +44,7 @@ contract GNFT is
         __ERC721URIStorage_init();
         __Pausable_init();
         __Ownable_init();
+        __UUPSUpgradeable_init();
     }
 
     function mint(
@@ -74,6 +77,10 @@ contract GNFT is
     }
 
     // only owner
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override onlyOwner {}
+
     function setFee(uint256 _fee) public onlyOwner {
         fee = _fee;
     }

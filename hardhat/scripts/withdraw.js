@@ -1,38 +1,23 @@
-const contract = require('../artifacts/contracts/AINFTs.sol/AINFTs.json')
+const contract = require('../artifacts/contracts/GNFTs.sol/GNFTs.json')
 const { contractAddress } = require('../constants')
 require('dotenv').config({ path: '.env' })
 
 async function main() {
   const signer = await ethers.getSigner()
 
-  const AINFT = await ethers.getContractAt(
-    contract.abi,
-    contractAddress,
-    signer
-  )
-  console.log('Withdrawing token funds...')
+  const GNFT = await ethers.getContractAt(contract.abi, contractAddress, signer)
 
-  const tokenTx = await AINFT.withdrawToken(0, {
-    gasLimit: 50000,
-  })
-
-  console.log(
-    `Check yout transaction at https://mumbai.polygonscan.com/tx/${tokenTx.hash}`
-  )
-
-  await tokenTx.wait()
-
-  console.log('You successfully withdraw your token funds :)')
+  // await signer.call(signer)
 
   console.log('Withdrawing funds...')
 
-  const maticTx = await AINFT.withdraw()
+  const tx = await GNFT.withdraw()
 
-  console.log(
-    `Check yout transaction at https://mumbai.polygonscan.com/tx/${maticTx.hash}`
-  )
+  // console.log(
+  //   `Check yout transaction at https://mumbai.polygonscan.com/tx/${maticTx.hash}`
+  // )
 
-  await maticTx.wait()
+  await tx.wait()
 
   console.log('You successfully withdraw your token funds :)')
 }

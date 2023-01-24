@@ -6,15 +6,15 @@ const { contractAddress } = require('../constants')
 async function main() {
   const signer = await ethers.getSigner()
 
-  const AINFTs = await ethers.getContractAt(
+  const GNFTs = await ethers.getContractAt(
     contract.abi,
     contractAddress,
     signer
   )
   console.log('Getting current fee...')
-  const setFeeTx = await AINFTs.fee()
-  // await setFeeTx.wait()
-  console.log(setFeeTx)
+  const getFeeTx = await GNFTs.fee()
+  // await getFeeTx.wait()
+  console.log(getFeeTx)
 }
 
 main()
