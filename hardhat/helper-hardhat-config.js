@@ -5,7 +5,7 @@ const networkConfig = {
     name: 'hardhat',
     keepersUpdateInterval: '30',
   },
-  31337: {
+  1337: {
     name: 'localhost',
   },
   5: {
