@@ -1,24 +1,8 @@
-import {
-  BackgroundImage,
-  Button,
-  createStyles,
-  Group,
-  Stack,
-  Title,
-} from '@mantine/core'
+import { BackgroundImage, Button, Group, Stack, Title } from '@mantine/core'
 import Link from 'next/link'
 import Navbar from '../components/Navbar'
 
-const useStyles = createStyles(() => ({
-  center: {
-    backgroundImage: "url('/backgroundImage.png')",
-    backgroundSize: 'cover',
-    height: '100vh',
-  },
-}))
 export default function Home() {
-  const { classes, theme } = useStyles()
-
   return (
     <>
       <BackgroundImage src="/imgs/backgroundImage.png" mih={720} h="100vh">
@@ -50,26 +34,26 @@ export default function Home() {
               wallet.
             </Title>
             <Group mx="auto" px={28}>
-              <Link href="/generate">
-                <Button
-                  variant="gradient"
-                  gradient={{ from: 'indigo', to: 'cyan' }}
-                  size="lg"
-                  radius="md"
-                  sx={(theme) => ({
-                    transition: 'all .25s ease-in-out',
-                    '&:hover': {
-                      transform: 'scale(1.025)',
-                    },
-                    a: {
-                      textDecoration: 'none',
-                      color: theme.colors.blue[1],
-                    },
-                  })}
-                >
-                  Start Now
-                </Button>
-              </Link>
+              <Button
+                component={Link}
+                href="/generate"
+                variant="gradient"
+                gradient={{ from: 'indigo', to: 'cyan' }}
+                size="lg"
+                radius="md"
+                sx={(theme) => ({
+                  transition: 'all .25s ease-in-out',
+                  '&:hover': {
+                    transform: 'scale(1.025)',
+                  },
+                  a: {
+                    textDecoration: 'none',
+                    color: theme.colors.blue[1],
+                  },
+                })}
+              >
+                Start Now
+              </Button>
             </Group>
           </Stack>
         </Navbar>

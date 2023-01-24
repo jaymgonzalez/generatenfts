@@ -5,8 +5,8 @@ import {
   Box,
   Button,
   Center,
+  CopyButton,
   createStyles,
-  Flex,
   Group,
   Menu,
   Text,
@@ -19,7 +19,7 @@ import {
   IconChevronRight,
 } from '@tabler/icons'
 import Identicon from './Identicon'
-import { useBalance, useDisconnect } from 'wagmi'
+import { useBalance, useDisconnect, useNetwork } from 'wagmi'
 import { formatEther } from '@ethersproject/units'
 import Link from 'next/link'
 
@@ -35,13 +35,6 @@ const useStyles = createStyles((theme) => ({
   header: {
     cursor: 'default',
   },
-  link: {
-    a: {
-      display: 'block',
-      textDecoration: 'none',
-    },
-    width: '100%',
-  },
 }))
 
 export default function AccountMenu({ children, opened, onChange, address }) {
@@ -51,6 +44,7 @@ export default function AccountMenu({ children, opened, onChange, address }) {
     address,
   })
   const { disconnect } = useDisconnect()
+  const { chain } = useNetwork()
 
   const amount = data?.value
     ? parseFloat(formatEther(data?.value)).toFixed(4)
@@ -100,13 +94,33 @@ export default function AccountMenu({ children, opened, onChange, address }) {
               </Text>
             </Group>
             <Group spacing="xs">
-              <Tooltip label="Copy" position="bottom">
-                <ActionIcon variant="default" radius="md" size={36}>
-                  <IconCopy size={18} stroke={1.5} />
-                </ActionIcon>
-              </Tooltip>
+              <CopyButton value={address} timeout={2000}>
+                {({ copied, copy }) => (
+                  <Tooltip label={copied ? 'Copied' : 'Copy'} position="bottom">
+                    <ActionIcon
+                      variant="default"
+                      radius="md"
+                      size={36}
+                      onClick={copy}
+                    >
+                      <IconCopy
+                        size={18}
+                        stroke={1.5}
+                        color={copied ? 'teal' : 'white'}
+                      />
+                    </ActionIcon>
+                  </Tooltip>
+                )}
+              </CopyButton>
               <Tooltip label="Explore" position="bottom">
-                <ActionIcon variant="default" radius="md" size={36}>
+                <ActionIcon
+                  variant="default"
+                  radius="md"
+                  size={36}
+                  component="a"
+                  target="_blank"
+                  href={chain?.blockExplorers?.default?.url}
+                >
                   <IconExternalLink size={18} stroke={1.5} />
                 </ActionIcon>
               </Tooltip>
@@ -132,13 +146,17 @@ export default function AccountMenu({ children, opened, onChange, address }) {
               {`$${usdAmount.toFixed(2)} USD`}
             </Text>
           </Center>
-          <Group position="center" pb={60} className={classes.link}>
-            <Link href="/generate">
-              <Button px={32} variant="outline" radius="md">
-                Generate NFTs
-              </Button>
-            </Link>
-          </Group>
+          <Center pb={60}>
+            <Button
+              component={Link}
+              href="/generate"
+              px={32}
+              variant="outline"
+              radius="md"
+            >
+              Generate NFTs
+            </Button>{' '}
+          </Center>
           <Menu.Divider />
           <Menu.Item rightSection={<IconChevronRight size={14} />}>
             Transactions

@@ -219,7 +219,7 @@ export default function NFTModal({
               <Text>contract address</Text>
               <a
                 target="_blank"
-                href={`${chain.blockExplorers.default.url}/address/${nft.contract.address}`}
+                href={`${chain?.blockExplorers?.default?.url}/address/${nft.contract.address}`}
               >{`${nft.contract.address.slice(
                 0,
                 6

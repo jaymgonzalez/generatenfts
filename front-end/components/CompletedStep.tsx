@@ -51,7 +51,7 @@ export default function CompletedStep({
             Transaction successful! Check it on the blockchain{' '}
             <a
               target="_blank"
-              href={`${chain.blockExplorers.default.url}/tx/${mintData.hash}`}
+              href={`${chain?.blockExplorers?.default?.url}/tx/${mintData.hash}`}
             >
               here
             </a>
