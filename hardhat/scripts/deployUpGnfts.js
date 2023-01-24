@@ -26,10 +26,9 @@ async function main() {
     proxy.address
   )
 
-  console.log(
-    await upgrades.erc1967.getAdminAddress(proxy.address),
-    ' getAdminAddress'
-  )
+  const adminAddress = await upgrades.erc1967.getAdminAddress(proxy.address)
+
+  console.log('Admin contract address: ', adminAddress)
 
   console.log('Proxy contract address: ' + proxy.address)
 
