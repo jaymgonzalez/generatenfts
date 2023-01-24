@@ -3,6 +3,7 @@ import { IconCheck, IconX } from '@tabler/icons'
 import Link from 'next/link'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
+import { useNetwork } from 'wagmi'
 import { setImageUrls, setImageMetadata } from '../store/slices/imageSlice'
 
 export default function CompletedStep({
@@ -12,6 +13,7 @@ export default function CompletedStep({
   mintIsError,
 }) {
   const dispatch = useDispatch()
+  const { chain } = useNetwork()
 
   useEffect(() => {
     if (mintIsSuccess) {
@@ -49,7 +51,7 @@ export default function CompletedStep({
             Transaction successful! Check it on the blockchain{' '}
             <a
               target="_blank"
-              href={`https://mumbai.polygonscan.com/tx/${mintData.hash}`}
+              href={`${chain.blockExplorers.default.url}/tx/${mintData.hash}`}
             >
               here
             </a>

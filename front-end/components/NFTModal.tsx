@@ -13,6 +13,7 @@ import {
 } from '@mantine/core'
 import { IconChevronDown } from '@tabler/icons'
 import { useState } from 'react'
+import { useNetwork } from 'wagmi'
 
 const useStyles = createStyles((theme) => ({
   modal: {
@@ -85,6 +86,8 @@ export default function NFTModal({
   const [openedAttributes, setOpenedAttributes] = useState(false)
 
   const { classes } = useStyles()
+
+  const { chain } = useNetwork()
 
   const attributes = nft.rawMetadata?.attributes?.map((attr, i) => {
     return (
@@ -216,7 +219,7 @@ export default function NFTModal({
               <Text>contract address</Text>
               <a
                 target="_blank"
-                href={`https://mumbai.polygonscan.com/address/${nft.contract.address}`}
+                href={`${chain.blockExplorers.default.url}/address/${nft.contract.address}`}
               >{`${nft.contract.address.slice(
                 0,
                 6
