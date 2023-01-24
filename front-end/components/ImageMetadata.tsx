@@ -31,8 +31,8 @@ async function createImageFiles(images, tokenId, urls) {
   return files
 }
 
-async function getMetadata(imagesMetadata, baseMetadata, tokenId, files) {
-  const cid = await returnCid(files)
+async function getMetadata(imagesMetadata, baseMetadata, tokenId, cid) {
+  // const cid = await returnCid(files)
 
   return imagesMetadata.map((img, i) => {
     const attributes = img.attributes?.map((attr) => {
@@ -74,6 +74,7 @@ export default function ImageMetadata({ images, setImages, children }) {
   const { chain } = useNetwork()
   const refMetadata = useRef(null)
   const [tokenId, setTokenId] = useState(null)
+  const [cid, setCid] = useState(null)
 
   const dispacth = useDispatch()
   const reduxImageMetadata = useSelector(selectImagesMetadata)
@@ -108,6 +109,10 @@ export default function ImageMetadata({ images, setImages, children }) {
   }, [images.length, tokenIdData, refMetadata.current])
 
   useEffect(() => {
+    Promise.resolve(returnCid(images)).then((res) => setCid(res))
+  }, [images.length, tokenIdData, refMetadata.current, cid])
+
+  useEffect(() => {
     if (
       JSON.stringify(refMetadata.current) !== JSON.stringify(reduxImageMetadata)
     ) {
@@ -117,9 +122,9 @@ export default function ImageMetadata({ images, setImages, children }) {
 
   useEffect(() => {
     Promise.resolve(
-      getMetadata(reduxImageMetadata, baseMetadata, tokenId, images)
+      getMetadata(reduxImageMetadata, baseMetadata, tokenId, cid)
     ).then((res) => dispacth(setImageMetadata(res)))
-  }, [refMetadata.current, tokenIdData])
+  }, [refMetadata.current, tokenIdData, cid])
 
   return <>{children}</>
 }
