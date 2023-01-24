@@ -1,7 +1,7 @@
 import contract from '../../hardhat/artifacts/contracts/GNFT.sol/GNFT.json'
 
-// LAST CONTRACT IN MUMBAI
-export const contractAddress = '0x2F42E4b4b6F458FE5CeE42e89c753D3174CAf1Da'
+// LAST CONTRACT IN MUMBAI (PROXY)
+export const contractAddress = '0x6f881A8726D06822DB2bDFaC0C55ADe965eb2A3e'
 
 // TESTING CONTRACT
 // export const contractAddress = '0xbD8Ca722093d811bF314dDAB8438711a4caB2e73'

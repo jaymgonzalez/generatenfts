@@ -30,7 +30,7 @@ contract GNFT is
     CountersUpgradeable.Counter private _tokenIdCounter;
 
     uint256 public _tokenId;
-    uint256 public fee = 0 ether;
+    uint256 public fee;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {

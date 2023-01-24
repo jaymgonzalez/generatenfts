@@ -5,7 +5,9 @@ coverage.json
 typechain
 typechain-types
 
-#Hardhat files
+# Hardhat
 cache
 artifacts
 
+# OpenZeppelin
+.openzeppelin
