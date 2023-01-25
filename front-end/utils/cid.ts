@@ -29,12 +29,12 @@ export async function getCid(files) {
 export async function storeFiles(files) {
   const client = makeStorageClient()
   const cid = await client.put(files)
-  console.log('stored files with cid:', cid)
+  // console.log('stored files with cid:', cid)
   return cid
 }
 
 export async function returnCid(files) {
   const cid = await getCid(files)
-  console.log('files cid:', cid)
+  // console.log('files cid:', cid)
   return cid
 }
