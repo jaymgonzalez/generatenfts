@@ -1,4 +1,6 @@
-import { contractAddress, contractAbi } from '../constants'
+import { useEffect, useRef, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { selectImagesMetadata } from '../store/slices/imageSlice'
 import {
   useContractWrite,
   usePrepareContractWrite,
@@ -6,10 +8,7 @@ import {
 } from 'wagmi'
 import { BigNumber } from 'ethers'
 import { returnCid, storeFiles } from '../utils/cid'
-import { useEffect, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { selectImagesMetadata } from '../store/slices/imageSlice'
-import { utils } from 'ethers'
+import { contractAddress, contractAbi } from '../constants'
 
 function createMetadataFiles(metadata) {
   return metadata.map((data) => {
@@ -30,22 +29,14 @@ function createMetadataFiles(metadata) {
 export default function RunContract({ address, images, children }) {
   const metadata = useSelector(selectImagesMetadata)
   const [metadataCid, setMetadataCid] = useState('')
+  const [fee, setFee] = useState(0)
   const filesRef = useRef('')
 
   const files = createMetadataFiles(metadata)
-  // returnCid(images)
 
   const names = metadata.map(
     (data) => `${data.name?.toString().trim().replace(/ /g, '_')}.json`
   )
-
-  // const { data: fee } = useContractRead({
-  //   address: contractAddress,
-  //   abi: contractAbi,
-  //   functionName: 'fee',
-  // })
-
-  // const value = parseInt(fee?.toString()) * names.length
 
   const { config: mintConfig } = usePrepareContractWrite({
     address: contractAddress,
@@ -54,8 +45,7 @@ export default function RunContract({ address, images, children }) {
     args: [address, metadataCid, names],
     overrides: {
       gasLimit: BigNumber.from('10000000'),
-      // value: utils.parseEther(!Number.isNaN(value) ? '10' : value.toString()),
-      value: utils.parseEther('0.5'),
+      value: BigNumber.from(fee.toString()),
     },
   })
 
@@ -67,18 +57,22 @@ export default function RunContract({ address, images, children }) {
     write: mintWrite,
   } = useContractWrite(mintConfig)
 
-  // const { config: withdrawConfig } = usePrepareContractWrite({
-  //   address: contractAddress,
-  //   abi: contractAbi,
-  //   functionName: 'withdraw',
-  //   overrides: {
-  //     gasLimit: BigNumber.from('10000000'),
-  //     // value: utils.parseEther(!Number.isNaN(value) ? '10' : value.toString()),
-  //     // value: utils.parseEther('10'),
-  //   },
-  // })
+  const { data: feeData } = useContractRead({
+    address: contractAddress,
+    abi: contractAbi,
+    functionName: 'fee',
+  })
 
-  // const { write: withdrawWrite } = useContractWrite(withdrawConfig)
+  const { data: owner } = useContractRead({
+    address: contractAddress,
+    abi: contractAbi,
+    functionName: 'owner',
+  })
+
+  useEffect(() => {
+    setFee(parseInt(feeData?.toString()) * names.length)
+    if (address === owner) setFee(0)
+  }, [feeData, names.length])
 
   useEffect(() => {
     if (mintIsSuccess) {

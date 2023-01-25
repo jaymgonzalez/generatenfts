@@ -2,17 +2,11 @@ const { ethers } = require('hardhat')
 const contract = require('../artifacts/contracts/GNFT.sol/GNFT.json')
 require('dotenv').config({ path: '.env' })
 const { contractAddress } = require('../constants')
-const proxyAddress = '0xC469e7aE4aD962c30c7111dc580B4adbc7E914DD'
 
 async function main() {
   const signer = await ethers.getSigner()
 
-  const GNFT = await ethers.getContractAt(
-    contract.abi,
-    // contractAddress,
-    proxyAddress,
-    signer
-  )
+  const GNFT = await ethers.getContractAt(contract.abi, contractAddress, signer)
   console.log('Setting fee...')
   const setFeeTx = await GNFT.setFee(ethers.utils.parseEther('1'))
   await setFeeTx.wait()
