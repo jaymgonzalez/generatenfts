@@ -1,8 +1,6 @@
-const { assert, expect } = require('chai')
-const { network, deployments, ethers } = require('hardhat')
+const { expect } = require('chai')
+const { ethers } = require('hardhat')
 const { BigNumber, utils } = require('ethers')
-const { developmentChains, networkConfig } = require('../helper-hardhat-config')
-require('dotenv').config()
 
 describe('GNFT Unit Tests', function () {
   let GNFT, gnft, owner, addr1
@@ -27,7 +25,7 @@ describe('GNFT Unit Tests', function () {
     })
   })
 
-  describe.only('Minting', function () {
+  describe('Minting', function () {
     let baseUri, fileNames, totalFee
     beforeEach(async () => {
       baseUri = 'QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG'
@@ -41,8 +39,8 @@ describe('GNFT Unit Tests', function () {
       expect(balance).to.equal(2)
     })
     it('should mint NFTs for other address', async () => {
-      await gnft.mint(addr1.address, baseUri, fileNames, {
-        value: totalFee,
+      await gnft.connect(addr1).mint(addr1.address, baseUri, fileNames, {
+        value: utils.parseEther('2'),
       })
       const balance = await gnft.balanceOf(addr1.address)
       expect(balance).to.equal(2)
@@ -54,17 +52,56 @@ describe('GNFT Unit Tests', function () {
         })
       ).to.be.revertedWithCustomError(gnft, 'GNFT__NftToMintLowerThanOne')
     })
-
-    // console.log(receipt)
-    // expect(receipt.logs).to.have.lengthOf(1)
-    // const event = receipt.logs[0]
-    // expect(event.event).to.be.equal('Transfer')
-    // expect(event.args.from).to.be.equal(
-    //   '0x0000000000000000000000000000000000000000'
-    // )
-    // expect(event.args.to).to.be.equal(other)
-    // expect(event.args.tokenId.toNumber()).to.be.above(0)
+    it('should NOT mint NFTs if value less than fee', async () => {
+      await expect(
+        gnft.connect(addr1).mint(addr1.address, baseUri, fileNames, {
+          value: utils.parseEther('0.1'),
+        })
+      ).to.be.revertedWithCustomError(gnft, 'GNFT__NotEnoughFunds')
+    })
+    it('should return correct URI', async () => {
+      await gnft.mint(owner.address, baseUri, fileNames)
+      expect(await gnft.tokenURI(0)).to.equal(
+        `ipfs://${baseUri}/${fileNames[0]}`
+      )
+      expect(await gnft.tokenURI(1)).to.equal(
+        `ipfs://${baseUri}/${fileNames[1]}`
+      )
+    })
   })
+
+  describe.only('Only Owner', function () {
+    it('should pause contract execution', async () => {
+      await gnft.pause()
+      expect(await gnft.paused()).to.equal(true)
+    })
+    it('should NOT pause contract execution', async () => {
+      await expect(gnft.connect(addr1).pause()).to.be.revertedWith(
+        'Ownable: caller is not the owner'
+      )
+    })
+    it('should unpause contract execution', async () => {
+      await gnft.pause()
+      expect(await gnft.paused()).to.equal(true)
+      await gnft.unpause()
+      expect(await gnft.paused()).to.equal(false)
+    })
+    it('should NOT unpause contract execution', async () => {
+      await expect(gnft.connect(addr1).unpause()).to.be.revertedWith(
+        'Ownable: caller is not the owner'
+      )
+    })
+  })
+
+  // console.log(receipt)
+  // expect(receipt.logs).to.have.lengthOf(1)
+  // const event = receipt.logs[0]
+  // expect(event.event).to.be.equal('Transfer')
+  // expect(event.args.from).to.be.equal(
+  //   '0x0000000000000000000000000000000000000000'
+  // )
+  // expect(event.args.to).to.be.equal(other)
+  // expect(event.args.tokenId.toNumber()).to.be.above(0)
   // it('Should have minted Link tokens', async function () {
   //   expect(await linkContract.balanceOf(owner.address)).to.equal(
   //     '1000000000000000000000000'
