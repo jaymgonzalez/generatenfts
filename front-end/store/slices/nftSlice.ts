@@ -27,5 +27,5 @@ export const nftSlice = createSlice({
 })
 
 export const { setNftData } = nftSlice.actions
-export const selectNftData = (state) => state.images.ownedNfts
+export const selectNftData = (state) => state.nfts.ownedNfts
 export default nftSlice.reducer
