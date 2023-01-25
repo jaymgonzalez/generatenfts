@@ -84,11 +84,13 @@ export default function GenerateNft() {
                       label="First step"
                       description="Upload your images"
                     >
-                      <Upload />
-                      <ImageGrid
-                        openedMap={openedMap}
-                        setOpenedMap={setOpenedMap}
-                      />
+                      <ImageMetadata images={images} setImages={setImages}>
+                        <Upload />
+                        <ImageGrid
+                          openedMap={openedMap}
+                          setOpenedMap={setOpenedMap}
+                        />
+                      </ImageMetadata>
                     </Stepper.Step>
                     <Stepper.Step
                       label="Second step"

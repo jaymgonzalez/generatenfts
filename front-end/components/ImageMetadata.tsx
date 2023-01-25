@@ -109,7 +109,8 @@ export default function ImageMetadata({ images, setImages, children }) {
   }, [images.length, tokenIdData, refMetadata.current])
 
   useEffect(() => {
-    Promise.resolve(returnCid(images)).then((res) => setCid(res))
+    if (images.length > 0)
+      Promise.resolve(returnCid(images)).then((res) => setCid(res))
   }, [images.length, tokenIdData, refMetadata.current, cid])
 
   useEffect(() => {
