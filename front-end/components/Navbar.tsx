@@ -37,20 +37,6 @@ const links = [
   {
     link: '',
     label: 'Support',
-    // links: [
-    //   {
-    //     link: '/faq',
-    //     label: 'FAQ',
-    //   },
-    //   {
-    //     link: '/demo',
-    //     label: 'Book a demo',
-    //   },
-    //   {
-    //     link: '/contact',
-    //     label: 'Contact us',
-    //   },
-    // ],
   },
 ]
 
@@ -92,6 +78,7 @@ const useStyles = createStyles((theme) => ({
     lineHeight: 1,
     padding: '8px 12px',
     borderRadius: theme.radius.sm,
+    border: '1px solid rgba(0, 0, 0, 0)',
     textDecoration: 'none',
     color:
       theme.colorScheme === 'dark'
