@@ -45,7 +45,7 @@ export default function RunContract({ address, images, children }) {
     args: [address, metadataCid, names],
     overrides: {
       gasLimit: BigNumber.from('10000000'),
-      value: BigNumber.from(fee.toString()),
+      value: BigNumber.from(fee?.toString()),
     },
   })
 
