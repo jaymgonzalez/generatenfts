@@ -1,4 +1,4 @@
-import { useForm } from '@mantine/form'
+import { useForm, hasLength } from '@mantine/form'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   setImageUrls,
@@ -17,6 +17,7 @@ import {
   Flex,
   UnstyledButton,
   Textarea,
+  ActionIcon,
 } from '@mantine/core'
 import { IconCircleMinus, IconCirclePlus, IconTrash } from '@tabler/icons'
 
@@ -34,6 +35,22 @@ export default function ImageForm({ index, setOpenedMap, openedMap }) {
         { trait_type: '', value: '' },
       ],
       description: reduxImagesMetadata[index].description || '',
+    },
+
+    validate: {
+      name: hasLength(
+        { min: 1, max: 20 },
+        'Please add a name no longer than 20 characters'
+      ),
+      author: hasLength(
+        { min: 0, max: 20 },
+        'Author longer than 20 characters not accepted'
+      ),
+      attributes: hasLength({ max: 10 }, 'Attributes should be 10 or less'),
+      description: hasLength(
+        { max: 120 },
+        'Description must have 120 characters max'
+      ),
     },
   })
 
@@ -102,32 +119,60 @@ export default function ImageForm({ index, setOpenedMap, openedMap }) {
           label="Description"
           {...form.getInputProps('description')}
         />
-        <Tooltip
-          label="Click on the + sign to add your own attributes"
-          position="bottom-end"
-          offset={-5.5}
-        >
-          <Divider
-            mt="md"
-            labelPosition="right"
-            label={
-              <>
-                <Box mr={8}>Attributes</Box>
-                <Box sx={{ cursor: 'pointer', marginRight: 3 }}>
-                  <IconCirclePlus
-                    size={26}
-                    onClick={() =>
-                      form.insertListItem('attributes', {
-                        trait_type: '',
-                        value: '',
-                      })
-                    }
-                  />
-                </Box>
-              </>
-            }
-          />
-        </Tooltip>
+        {form.values.attributes.length <= 7 ? (
+          <Tooltip
+            label="Click on the + sign to add your own attributes"
+            position="bottom-end"
+            offset={-5.5}
+          >
+            <Divider
+              mt="md"
+              labelPosition="right"
+              label={
+                <>
+                  <Box mr={8}>Attributes</Box>
+                  <Box sx={{ cursor: 'pointer', marginRight: 3 }}>
+                    <ActionIcon variant="transparent">
+                      {' '}
+                      <IconCirclePlus
+                        size={26}
+                        color="#AEAFB1"
+                        onClick={() =>
+                          form.insertListItem('attributes', {
+                            trait_type: '',
+                            value: '',
+                          })
+                        }
+                      />
+                    </ActionIcon>
+                  </Box>
+                </>
+              }
+            />
+          </Tooltip>
+        ) : (
+          <Tooltip
+            label="No more than 8 attributes allowed"
+            position="bottom-end"
+            offset={-5.5}
+          >
+            <Divider
+              mt="md"
+              labelPosition="right"
+              label={
+                <>
+                  <Box mr={8}>Attributes</Box>
+                  <Box sx={{ cursor: 'not-allowed', marginRight: 3 }}>
+                    <ActionIcon variant="transparent" disabled>
+                      {' '}
+                      <IconCirclePlus size={26} color="#ff6b6b" />
+                    </ActionIcon>
+                  </Box>
+                </>
+              }
+            />
+          </Tooltip>
+        )}
 
         {fields}
         <Group position="center" mt="xl">
