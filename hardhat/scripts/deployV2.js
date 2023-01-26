@@ -1,6 +1,6 @@
 const { ethers, upgrades } = require('hardhat')
 
-const proxyAddress = '0xC469e7aE4aD962c30c7111dc580B4adbc7E914DD'
+const proxyAddress = '0x5a8E771b5D0B3d2e4d218478CB7C9029d00c4e5a'
 
 async function main() {
   console.log(proxyAddress, ' original GNFT(proxy) address')
