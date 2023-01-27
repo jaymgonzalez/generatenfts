@@ -64,7 +64,7 @@ const useStyles = createStyles((theme) => ({
     },
     flexWrap: 'wrap',
     width: '100%',
-    height: '122px',
+    height: '128px',
   },
 
   burger: {
