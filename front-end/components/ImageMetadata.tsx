@@ -32,8 +32,6 @@ async function createImageFiles(images, tokenId, urls) {
 }
 
 async function getMetadata(imagesMetadata, baseMetadata, tokenId, cid) {
-  // const cid = await returnCid(files)
-
   return imagesMetadata.map((img, i) => {
     const attributes = img.attributes?.map((attr) => {
       if (attr.trait_type.length === 0 || attr.value.length === 0) return
@@ -46,11 +44,12 @@ async function getMetadata(imagesMetadata, baseMetadata, tokenId, cid) {
     const newMetadata = {
       title: tokenId
         ? `Generate NFT Collection #${parseInt(tokenId) + 1 + i}`
-        : 'Generate NFT Collection', // choose by user (Name + Creator)
+        : 'Generate NFT Collection',
       id: img.id,
-      name: img.name || parseInt(tokenId) + 1 + i,
-      cid,
+      name: img.name || `${parseInt(tokenId) + 1 + i}`,
+      author: img.author,
       tokenId: parseInt(tokenId) + 1 + i,
+      description: img.description,
       ...baseMetadata,
       image: img.name
         ? `ipfs://${cid}/${img.name.toString().trim().replace(/ /g, '_')}.${
@@ -58,12 +57,14 @@ async function getMetadata(imagesMetadata, baseMetadata, tokenId, cid) {
           }`
         : `ipfs://${cid}/${parseInt(tokenId) + 1 + i}.${img.extension}`,
       timestamp: baseMetadata.timestamp || Math.floor(date.getTime() / 1000),
+      cid,
       extension: img.extension,
       attributes,
     }
 
-    if (img.author) newMetadata.author = img.author
-    if (img.description) newMetadata.description = img.description
+    if (img.author === '') delete newMetadata.author
+    if (img.description === '') delete newMetadata.description
+    if (img.attributes?.length < 1) delete newMetadata.attributes
 
     return newMetadata
   })
@@ -81,8 +82,8 @@ export default function ImageMetadata({ images, setImages, children }) {
   const urls = useSelector(selectImagesUrls)
 
   const baseMetadata = {
-    contract: contractAddress, // contract that minted it
-    owner: address, // wallet address
+    contract: contractAddress,
+    owner: address,
     timestamp: Math.floor(date.getTime() / 1000),
     network: chain.name,
   }

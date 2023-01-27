@@ -27,10 +27,10 @@ export const imageSlice = createSlice({
     setNftMetadata: (state, action) => {
       const updatedMetadata = state.metadata.map((data) => {
         if (data.id === action.payload.id) {
-          if (!action.payload.author) delete action.payload.author
-          if (action.payload.attributes[0]?.value === '')
-            delete action.payload.attributes
-          if (!action.payload.description) delete action.payload.description
+          if (!action.payload.author) delete data.author
+          if (!action.payload.description) delete data.description
+          if (!action.payload.attributes) delete data.attributes
+          // data.attributes = [{ trait_type: '', value: '' }]
           return {
             ...data,
             ...action.payload,

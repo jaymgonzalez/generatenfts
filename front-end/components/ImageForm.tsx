@@ -1,4 +1,4 @@
-import { useForm, hasLength } from '@mantine/form'
+import { useForm, hasLength, isNotEmpty, isInRange } from '@mantine/form'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   setImageUrls,
@@ -29,8 +29,8 @@ export default function ImageForm({ index, setOpenedMap, openedMap }) {
 
   const form = useForm({
     initialValues: {
-      name: reduxImagesMetadata[index].name,
-      author: reduxImagesMetadata[index].author,
+      name: reduxImagesMetadata[index].name || '',
+      author: reduxImagesMetadata[index].author || '',
       attributes: reduxImagesMetadata[index].attributes || [
         { trait_type: '', value: '' },
       ],
@@ -38,15 +38,21 @@ export default function ImageForm({ index, setOpenedMap, openedMap }) {
     },
 
     validate: {
-      name: hasLength(
-        { min: 1, max: 20 },
-        'Please add a name no longer than 20 characters'
-      ),
-      author: hasLength(
-        { min: 0, max: 20 },
-        'Author longer than 20 characters not accepted'
-      ),
-      attributes: hasLength({ max: 10 }, 'Attributes should be 10 or less'),
+      name: (value) =>
+        value.length > 20
+          ? 'Please add a name no longer than 20 characters'
+          : value === ''
+          ? 'Please add a name'
+          : null,
+      author: (value) =>
+        value?.length < 20
+          ? null
+          : 'Please add an author no longer than 20 characters',
+      attributes: {
+        trait_type: (value) =>
+          value.length < 1 ? 'Please add a trait type' : null,
+        value: (value) => (value.length < 1 ? 'Please add a value' : null),
+      },
       description: hasLength(
         { max: 120 },
         'Description must have 120 characters max'
