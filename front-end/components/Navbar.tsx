@@ -140,11 +140,14 @@ export default function CustomNavbar({ children }) {
   return (
     <AppShell
       fixed={false}
-      styles={{
+      styles={(theme) => ({
         body: {
           display: 'block',
         },
-      }}
+        main: {
+          maxWidth: theme.breakpoints.xl,
+        },
+      })}
       header={
         <Header
           height={HEADER_HEIGHT}
