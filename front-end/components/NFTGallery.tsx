@@ -9,6 +9,9 @@ import {
   LoadingOverlay,
   Pagination,
   Center,
+  Flex,
+  Title,
+  Button,
 } from '@mantine/core'
 import { Network, Alchemy, OwnedNftsResponse } from 'alchemy-sdk'
 import { useEffect, useState } from 'react'
@@ -19,6 +22,7 @@ import en from 'javascript-time-ago/locale/en'
 import NFTModal from './NFTModal'
 import { selectNftData, setNftData } from '../store/slices/nftSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import Link from 'next/link'
 // import Link from 'next/link'
 
 TimeAgo.addDefaultLocale(en)
@@ -113,7 +117,13 @@ export default function NFTGallery({ address }) {
   const nfts = records?.map((nft, index) => {
     return (
       <>
-        <Grid.Col span={12} xs={6} sm={4} lg={3}>
+        <Grid.Col
+          key={nft.tokenId + nft.tokenType}
+          span={12}
+          xs={6}
+          sm={4}
+          lg={3}
+        >
           {/* <Link href={`/nft/${nft.contract.address}/${nft.tokenId}`}> */}
           <NFTModal
             nft={nft}
@@ -191,6 +201,25 @@ export default function NFTGallery({ address }) {
   return (
     <>
       {<LoadingOverlay visible={loading} />}
+      {nfts?.length === 0 && (
+        <Box h="100vh">
+          <Flex
+            gap="md"
+            justify="center"
+            align="center"
+            direction="column"
+            h="80%"
+          >
+            <Title order={3}>No GNFT detected in your connected wallet.</Title>
+            <Title order={5}>Click below to get your first one!</Title>
+            <Group mx="auto" px={28}>
+              <Button component={Link} href="/generate" size="md" radius="md">
+                Generate NFT
+              </Button>
+            </Group>
+          </Flex>
+        </Box>
+      )}
       {nfts && <Grid gutter="xl">{nfts}</Grid>}
       {nftList.length > PAGE_SIZE && (
         <Center py={32}>

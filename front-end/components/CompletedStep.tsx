@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNetwork } from 'wagmi'
 import { setImageUrls, setImageMetadata } from '../store/slices/imageSlice'
+import { setNftData } from '../store/slices/nftSlice'
 
 export default function CompletedStep({
   mintData,
@@ -19,6 +20,7 @@ export default function CompletedStep({
     if (mintIsSuccess) {
       dispatch(setImageUrls([]))
       dispatch(setImageMetadata([]))
+      dispatch(setNftData([]))
     }
   }, [mintIsSuccess])
   return (
