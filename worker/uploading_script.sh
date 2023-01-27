@@ -9,7 +9,7 @@ for file in $(find "$UPLOAD_DIR" -type f); do
   filename=$(basename "$file")
 
   # Get the subdirectory path and remove the leading "./"
-  subdir_path=$(echo "$file" | sed 's|/home/jay-pc/workspace/earnWeb3/ai-nft/front-end/out||')
+  subdir_path=$(echo "$file" | sed 's|/home/jay-pc/workspace/generatenfts/front-end/out||')
 
   # Construct the full file name with the subdirectory path
   full_filename=${subdir_path#'/'}
