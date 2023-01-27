@@ -1,26 +1,9 @@
 import { useState } from 'react'
-import {
-  Button,
-  Group,
-  Box,
-  Overlay,
-  Alert,
-  Modal,
-  createStyles,
-  Text,
-  UnstyledButton,
-} from '@mantine/core'
+import { Button, Group, Alert, Modal, Text } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons'
 import { Metamask } from '@web3uikit/icons'
 import Link from 'next/link'
 import { Matic } from '@web3uikit/icons'
-
-const useStyles = createStyles(() => ({
-  modal: {
-    backgroundColor: 'red',
-    // display: 'none',
-  },
-}))
 
 function addMaticNetwork() {
   try {
@@ -47,7 +30,6 @@ function addMaticNetwork() {
 
 export default function WIPOverlay() {
   const [opened, setOpened] = useState(true)
-  const { classes, theme } = useStyles()
 
   return (
     opened && (
@@ -55,7 +37,6 @@ export default function WIPOverlay() {
         <Modal
           opened={opened}
           onClose={() => setOpened(false)}
-          // className={classes.modal}
           withCloseButton={false}
         >
           <Alert
@@ -69,11 +50,15 @@ export default function WIPOverlay() {
             <Text align="center">🚧👷🏽‍♀️👷🏽‍♂️🚧</Text>
             <Text
               align="center"
-              sx={{
+              sx={(theme) => ({
                 a: {
                   textDecoration: 'none',
+                  color:
+                    theme.colorScheme === 'dark'
+                      ? theme.colors.blue[4]
+                      : theme.colors.gray[3],
                 },
-              }}
+              })}
             >
               Please check our guide on how the app works{' '}
               <Link href="/guide">here</Link>
