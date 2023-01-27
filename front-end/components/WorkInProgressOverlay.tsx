@@ -76,7 +76,7 @@ export default function WIPOverlay() {
               }}
             >
               Please check our guide on how the app works{' '}
-              <Link href="/support">here</Link>
+              <Link href="/guide">here</Link>
             </Text>
             <Text align="center">
               At the moment, only live on Polygon Mumbai.

@@ -35,7 +35,7 @@ const links = [
     label: 'NFT Gallery',
   },
   {
-    link: '',
+    link: '/support',
     label: 'Support',
   },
 ]
