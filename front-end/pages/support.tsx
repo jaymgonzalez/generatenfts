@@ -104,7 +104,6 @@ export default function Support() {
         <Title order={2} className={classes.title} align="center" mt="sm">
           Support Center
         </Title>
-
         <Text
           color="dimmed"
           className={classes.description}
@@ -113,7 +112,6 @@ export default function Support() {
         >
           Get the Help You Need - Guides, FAQs, and Contact Information
         </Text>
-
         <SimpleGrid
           cols={3}
           spacing="xl"
