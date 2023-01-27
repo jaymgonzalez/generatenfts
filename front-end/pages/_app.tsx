@@ -12,6 +12,7 @@ import { NotificationsProvider } from '@mantine/notifications'
 // import { type AppProps } from 'next/app'
 
 import '@rainbow-me/rainbowkit/styles.css'
+import Head from 'next/head'
 
 export default function App(props) {
   // props: AppProps<{ session: Session }>
@@ -82,6 +83,14 @@ export default function App(props) {
                   modalSize="compact"
                   chains={chains}
                 >
+                  <Head>
+                    <title>Generate NFT</title>
+                    <meta
+                      name="description"
+                      content="GenerateNFTs.xyz - IMG to NFT dApp"
+                    />
+                    <link rel="icon" href="/favicon.ico" />
+                  </Head>
                   <Component {...pageProps} />
                 </RainbowKitProvider>
                 {/* </RainbowKitSiweNextAuthProvider> </SessionProvider> */}

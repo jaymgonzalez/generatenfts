@@ -9,11 +9,7 @@ export default class _Document extends Document {
   render() {
     return (
       <Html>
-        <Head>
-          <title>Generate NFT</title>
-          <meta name="description" content="Whitelist-Dapp" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
+        <Head></Head>
         <body>
           <Main />
           <NextScript />
