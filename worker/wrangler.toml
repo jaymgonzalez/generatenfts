@@ -5,3 +5,4 @@ compatibility_date = "2023-01-10"
 [[r2_buckets]]
 binding = 'MY_BUCKET' 
 bucket_name = 'generatenft'
+preview_bucket_name = 'gnft-test'
