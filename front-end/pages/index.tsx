@@ -5,7 +5,7 @@ import Navbar from '../components/Navbar'
 export default function Home() {
   return (
     <>
-      <BackgroundImage src="/imgs/backgroundImage.png" mih={720} h="100vh">
+      <BackgroundImage src="/generatenfts/imgs/backgroundImage.png" mih={720} h="100vh">
         <Navbar>
           <Stack
             align="flex-start"
