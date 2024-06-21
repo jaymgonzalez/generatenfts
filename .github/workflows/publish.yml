@@ -30,13 +30,12 @@ jobs:
           static_site_generator: next
 
       - name: Build with Next.js 🏗️
-        run: cd front-end && yarn next build && ls
-        
+        run: cd front-end && yarn next build && ls -la        
 
       - name: Upload artifact 📡
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .front-end/out
+          path: front-end/.out
 
   deploy:
     environment:
