@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build  && next export && yarn deploy",
+    "build": "next build  && next export",
     "start": "next start",
     "lint": "next lint",
     "deploy": "export $(cat .env.local | xargs) && ../worker/uploading_script.sh"
