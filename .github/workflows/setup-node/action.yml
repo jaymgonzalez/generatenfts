@@ -13,7 +13,7 @@ runs:
       uses: actions/cache@v3
       with:
         path: front-end/node_modules
-        key: node-modules-${{ hashFiles('package-lock.json') }}
+        key: node-modules-${{ hashFiles('yarn-lock.json') }}
 
     - name: Install dependencies 🔧
       shell: bash
