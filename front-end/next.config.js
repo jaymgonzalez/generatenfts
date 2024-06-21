@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: "/generatenfts/front-end",
+  basePath: "/generatenfts",
   output: "export",
   reactStrictMode: true,
 }
