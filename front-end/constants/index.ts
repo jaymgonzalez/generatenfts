@@ -1,4 +1,4 @@
-import contract from '../../hardhat/artifacts/contracts/GNFT.sol/GNFT.json'
+import contract from '../../hardhat/contract-artifacts/GNFT.json'
 
 // LAST CONTRACT IN MUMBAI (PROXY UUPS)
 export const contractAddress = '0x53F36A61223fee9f4449C7D0D7C9fB5f3b0BFAc1'
