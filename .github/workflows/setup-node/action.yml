@@ -18,4 +18,4 @@ runs:
     - name: Install dependencies 🔧
       shell: bash
       if: steps.cache_dependencies.outputs.cache-hit != 'true'
-      run: cd front-end && npm ci
+      run: cd front-end && yarn install --frozen-lockfile
